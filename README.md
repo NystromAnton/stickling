@@ -1,4 +1,4 @@
-# stycling
+# Stickling
 
 A new Flutter application.
 
