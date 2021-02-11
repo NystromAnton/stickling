@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'Login.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -17,7 +15,142 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: TabBarDemo(),
+      //home: MyStatefulWidget(),
+      //home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+class TabBarDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 60,
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              indicatorColor: Colors.white,
+              labelColor: Color(0xFF65C27A),
+              unselectedLabelColor: Color(0xFFB2E5BE),
+              tabs: [
+                Tab(
+                  icon: ImageIcon(
+                AssetImage("assets/sticklinglogo.png"),
+                  size: 50,
+                )),
+                Tab(icon: ImageIcon(
+                  AssetImage("assets/chaticon.png"),
+                  size: 50,
+                )),
+                Tab(icon: ImageIcon(
+                  AssetImage("assets/myprofileicon.png"),
+                  size: 50,
+                )),
+              ],
+            ),
+            //title: Text('Tabs Demo'),
+          ),
+          body: TabBarView(
+            children: [
+              Container(
+                color: Colors.white,
+              ),
+              Container(
+                color: Colors.white,
+              ),
+              Container(
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  //Tillhör Mette och Helenas navbar
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Swipemode',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      //appBar: AppBar(
+        //title: const Text('BottomNavigationBar Sample'),
+      //),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      //Mette och Helenas Navbar fast den är i botten :/
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+                  AssetImage("assets/sticklinglogo.png"),
+                  size: 50,
+                ),
+            //icon: Icon(Icons.local_florist_rounded),
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+                  AssetImage("assets/chaticon.png"),
+                  size: 55,
+                ),
+                  
+            label: ' ',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+                  AssetImage("assets/myprofileicon.png"),
+                  size: 50,
+                ),
+            label: ' ',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color(0xFF65C27A),
+        onTap: _onItemTapped,
+      ),
+      
     );
   }
 }
@@ -49,7 +182,6 @@ setState(() {
     return Scaffold(
 
       body: Container(
-
 
         child: Column(
             children: <Widget>[
