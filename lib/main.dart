@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/icons.dart';
-import 'Login.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +13,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -164,16 +162,15 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 55, left: 10, right: 30), // Make this truly centered
+                  padding: const EdgeInsets.only(top: 55, left: 10, right: 30),
                   child: TextField(
                     textDirection: TextDirection.ltr,
                     controller: titleController,
-                    obscureText: false,
+                    obscureText: true,
                     style: TextStyle(fontSize: 30),
                     cursorColor: Colors.black,
                     showCursor: false,
-                    enableInteractiveSelection: false,
+                    //enableInteractiveSelection: false,
                     decoration: InputDecoration(
                       fillColor: Color(0xFF65C27A),
                       border: InputBorder.none,
@@ -254,10 +251,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     style: TextStyle(fontSize: 25),
                   ),
                   textColor: Colors.white,
-                  disabledTextColor: Colors.white,
+                  //disabledTextColor: Colors.white,
                   color: Color(0xFF65C27A),
                   focusColor: Color(0xFF65C27A),
-                  disabledColor: Color(0xFF65C27A),
+                  //disabledColor: Color(0xFF65C27A),
                   padding: const EdgeInsets.all(20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
