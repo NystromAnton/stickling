@@ -166,7 +166,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   child: TextField(
                     textDirection: TextDirection.ltr,
                     controller: titleController,
-                    obscureText: true,
                     style: TextStyle(fontSize: 30),
                     cursorColor: Colors.black,
                     showCursor: false,
