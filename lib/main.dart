@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 
+import 'Profile/ProfilePage.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -176,19 +178,34 @@ class TabBarDemo extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          RaisedButton(
-                            onPressed: null,
-                            padding: EdgeInsets.all(15),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text(
-                              'Add new stickling',
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.white,
+
+                          GestureDetector(
+
+                            child: RaisedButton(
+                              onPressed: null,
+                              padding: EdgeInsets.all(15),
+
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                'Add new stickling',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.white,
+                                ),
                               ),
+                              disabledColor: Color(0xFF65C27A),
                             ),
-                            disabledColor: Color(0xFF65C27A),
+                            onTap: (){
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => PlantProfile(null)),
+                              );
+
+                            },
+
+
                           )
                         ],
                       ),
