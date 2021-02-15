@@ -99,14 +99,15 @@ class TabBarDemo extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.only(top: 40),
                             child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Image.asset(
-                              'assets/palettblad.png',
-                              width: 400.0,
-                              height: 400.0,
-                              fit: BoxFit.cover,
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.asset(
+                                'assets/palettblad.png',
+                                width: 400.0,
+                                height: 400.0,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),),
+                          ),
                           /* child: Container(
                             padding: EdgeInsets.only(top: 40),
                             width: 400,
@@ -168,7 +169,32 @@ class TabBarDemo extends StatelessWidget {
                 color: Colors.white,
               ),
               Container(
-                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RaisedButton(
+                            onPressed: null,
+                            padding: EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text(
+                              'Add new stickling',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                            disabledColor: Color(0xFF65C27A),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           ),
