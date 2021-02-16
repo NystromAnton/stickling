@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 
 import 'Profile/ProfilePage.dart';
+import 'Registration/Login.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TabBarDemo(),
+      home: Login(),
+      //home: TabBarDemo(),
       //home: MyStatefulWidget(),
       //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
