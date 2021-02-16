@@ -224,36 +224,57 @@ class TabBarDemo extends StatelessWidget {
                     SingleChildScrollView(
                       child: Row(
                         children: <Widget>[
-                          Column(children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  'assets/stickling1.jpg',
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.fitWidth,
-                                ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset(
+                                'assets/stickling1.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
-                          ]),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Stickling',
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Stickling',
+                                    //textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [Text('hej')],
-                                )
-                              ],
-                            ),
+                                  ),
+                                  RaisedButton(
+                                    onPressed: null,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.edit_outlined,
+                                          size: 18,
+                                        ),
+                                        Text(
+                                          'Edit',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                    color: Colors.white,
+                                    disabledColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: BorderSide(color: Colors.grey)),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [Text('hej')],
+                              )
+                            ],
                           ),
                         ],
                       ),
