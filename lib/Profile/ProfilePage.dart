@@ -193,7 +193,7 @@ class _PlantProfileState extends State<PlantProfile> {
                     textColor: Colors.white,
 
                     //disabledTextColor: Colors.white,
-                    color: Colors.pinkAccent,
+                    color: Color(0xFF65C27A),
 
                     padding: const EdgeInsets.all(20),
                     shape: RoundedRectangleBorder(
