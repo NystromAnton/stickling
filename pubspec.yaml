@@ -56,6 +56,9 @@ flutter:
       - assets/flower2.png
       - assets/flower3.png
       - assets/palettblad.png
+      - assets/stickling1.jpg
+      - assets/stickling2.jpg
+      - assets/stickling3.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

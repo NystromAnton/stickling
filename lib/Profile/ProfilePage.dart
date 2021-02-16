@@ -10,9 +10,8 @@ import 'CameraPicker.dart';
 
 class PlantProfile extends StatefulWidget {
   File imageFile;
-  PlantProfile(File imageFile){
-
-    this.imageFile=imageFile;
+  PlantProfile(File imageFile) {
+    this.imageFile = imageFile;
   }
 
   @override
@@ -29,12 +28,12 @@ class _PlantProfileState extends State<PlantProfile> {
     descriptionController.dispose();
     super.dispose();
   }
+
   File _imageFile;
 
-  var isEnabled=false;
+  var isEnabled = false;
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -45,7 +44,7 @@ class _PlantProfileState extends State<PlantProfile> {
                 Container(
                   padding: const EdgeInsets.only(top: 55),
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
                     child: IconButton(
@@ -58,23 +57,23 @@ class _PlantProfileState extends State<PlantProfile> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 55, left: 10, right: 30),
+                    padding:
+                        const EdgeInsets.only(top: 55, left: 10, right: 30),
                     child: TextField(
                       textDirection: TextDirection.ltr,
                       controller: titleController,
                       style: TextStyle(fontSize: 30),
                       cursorColor: Colors.black,
                       showCursor: false,
-                      onChanged: (text){
+                      onChanged: (text) {
                         EnableButton();
                       },
                       //enableInteractiveSelection: false,
                       decoration: InputDecoration(
-
                         fillColor: Color(0xFF65C27A),
                         border: InputBorder.none,
                         prefixIcon:
-                        Icon(Icons.edit, color: Colors.grey, size: 25),
+                            Icon(Icons.edit, color: Colors.grey, size: 25),
                         hintText: 'Title',
                         alignLabelWithHint: true,
                         hintStyle: TextStyle(
@@ -84,21 +83,21 @@ class _PlantProfileState extends State<PlantProfile> {
                     ),
                   ),
                 ),
-                widget.imageFile==null?Container()
-
-                :GestureDetector(
-                  onTap: (){
-                    CaptureImage();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top:48.0,right: 20),
-                    child: Icon(
-                      Icons.control_point_outlined,
-                      size: 60,
-                      color: Color(0xFF000000).withOpacity(0.1),
-                    ),
-                  ),
-                ),
+                widget.imageFile == null
+                    ? Container()
+                    : GestureDetector(
+                        onTap: () {
+                          CaptureImage();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 48.0, right: 20),
+                          child: Icon(
+                            Icons.control_point_outlined,
+                            size: 60,
+                            color: Color(0xFF000000).withOpacity(0.1),
+                          ),
+                        ),
+                      ),
               ],
             ),
             Row(
@@ -106,39 +105,37 @@ class _PlantProfileState extends State<PlantProfile> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: widget.imageFile==null
-                      ?
-                  Container(
-                    height: 375,
-                    width: 375,
-                    child: GestureDetector(
-                      onTap: (){
-                        CaptureImage();
-                      },
-                      child: Icon(
-                        Icons.control_point_outlined,
-                        size: 80,
-                        color: Color(0xFF000000).withOpacity(0.1),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD9D9D9).withOpacity(.5),
-                        borderRadius: BorderRadius.circular(10)),
-                  )
-                      :
-                  Container(
-                    height: 375,
-                      width: 375,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9).withOpacity(.5),
-                          borderRadius: BorderRadius.circular(10)),
-                      child:
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.file(widget.imageFile,
-
-                        fit: BoxFit.fitWidth,),
-                      )),
+                  child: widget.imageFile == null
+                      ? Container(
+                          height: 375,
+                          width: 375,
+                          child: GestureDetector(
+                            onTap: () {
+                              CaptureImage();
+                            },
+                            child: Icon(
+                              Icons.control_point_outlined,
+                              size: 80,
+                              color: Color(0xFF000000).withOpacity(0.1),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFD9D9D9).withOpacity(.5),
+                              borderRadius: BorderRadius.circular(10)),
+                        )
+                      : Container(
+                          height: 375,
+                          width: 375,
+                          decoration: BoxDecoration(
+                              color: Color(0xFFD9D9D9).withOpacity(.5),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Image.file(
+                              widget.imageFile,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          )),
                 ),
               ],
             ),
@@ -153,8 +150,7 @@ class _PlantProfileState extends State<PlantProfile> {
                       textAlignVertical: TextAlignVertical.top,
                       controller: descriptionController,
                       maxLines: 5,
-                      onChanged: (text){
-
+                      onChanged: (text) {
                         EnableButton();
                       },
                       cursorColor: Colors.grey,
@@ -184,8 +180,7 @@ class _PlantProfileState extends State<PlantProfile> {
                 Expanded(
                   flex: 0,
                   child: RaisedButton(
-
-                    onPressed:  isEnabled ? ()=> Navigator.pop : null,
+                    onPressed: isEnabled ? () => Navigator.pop : null,
                     child: Text(
                       'Upload plant',
                       style: TextStyle(fontSize: 25),
@@ -208,7 +203,8 @@ class _PlantProfileState extends State<PlantProfile> {
       ),
     );
   }
-   CaptureImage(){
+
+  CaptureImage() {
     Alert(
       context: context,
       title: "Choose Image",
@@ -220,9 +216,8 @@ class _PlantProfileState extends State<PlantProfile> {
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () => captureImage(ImageSource.gallery),
-          color:Color(0xFF65C27A),
+          color: Color(0xFF65C27A),
         ),
-
         DialogButton(
           child: Text(
             "Camera",
@@ -231,13 +226,13 @@ class _PlantProfileState extends State<PlantProfile> {
           onPressed: () => captureImage(ImageSource.camera),
           color: Color(0xFF65C27A),
         ),
-
       ],
     ).show();
   }
+
   Future<void> captureImage(ImageSource imageSource) async {
     try {
-      final imageFile =  await ImagePicker.pickImage(source: imageSource);
+      final imageFile = await ImagePicker.pickImage(source: imageSource);
 
       Navigator.push(
         context,
@@ -252,20 +247,18 @@ class _PlantProfileState extends State<PlantProfile> {
     print("Text1 " + descriptionController.text.length.toString());
     print("Text2 " + titleController.text.length.toString());
     setState(() {
-      if(widget.imageFile==null){
-        isEnabled=false;
-      }else{
-
-        if(descriptionController.text.length>0&&titleController.text.length>0){
-          isEnabled=true;
-        }else{
-          isEnabled=false;
+      if (widget.imageFile == null) {
+        isEnabled = false;
+      } else {
+        if (descriptionController.text.length > 0 &&
+            titleController.text.length > 0) {
+          isEnabled = true;
+        } else {
+          isEnabled = false;
         }
-
       }
-
     });
 
-    print("IsEnables "+isEnabled.toString());
+    print("IsEnables " + isEnabled.toString());
   }
 }

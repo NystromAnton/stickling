@@ -110,18 +110,6 @@ class TabBarDemo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          /* child: Container(
-                            padding: EdgeInsets.only(top: 40),
-                            width: 400,
-                            height: 400,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0), //doesn't work, why??
-                            ),
-                            child: Image.asset(
-                              "assets/palettblad.png",
-                              fit: BoxFit.fitWidth,
-                            ),
-                          ), */
                         )
                       ],
                     ),
@@ -139,7 +127,6 @@ class TabBarDemo extends StatelessWidget {
                                   color: Colors.grey[400],
                                 )),
                             child: IconButton(
-                                //padding: EdgeInsets.all(20),
                                 icon: Icon(Icons.close, color: Colors.red[700]),
                                 onPressed: null,
                                 iconSize: 60),
@@ -148,7 +135,6 @@ class TabBarDemo extends StatelessWidget {
                         Container(
                           height: 100,
                           width: 100,
-                          //padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(25),
@@ -176,19 +162,47 @@ class TabBarDemo extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: 30),
                       child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            padding: EdgeInsets.only(left: 30),
+                            icon: Icon(
+                              Icons.settings,
+                              size: 35,
+                            ),
+                            onPressed: null,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 60,
+                              ),
+                              child: Text(
+                                'My Sticklings',
+                                //textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontFamily: '.SF UI Display',
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20, bottom: 20),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
                           GestureDetector(
-
                             child: RaisedButton(
                               onPressed: null,
                               padding: EdgeInsets.all(15),
-
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                               child: Text(
-                                'Add new stickling',
+                                'Add New Stickling',
                                 style: TextStyle(
                                   fontSize: 25,
                                   color: Colors.white,
@@ -196,20 +210,54 @@ class TabBarDemo extends StatelessWidget {
                               ),
                               disabledColor: Color(0xFF65C27A),
                             ),
-                            onTap: (){
-
+                            onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => PlantProfile(null)),
+                                MaterialPageRoute(
+                                    builder: (context) => PlantProfile(null)),
                               );
-
                             },
-
-
-                          )
+                          ),
                         ],
                       ),
-                    )
+                    ),
+                    SingleChildScrollView(
+                      child: Row(
+                        children: <Widget>[
+                          Column(children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.asset(
+                                  'assets/stickling1.jpg',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                            ),
+                          ]),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Stickling',
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [Text('hej')],
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -224,8 +272,10 @@ class TabBarDemo extends StatelessWidget {
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+  );
   //Tillhör Mette och Helenas navbar
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
