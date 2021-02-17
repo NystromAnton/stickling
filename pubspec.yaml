@@ -55,7 +55,10 @@ flutter:
       - assets/flower1.png
       - assets/flower2.png
       - assets/flower3.png
-      - assets/palettblad.png
+      - assets/stickling1.jpg
+      - assets/stickling2.jpg
+      - assets/stickling3.jpg
+      - assets/stickling4.png
   #   - images/a_dot_ham.jpeg'
 
   fonts: 
@@ -65,6 +68,16 @@ flutter:
     - family: Lato
       fonts:
         - asset: fonts/Lato-Regular.ttf
+        - asset: fonts/Lato-Black.ttf
+        - asset: fonts/Lato-BlackItalic.ttf
+        - asset: fonts/Lato-Bold.ttf
+        - asset: fonts/Lato-BoldItalic.ttf
+        - asset: fonts/Lato-Hairline.ttf
+        - asset: fonts/Lato-HairlineItalic.ttf
+        - asset: fonts/Lato-Italic.ttf
+        - asset: fonts/Lato-Light.ttf
+        - asset: fonts/Lato-LightItalic.ttf
+        
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

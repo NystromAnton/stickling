@@ -7,6 +7,7 @@ import 'Registration/Login.dart';
 void main() {
   runApp(MyApp());
 }
+
 class MyApp2 extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -29,30 +30,10 @@ class ExampleHomePage extends StatefulWidget {
 class _ExampleHomePageState extends State<ExampleHomePage>
     with TickerProviderStateMixin {
   List<String> welcomeImages = [
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling4.png"
   ];
 
   @override
@@ -64,7 +45,6 @@ class _ExampleHomePageState extends State<ExampleHomePage>
         child: Container(
           height: MediaQuery.of(context).size.height * 0.6,
           child: new TinderSwapCard(
-
             swipeUp: true,
             swipeDown: true,
             orientation: AmassOrientation.BOTTOM,
@@ -79,8 +59,7 @@ class _ExampleHomePageState extends State<ExampleHomePage>
               child: Image.asset('${welcomeImages[index]}'),
             ),
             cardController: controller = CardController(),
-            swipeUpdateCallback:
-                (DragUpdateDetails details, Alignment align) {
+            swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
               /// Get swiping card's alignment
               if (align.x < 0) {
                 //Card is LEFT swiping
@@ -98,6 +77,7 @@ class _ExampleHomePageState extends State<ExampleHomePage>
     );
   }
 }
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -126,51 +106,65 @@ class MyStatefulWidget extends StatefulWidget {
 
 class TabBarDemo extends StatelessWidget {
   final List<String> flowerImages = [
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower1.png",
-    "assets/flower2.png",
-    "assets/flower3.png"
-
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling4.png",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling4.png",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling4.png",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling4.png"
   ];
 
-  final List<String> Title =
-  ["Flower 1", "Flower 2", "Flower 1", "Flower 2","Flower 3"];
+  final List<String> Title = [
+    "Flower 1",
+    "Flower 2",
+    "Flower 1",
+    "Flower 2",
+    "Flower 3",
+    "Flower 1",
+    "Flower 2",
+    "Flower 1",
+    "Flower 2",
+    "Flower 3",
+    "Flower 1",
+    "Flower 2",
+    "Flower 1",
+    "Flower 2",
+    "Flower 3",
+    "Flower 4"
+  ];
   final List<String> Description = [
     "Description 1",
     "Description 2",
     "Description 1",
     "Description 2",
-    "Description 3"
+    "Description 3",
+    "Description 1",
+    "Description 2",
+    "Description 1",
+    "Description 2",
+    "Description 3",
+    "Description 1",
+    "Description 2",
+    "Description 1",
+    "Description 2",
+    "Description 3",
+    "Description 2"
   ];
 
   @override
   Widget build(BuildContext context) {
     List<String> welcomeImages = [
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
-      "assets/flower1.png",
-      "assets/flower2.png",
+      "assets/stickling1.jpg",
     ];
     CardController controller;
     return MaterialApp(
@@ -225,7 +219,7 @@ class TabBarDemo extends StatelessWidget {
                                 'Julia\'s Palettblad',
                                 style: TextStyle(
                                   fontSize: 35,
-                                  fontFamily: '.SF UI Display',
+                                  fontFamily: 'Lato',
                                 ),
                               ),
                             ),
@@ -234,7 +228,6 @@ class TabBarDemo extends StatelessWidget {
                         Container(
                           height: MediaQuery.of(context).size.height * 0.6,
                           child: new TinderSwapCard(
-
                             swipeUp: true,
                             swipeDown: true,
                             orientation: AmassOrientation.BOTTOM,
@@ -315,6 +308,28 @@ class TabBarDemo extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Padding(
+                          padding: EdgeInsets.only(top: 15, left: 10),
+                          child: Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.settings),
+                                onPressed: null,
+                                iconSize: 40,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 45.0),
+                                child: Text(
+                                  'My Sticklings',
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontFamily: 'Lato',
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
                           padding: EdgeInsets.only(top: 30),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -326,10 +341,12 @@ class TabBarDemo extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Text(
-                                    'Add new stickling',
+                                    'Add new plant',
                                     style: TextStyle(
                                       fontSize: 25,
+                                      //fontWeight: FontWeight.bold,
                                       color: Colors.white,
+                                      fontFamily: 'Lato',
                                     ),
                                   ),
                                   disabledColor: Color(0xFF65C27A),
@@ -347,9 +364,9 @@ class TabBarDemo extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top:28.0),
+                          padding: const EdgeInsets.only(top: 28.0),
                           child: Container(
-                            height: 400,
+                            height: 500,
                             child: ListView.builder(
                               itemCount: flowerImages.length,
                               itemBuilder: (context, i) {
@@ -374,64 +391,86 @@ class TabBarDemo extends StatelessWidget {
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    Title[i],
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.black,
-                                                        fontSize: 25),
-                                                  ),
-                                                  Container(
-                                                    width: 90,
-                                                    height: 40,
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color: Colors.grey[500],
-                                                        ),
-                                                        borderRadius: BorderRadius.all(Radius.circular(20))
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: 8.0,
+                                                  right: 10,
+                                                  left: 20,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      Title[i],
+                                                      style: TextStyle(
+                                                          fontFamily: 'Lato',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black,
+                                                          fontSize: 25),
                                                     ),
-
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Icon(
-                                                            Icons.edit,
-
-                                                            color: Colors.grey,
-                                                            size: 25),
-                                                        Text(
-                                                         "Edit",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                              FontWeight.normal,
-                                                              color: Colors.black,
-                                                              fontSize: 20),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-
-
-                                                ],
+                                                    Container(
+                                                      width: 90,
+                                                      height: 35,
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Colors
+                                                                .grey[500],
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          20))),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(
+                                                              Icons
+                                                                  .edit_outlined,
+                                                              color:
+                                                                  Colors.grey,
+                                                              size: 25),
+                                                          Text(
+                                                            "Edit",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'Lato',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 20),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                              Text(
-                                                Description[i],
-                                                maxLines: 2,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.normal,
-                                                    color: Colors.black,
-                                                    fontSize: 20),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 20),
+                                                child: Text(
+                                                  Description[i],
+                                                  maxLines: 2,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Lato',
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      color: Colors.black,
+                                                      fontSize: 20),
+                                                ),
                                               ),
                                             ],
                                           ),
