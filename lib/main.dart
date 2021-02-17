@@ -7,7 +7,97 @@ import 'Registration/Login.dart';
 void main() {
   runApp(MyApp());
 }
+class MyApp2 extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: ExampleHomePage(),
+    );
+  }
+}
 
+class ExampleHomePage extends StatefulWidget {
+  @override
+  _ExampleHomePageState createState() => _ExampleHomePageState();
+}
+
+class _ExampleHomePageState extends State<ExampleHomePage>
+    with TickerProviderStateMixin {
+  List<String> welcomeImages = [
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    CardController controller; //Use this to trigger swap.
+
+    return new Scaffold(
+      body: new Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.6,
+          child: new TinderSwapCard(
+
+            swipeUp: true,
+            swipeDown: true,
+            orientation: AmassOrientation.BOTTOM,
+            totalNum: welcomeImages.length,
+            stackNum: 3,
+            swipeEdge: 4.0,
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+            maxHeight: MediaQuery.of(context).size.width * 0.9,
+            minWidth: MediaQuery.of(context).size.width * 0.8,
+            minHeight: MediaQuery.of(context).size.width * 0.8,
+            cardBuilder: (context, index) => Card(
+              child: Image.asset('${welcomeImages[index]}'),
+            ),
+            cardController: controller = CardController(),
+            swipeUpdateCallback:
+                (DragUpdateDetails details, Alignment align) {
+              /// Get swiping card's alignment
+              if (align.x < 0) {
+                //Card is LEFT swiping
+              } else if (align.x > 0) {
+                //Card is RIGHT swiping
+              }
+            },
+            swipeCompleteCallback:
+                (CardSwipeOrientation orientation, int index) {
+              /// Get orientation & index of swiped card!
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -38,11 +128,51 @@ class TabBarDemo extends StatelessWidget {
   final List<String> flowerImages = [
     "assets/flower1.png",
     "assets/flower2.png",
+    "assets/flower1.png",
+    "assets/flower2.png",
     "assets/flower3.png"
+
+  ];
+
+  final List<String> Title =
+  ["Flower 1", "Flower 2", "Flower 1", "Flower 2","Flower 3"];
+  final List<String> Description = [
+    "Description 1",
+    "Description 2",
+    "Description 1",
+    "Description 2",
+    "Description 3"
   ];
 
   @override
   Widget build(BuildContext context) {
+    List<String> welcomeImages = [
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+      "assets/flower1.png",
+      "assets/flower2.png",
+    ];
+    CardController controller;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -52,6 +182,7 @@ class TabBarDemo extends StatelessWidget {
             toolbarHeight: 60,
             backgroundColor: Colors.white,
             bottom: TabBar(
+              physics: NeverScrollableScrollPhysics(),
               indicatorColor: Colors.white,
               labelColor: Color(0xFF65C27A),
               unselectedLabelColor: Color(0xFFB2E5BE),
@@ -76,146 +207,249 @@ class TabBarDemo extends StatelessWidget {
             ),
             //title: Text('Tabs Demo'),
           ),
-          body: TabBarView(
-            children: [
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 40),
-                          child: Text(
-                            'Julia\'s Palettblad',
-                            style: TextStyle(
-                              fontSize: 35,
-                              fontFamily: '.SF UI Display',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          body: SingleChildScrollView(
+            child: Container(
+              height: 850,
+              child: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  Container(
+                    child: Column(
                       children: <Widget>[
-                        Flexible(
-                          child: Container(
-                            padding: EdgeInsets.only(top: 40),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.asset(
-                                'assets/palettblad.png',
-                                width: 400.0,
-                                height: 400.0,
-                                fit: BoxFit.cover,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(top: 40),
+                              child: Text(
+                                'Julia\'s Palettblad',
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  fontFamily: '.SF UI Display',
+                                ),
                               ),
                             ),
+                          ],
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          child: new TinderSwapCard(
+
+                            swipeUp: true,
+                            swipeDown: true,
+                            orientation: AmassOrientation.BOTTOM,
+                            totalNum: welcomeImages.length,
+                            stackNum: 3,
+                            swipeEdge: 4.0,
+                            maxWidth: MediaQuery.of(context).size.width * 0.9,
+                            maxHeight: MediaQuery.of(context).size.width * 0.9,
+                            minWidth: MediaQuery.of(context).size.width * 0.8,
+                            minHeight: MediaQuery.of(context).size.width * 0.8,
+                            cardBuilder: (context, index) => Card(
+                              child: Image.asset('${welcomeImages[index]}'),
+                            ),
+                            cardController: controller = CardController(),
+                            swipeUpdateCallback:
+                                (DragUpdateDetails details, Alignment align) {
+                              /// Get swiping card's alignment
+                              if (align.x < 0) {
+                                //Card is LEFT swiping
+                              } else if (align.x > 0) {
+                                //Card is RIGHT swiping
+                              }
+                            },
+                            swipeCompleteCallback:
+                                (CardSwipeOrientation orientation, int index) {
+                              /// Get orientation & index of swiped card!
+                            },
                           ),
-                          /* child: Container(
-                            padding: EdgeInsets.only(top: 40),
-                            width: 400,
-                            height: 400,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0), //doesn't work, why??
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(70),
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(25),
+                                    border: Border.all(
+                                      color: Colors.grey[400],
+                                    )),
+                                child: IconButton(
+                                    //padding: EdgeInsets.all(20),
+                                    icon: Icon(Icons.close,
+                                        color: Colors.red[700]),
+                                    onPressed: null,
+                                    iconSize: 60),
+                              ),
                             ),
-                            child: Image.asset(
-                              "assets/palettblad.png",
-                              fit: BoxFit.fitWidth,
+                            Container(
+                              height: 100,
+                              width: 100,
+
+                              //padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                    color: Colors.grey[400],
+                                  )),
+                              child: IconButton(
+                                  //padding: EdgeInsets.all(20),
+                                  icon: Icon(Icons.favorite_rounded,
+                                      color: Colors.pink[300]),
+                                  onPressed: null,
+                                  iconSize: 55),
                             ),
-                          ), */
+                          ],
                         )
                       ],
                     ),
-                    Row(
-                      children: [
+                  ),
+                  Container(
+                    color: Colors.white,
+                  ),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.all(70),
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(25),
-                                border: Border.all(
-                                  color: Colors.grey[400],
-                                )),
-                            child: IconButton(
-                                //padding: EdgeInsets.all(20),
-                                icon: Icon(Icons.close, color: Colors.red[700]),
-                                onPressed: null,
-                                iconSize: 60),
+                          padding: EdgeInsets.only(top: 30),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                child: RaisedButton(
+                                  onPressed: null,
+                                  padding: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Text(
+                                    'Add new stickling',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  disabledColor: Color(0xFF65C27A),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PlantProfile(null)),
+                                  );
+                                },
+                              )
+                            ],
                           ),
                         ),
-                        Container(
-                          height: 100,
-                          width: 100,
-                          //padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(25),
-                              border: Border.all(
-                                color: Colors.grey[400],
-                              )),
-                          child: IconButton(
-                              //padding: EdgeInsets.all(20),
-                              icon: Icon(Icons.favorite_rounded,
-                                  color: Colors.pink[300]),
-                              onPressed: null,
-                              iconSize: 55),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                color: Colors.white,
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top:28.0),
+                          child: Container(
+                            height: 400,
+                            child: ListView.builder(
+                              itemCount: flowerImages.length,
+                              itemBuilder: (context, i) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Container(
+                                    height: 100,
+                                    width: 150,
+                                    color: Colors.white,
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Image.asset(
+                                              flowerImages[i],
+                                              width: 100.0,
+                                              height: 400.0,
+                                              fit: BoxFit.cover,
+                                            )),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
 
-                          GestureDetector(
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    Title[i],
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                        fontSize: 25),
+                                                  ),
+                                                  Container(
+                                                    width: 90,
+                                                    height: 40,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                          color: Colors.grey[500],
+                                                        ),
+                                                        borderRadius: BorderRadius.all(Radius.circular(20))
+                                                    ),
 
-                            child: RaisedButton(
-                              onPressed: null,
-                              padding: EdgeInsets.all(15),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Icon(
+                                                            Icons.edit,
 
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                'Add new stickling',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              disabledColor: Color(0xFF65C27A),
+                                                            color: Colors.grey,
+                                                            size: 25),
+                                                        Text(
+                                                         "Edit",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                              FontWeight.normal,
+                                                              color: Colors.black,
+                                                              fontSize: 20),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+
+
+                                                ],
+                                              ),
+                                              Text(
+                                                Description[i],
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.normal,
+                                                    color: Colors.black,
+                                                    fontSize: 20),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            onTap: (){
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => PlantProfile(null)),
-                              );
-
-                            },
-
-
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -228,6 +462,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   //Tillhör Mette och Helenas navbar
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
@@ -243,6 +478,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       style: optionStyle,
     ),
   ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -306,6 +542,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   String text = "Test 1";
+
   void _incrementCounter() {
     setState(() {});
   }
