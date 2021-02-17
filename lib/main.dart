@@ -7,7 +7,6 @@ import 'Registration/Login.dart';
 void main() {
   runApp(MyApp());
 }
-
 class MyApp2 extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -65,6 +64,7 @@ class _ExampleHomePageState extends State<ExampleHomePage>
         child: Container(
           height: MediaQuery.of(context).size.height * 0.6,
           child: new TinderSwapCard(
+
             swipeUp: true,
             swipeDown: true,
             orientation: AmassOrientation.BOTTOM,
@@ -79,7 +79,8 @@ class _ExampleHomePageState extends State<ExampleHomePage>
               child: Image.asset('${welcomeImages[index]}'),
             ),
             cardController: controller = CardController(),
-            swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
+            swipeUpdateCallback:
+                (DragUpdateDetails details, Alignment align) {
               /// Get swiping card's alignment
               if (align.x < 0) {
                 //Card is LEFT swiping
@@ -97,7 +98,6 @@ class _ExampleHomePageState extends State<ExampleHomePage>
     );
   }
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -131,15 +131,11 @@ class TabBarDemo extends StatelessWidget {
     "assets/flower1.png",
     "assets/flower2.png",
     "assets/flower3.png"
+
   ];
 
-  final List<String> Title = [
-    "Flower 1",
-    "Flower 2",
-    "Flower 1",
-    "Flower 2",
-    "Flower 3"
-  ];
+  final List<String> Title =
+  ["Flower 1", "Flower 2", "Flower 1", "Flower 2","Flower 3"];
   final List<String> Description = [
     "Description 1",
     "Description 2",
@@ -238,6 +234,7 @@ class TabBarDemo extends StatelessWidget {
                         Container(
                           height: MediaQuery.of(context).size.height * 0.6,
                           child: new TinderSwapCard(
+
                             swipeUp: true,
                             swipeDown: true,
                             orientation: AmassOrientation.BOTTOM,
@@ -350,7 +347,7 @@ class TabBarDemo extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 28.0),
+                          padding: const EdgeInsets.only(top:28.0),
                           child: Container(
                             height: 400,
                             child: ListView.builder(
@@ -377,13 +374,12 @@ class TabBarDemo extends StatelessWidget {
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+
                                             children: <Widget>[
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                    MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
@@ -400,34 +396,32 @@ class TabBarDemo extends StatelessWidget {
                                                     height: 40,
                                                     decoration: BoxDecoration(
                                                         border: Border.all(
-                                                          color:
-                                                              Colors.grey[500],
+                                                          color: Colors.grey[500],
                                                         ),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20))),
+                                                        borderRadius: BorderRadius.all(Radius.circular(20))
+                                                    ),
+
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
-                                                        Icon(Icons.edit,
+                                                        Icon(
+                                                            Icons.edit,
+
                                                             color: Colors.grey,
                                                             size: 25),
                                                         Text(
-                                                          "Edit",
+                                                         "Edit",
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                              color:
-                                                                  Colors.black,
+                                                              FontWeight.normal,
+                                                              color: Colors.black,
                                                               fontSize: 20),
                                                         ),
                                                       ],
                                                     ),
                                                   )
+
+
                                                 ],
                                               ),
                                               Text(
@@ -435,7 +429,7 @@ class TabBarDemo extends StatelessWidget {
                                                 maxLines: 2,
                                                 style: TextStyle(
                                                     fontWeight:
-                                                        FontWeight.normal,
+                                                    FontWeight.normal,
                                                     color: Colors.black,
                                                     fontSize: 20),
                                               ),
