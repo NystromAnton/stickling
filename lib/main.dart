@@ -33,6 +33,18 @@ class _ExampleHomePageState extends State<ExampleHomePage>
     "assets/stickling1.jpg",
     "assets/stickling2.jpg",
     "assets/stickling3.jpg",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
+    "assets/stickling1.jpg",
+    "assets/stickling2.jpg",
+    "assets/stickling3.jpg",
     "assets/stickling4.png"
   ];
 
@@ -50,7 +62,7 @@ class _ExampleHomePageState extends State<ExampleHomePage>
             orientation: AmassOrientation.BOTTOM,
             totalNum: welcomeImages.length,
             stackNum: 3,
-            swipeEdge: 4.0,
+            swipeEdge: 5.0,
             maxWidth: MediaQuery.of(context).size.width * 0.9,
             maxHeight: MediaQuery.of(context).size.width * 0.9,
             minWidth: MediaQuery.of(context).size.width * 0.8,
@@ -165,6 +177,22 @@ class TabBarDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> welcomeImages = [
       "assets/stickling1.jpg",
+      "assets/stickling1.jpg",
+      "assets/stickling2.jpg",
+      "assets/stickling3.jpg",
+      "assets/stickling1.jpg",
+      "assets/stickling2.jpg",
+      "assets/stickling3.jpg",
+      "assets/stickling1.jpg",
+      "assets/stickling2.jpg",
+      "assets/stickling3.jpg",
+      "assets/stickling1.jpg",
+      "assets/stickling2.jpg",
+      "assets/stickling3.jpg",
+      "assets/stickling1.jpg",
+      "assets/stickling2.jpg",
+      "assets/stickling3.jpg",
+      "assets/stickling4.png"
     ];
     CardController controller;
     return MaterialApp(
@@ -214,7 +242,7 @@ class TabBarDemo extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: EdgeInsets.only(top: 40),
+                              padding: EdgeInsets.only(top: 30),
                               child: Text(
                                 'Julia\'s Palettblad',
                                 style: TextStyle(
@@ -226,16 +254,16 @@ class TabBarDemo extends StatelessWidget {
                           ],
                         ),
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.6,
+                          height: MediaQuery.of(context).size.height * 0.5,
                           child: new TinderSwapCard(
                             swipeUp: true,
                             swipeDown: true,
-                            orientation: AmassOrientation.BOTTOM,
+                            orientation: AmassOrientation.RIGHT,
                             totalNum: welcomeImages.length,
                             stackNum: 3,
                             swipeEdge: 4.0,
-                            maxWidth: MediaQuery.of(context).size.width * 0.9,
-                            maxHeight: MediaQuery.of(context).size.width * 0.9,
+                            maxWidth: MediaQuery.of(context).size.width * 1.0,
+                            maxHeight: MediaQuery.of(context).size.width * 1.0,
                             minWidth: MediaQuery.of(context).size.width * 0.8,
                             minHeight: MediaQuery.of(context).size.width * 0.8,
                             cardBuilder: (context, index) => Card(
@@ -258,31 +286,11 @@ class TabBarDemo extends StatelessWidget {
                           ),
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.all(70),
-                              child: Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(25),
-                                    border: Border.all(
-                                      color: Colors.grey[400],
-                                    )),
-                                child: IconButton(
-                                    //padding: EdgeInsets.all(20),
-                                    icon: Icon(Icons.close,
-                                        color: Colors.red[700]),
-                                    onPressed: null,
-                                    iconSize: 60),
-                              ),
-                            ),
                             Container(
-                              height: 100,
-                              width: 100,
-
-                              //padding: EdgeInsets.all(10),
+                              height: 90,
+                              width: 90,
                               decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(25),
@@ -290,7 +298,21 @@ class TabBarDemo extends StatelessWidget {
                                     color: Colors.grey[400],
                                   )),
                               child: IconButton(
-                                  //padding: EdgeInsets.all(20),
+                                  icon:
+                                      Icon(Icons.close, color: Colors.red[700]),
+                                  onPressed: null,
+                                  iconSize: 60),
+                            ),
+                            Container(
+                              height: 90,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                    color: Colors.grey[400],
+                                  )),
+                              child: IconButton(
                                   icon: Icon(Icons.favorite_rounded,
                                       color: Colors.pink[300]),
                                   onPressed: null,
