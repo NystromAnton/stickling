@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 255,
   },
+  location: {
+    type: { type: String },
+    coordinates: [Number]
+ },
 });
 
 UserSchema.methods.comparePassword = async function (user, password) {
