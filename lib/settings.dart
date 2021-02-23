@@ -104,7 +104,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 25, left: 25, right: 25, bottom: 15),
+                  top: 40, left: 25, right: 25, bottom: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,22 +217,26 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 25, top: 10),
+                  padding: EdgeInsets.only(left: 20, top: 10),
                   width: MediaQuery.of(context).size.width * 0.95,
                   alignment: Alignment.centerLeft,
                   //width: MediaQuery.of(context).size.width * 0.9,
                   child: MultiSelectChipField(
                     items: _items,
-                    //title: Text("Plant types:"),
-                    chipColor: Colors.white,
+                    scroll: false,
+                    title: Text("Plant types:"),
+                    chipColor: Colors.grey[400],
+                    selectedChipColor: Color(0xFF65C27A),
+                    selectedTextStyle: TextStyle(color: Colors.white),
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
                     headerColor: Colors.white,
-                    chipShape: Border.all(color: Colors.black),
-                    /*RoundedRectangleBorder(
+                    chipShape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
-
-                    ),*/
+                    ),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(color: Colors.transparent),
                     ),
                   ),
                 ),
@@ -241,6 +245,63 @@ class _SettingsPageState extends State<SettingsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Divider(color: Colors.grey[700]),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SettingsPage()),
+                      );
+                    },
+                    padding: EdgeInsets.only(
+                        left: 20, right: 20, top: 10, bottom: 10),
+                    color: Color(0xFF65C27A),
+                    child: Text(
+                      'Change password',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Lato',
+                        //fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            /*Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Divider(color: Colors.grey[700]),
+            ),*/
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Text(
+                  'About',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Lato',
+                    //fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
