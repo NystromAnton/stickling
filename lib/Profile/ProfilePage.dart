@@ -133,7 +133,7 @@ class _PlantProfileState extends State<PlantProfile> {
                             borderRadius: BorderRadius.circular(10.0),
                             child: Image.file(
                               widget.imageFile,
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.cover,
                             ),
                           )),
                 ),
@@ -239,13 +239,10 @@ class _PlantProfileState extends State<PlantProfile> {
         MaterialPageRoute(builder: (context) => PlantProfile(imageFile)),
       );
     } catch (e) {
-      print(e);
     }
   }
 
   EnableButton() {
-    print("Text1 " + descriptionController.text.length.toString());
-    print("Text2 " + titleController.text.length.toString());
     setState(() {
       if (widget.imageFile == null) {
         isEnabled = false;
@@ -258,7 +255,5 @@ class _PlantProfileState extends State<PlantProfile> {
         }
       }
     });
-
-    print("IsEnables " + isEnabled.toString());
   }
 }

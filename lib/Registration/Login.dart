@@ -187,10 +187,9 @@ class _LoginState extends State<Login> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Signup()),
-                            ),
+                      context,
+                      MaterialPageRoute(builder: (context) => Signup()),
+                    ),
                     child: Text(
                       'Sign up',
                       style: TextStyle(

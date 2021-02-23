@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage();
@@ -23,8 +24,12 @@ class PlantType {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   @override
   void dispose() {
+    confirmPasswordController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -55,6 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
   List<PlantType> _selectedPlantTypes5 = [];
   final _multiSelectKey = GlobalKey<FormFieldState>();
 
+  var isEnabled = false;
   @override
   void initState() {
     _selectedPlantTypes5 = _tags;
@@ -253,17 +259,39 @@ class _SettingsPageState extends State<SettingsPage> {
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SettingsPage()),
-                      );
-                    },
+                    onPressed: () => _onAlertWithCustomContentPressed(context),
                     padding: EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
                     color: Color(0xFF65C27A),
                     child: Text(
                       'Change password',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Lato',
+                        //fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RaisedButton(
+                    onPressed: () => _onAlertWithCustomContentPressed(context),
+                    padding: EdgeInsets.only(
+                        left: 20, right: 20, top: 10, bottom: 10),
+                    color: Colors.grey,
+                    child: Text(
+                      'Log out',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Lato',
@@ -307,5 +335,83 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  _onAlertWithCustomContentPressed(context) {
+    Alert(
+        context: context,
+        title: "Change password",
+        content: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 25, left: 8, right: 8, bottom: 8),
+              child: Theme(
+                data: ThemeData(primaryColor: Colors.grey),
+                child: TextField(
+                  controller: passwordController,
+                  cursorColor: Colors.grey,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  onChanged: (text) {
+                            EnableButton();
+                          },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 2),
+              child: Theme(
+                data: ThemeData(primaryColor: Colors.grey),
+                child: TextField(
+                  controller: confirmPasswordController,
+                  cursorColor: Colors.grey,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  onChanged: (text) {
+                            EnableButton();
+                          },
+                ),
+              ),
+            ),
+          ],
+        ),
+        buttons: [
+          DialogButton(
+              onPressed: isEnabled
+              ? () => Navigator.pop(context):
+              null,
+              child: Text(
+                "Change password",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+
+              color: Color(0xFF65C27A),
+              radius: BorderRadius.circular(20),
+          )  
+        ]).show();
+  }
+
+  EnableButton() {
+    setState(() {
+      if (passwordController.text.length > 0 &&
+          confirmPasswordController.text.length > 0  && 
+          passwordController.text == confirmPasswordController.text) {
+        isEnabled = true;
+      } else {
+        isEnabled = false;
+      }
+    });
   }
 }
