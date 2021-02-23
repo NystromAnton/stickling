@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:stycling/settings.dart';
 
 import 'Profile/ProfilePage.dart';
 import 'Registration/Login.dart';
+import 'settings.dart';
 
 void main() {
   runApp(MyApp());
@@ -205,7 +207,7 @@ class TabBarDemo extends StatelessWidget {
             backgroundColor: Colors.white,
             bottom: TabBar(
               physics: NeverScrollableScrollPhysics(),
-              indicatorColor: Colors.white,
+              indicatorColor: Colors.green,
               labelColor: Color(0xFF65C27A),
               unselectedLabelColor: Color(0xFFB2E5BE),
               tabs: [
@@ -267,7 +269,12 @@ class TabBarDemo extends StatelessWidget {
                             minWidth: MediaQuery.of(context).size.width * 0.8,
                             minHeight: MediaQuery.of(context).size.width * 0.8,
                             cardBuilder: (context, index) => Card(
-                              child: Image.asset('${welcomeImages[index]}'),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    '${welcomeImages[index]}',
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
                             cardController: controller = CardController(),
                             swipeUpdateCallback:
@@ -335,11 +342,18 @@ class TabBarDemo extends StatelessWidget {
                             children: <Widget>[
                               IconButton(
                                 icon: Icon(Icons.settings),
-                                onPressed: null,
+                                color: Colors.grey,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SettingsPage()),
+                                  );
+                                },
                                 iconSize: 40,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 45.0),
+                                padding: const EdgeInsets.only(left: 50.0),
                                 child: Text(
                                   'My Sticklings',
                                   style: TextStyle(
