@@ -20,7 +20,7 @@ router.post("/signup", async function (req, res, next) {
       name: form.name,
       email: form.email,
       password: form.password,
-      //location: form.location,
+      location: form.location,
     });
     newUser.password = await bcrypt.hash(newUser.password, 10);
 
