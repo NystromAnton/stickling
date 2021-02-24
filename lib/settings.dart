@@ -344,7 +344,8 @@ class _SettingsPageState extends State<SettingsPage> {
         content: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 25, left: 8, right: 8, bottom: 8),
+              padding:
+                  const EdgeInsets.only(top: 25, left: 8, right: 8, bottom: 8),
               child: Theme(
                 data: ThemeData(primaryColor: Colors.grey),
                 child: TextField(
@@ -359,13 +360,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   onChanged: (text) {
-                            EnableButton();
-                          },
+                    EnableButton();
+                  },
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 2),
+              padding:
+                  const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 2),
               child: Theme(
                 data: ThemeData(primaryColor: Colors.grey),
                 child: TextField(
@@ -380,8 +382,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   onChanged: (text) {
-                            EnableButton();
-                          },
+                    EnableButton();
+                  },
                 ),
               ),
             ),
@@ -389,24 +391,21 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         buttons: [
           DialogButton(
-              onPressed: isEnabled
-              ? () => Navigator.pop(context):
-              null,
-              child: Text(
-                "Change password",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-
-              color: Color(0xFF65C27A),
-              radius: BorderRadius.circular(20),
-          )  
+            onPressed: isEnabled ? () => Navigator.pop(context) : null,
+            child: Text(
+              "Change password",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            color: Color(0xFF65C27A),
+            radius: BorderRadius.circular(20),
+          )
         ]).show();
   }
 
   EnableButton() {
     setState(() {
       if (passwordController.text.length > 0 &&
-          confirmPasswordController.text.length > 0  && 
+          confirmPasswordController.text.length > 0 &&
           passwordController.text == confirmPasswordController.text) {
         isEnabled = true;
       } else {

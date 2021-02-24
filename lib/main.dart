@@ -4,7 +4,9 @@ import 'package:stycling/settings.dart';
 
 import 'Profile/ProfilePage.dart';
 import 'Registration/Login.dart';
+import 'Walkthrough/Page3.dart';
 import 'settings.dart';
+import 'Walkthrough/Page1.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,7 +21,7 @@ class MyApp2 extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ExampleHomePage(),
+      home: Page1(),
     );
   }
 }
@@ -103,7 +105,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Login(),
+      home: Page3(),
       //home: TabBarDemo(),
       //home: MyStatefulWidget(),
       //home: MyHomePage(title: 'Flutter Demo Home Page'),
