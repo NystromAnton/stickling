@@ -28,19 +28,45 @@ class _Page3State extends State<Page3> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-          child: PageView(
-        children: <Widget>[
-          Container(
-            color: Colors.pink,
+        child: GestureDetector(
+          onPanUpdate: (details) {
+            if (details.delta.dx > 0) {
+              () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Page1()),
+                  );
+            }
+            // swiping in right direction
+            else {
+              // swiping in left direction
+              () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Page3()),
+                  );
+            }
+          },
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 70),
+                    child: Text(
+                      'How Stickling works?',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          Container(
-            color: Colors.cyan,
-          ),
-          Container(
-            color: Colors.deepPurple,
-          ),
-        ],
-      )),
+        ),
+      ),
     );
   }
 }

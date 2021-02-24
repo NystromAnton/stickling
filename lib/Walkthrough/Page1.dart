@@ -10,6 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'Page3.dart';
+
+//import 'Page2.dart';
+
 class Page1 extends StatefulWidget {
   Page1() {}
 
@@ -74,7 +78,7 @@ class _Page1State extends State<Page1> {
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Lato',
-                  color: Colors.grey,
+                  color: Colors.grey[600],
                 ),
               ),
             ),
