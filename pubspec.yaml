@@ -61,6 +61,7 @@ flutter:
       - assets/stickling2.jpg
       - assets/stickling3.jpg
       - assets/stickling4.png
+      - assets/page1pic.png
   #   - images/a_dot_ham.jpeg'
 
   fonts: 
