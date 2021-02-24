@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:stycling/main.dart';
 
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:http/http.dart' as http;
 class Signup extends StatefulWidget {
   Signup() {}
 
@@ -29,8 +30,29 @@ class _SignupState extends State<Signup> {
     passwordController.dispose();
     super.dispose();
   }
+void callApis(){
+Map<String, String> user = {"name": "John Doe",
+ "email": "a@b.com",
+ "password": "123456",
+ "location": "[23, 43]",
+ };
+String userJson = jsonEncode(user);
 
+
+  http.post("http://localhost:3000/users/signup",
+  headers: {"Content-Type": "application/json"},
+      body: userJson).then((result){
+    int itemId = json.decode(result.body);
+    print(itemId.toString());
+
+  });
+}
   var isEnabled = false;
+  void initState() {
+    super.initState();
+    callApis();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
