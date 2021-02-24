@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   Login() {}
@@ -25,9 +26,26 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+  void initState() {
+    super.initState();
+    _checkUserAlreadyLoggedIn();
+  }
+
+  _checkUserAlreadyLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool alreadyLoggedIn = (prefs.getBool('login'));
+    if (alreadyLoggedIn) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => TabBarDemo()));
+    } else {
+
+    }
+  }
+
   var isEnabled = false;
   @override
   Widget build(BuildContext context) {
+    SharedPreferences prefs ;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -146,13 +164,19 @@ class _LoginState extends State<Login> {
                 Expanded(
                   flex: 0,
                   child: RaisedButton(
-                    onPressed: isEnabled
-                        ? () => Navigator.push(
+                    onPressed:
+                        () async {
+
+                         
+ prefs = await SharedPreferences.getInstance();
+await prefs.setBool('login', true);
+                        Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TabBarDemo()),
-                            )
-                        : null,
+                                  builder: (context) => TabBarDemo())
+                        );
+                    
+                        },
                     child: Text(
                       'Log in',
                       style: TextStyle(fontSize: 25),
