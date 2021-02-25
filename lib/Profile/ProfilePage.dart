@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:carousel_pro/carousel_pro.dart';
 import 'CameraPicker.dart';
+import 'dart:async';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 class PlantProfile extends StatefulWidget {
   File imageFile;
@@ -21,6 +23,13 @@ class PlantProfile extends StatefulWidget {
 class _PlantProfileState extends State<PlantProfile> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
+  List<Asset> images = List<Asset>();
+  String _error = 'No Error Dectected';
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -103,6 +112,42 @@ class _PlantProfileState extends State<PlantProfile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
+                /* SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Carousel(
+                    boxFit: BoxFit.cover,
+                    borderRadius: true,
+                    radius: Radius.circular(20),
+                    autoplay: false,
+                    dotSize: 4.0,
+                    dotIncreasedColor: Color(0xFF65C27A),
+                    dotBgColor: Colors.transparent,
+                    dotPosition: DotPosition.bottomCenter,
+                    dotVerticalPadding: 10.0,
+                    showIndicator: true,
+                    indicatorBgPadding: 7.0,
+                    images: [
+                      Image.asset(
+                        'assets/stickling1.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        'assets/stickling2.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        'assets/stickling3.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        'assets/stickling4.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                ),*/
+
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: widget.imageFile == null
@@ -123,7 +168,7 @@ class _PlantProfileState extends State<PlantProfile> {
                               color: Color(0xFFD9D9D9).withOpacity(.5),
                               borderRadius: BorderRadius.circular(10)),
                         )
-                      : Container(
+                      : null, /*Container(
                           height: 375,
                           width: 375,
                           decoration: BoxDecoration(
@@ -135,7 +180,8 @@ class _PlantProfileState extends State<PlantProfile> {
                               widget.imageFile,
                               fit: BoxFit.cover,
                             ),
-                          )),
+                          ),
+                        ),*/
                 ),
               ],
             ),
@@ -215,7 +261,7 @@ class _PlantProfileState extends State<PlantProfile> {
             "Gallery",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => captureImage(ImageSource.gallery),
+          onPressed: () => loadAssets(),
           color: Color(0xFF65C27A),
         ),
         DialogButton(
@@ -223,11 +269,44 @@ class _PlantProfileState extends State<PlantProfile> {
             "Camera",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => captureImage(ImageSource.camera),
+          onPressed: () => loadAssets(),
           color: Color(0xFF65C27A),
         ),
       ],
     ).show();
+  }
+
+  Future<void> loadAssets() async {
+    List<Asset> resultList = List<Asset>();
+    String error = 'No Error Dectected';
+
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 300,
+        enableCamera: true,
+        selectedAssets: images,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          actionBarColor: "#abcdef",
+          actionBarTitle: "Example App",
+          allViewTitle: "All Photos",
+          useDetailsView: false,
+          selectCircleStrokeColor: "#000000",
+        ),
+      );
+    } on Exception catch (e) {
+      error = e.toString();
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+      _error = error;
+    });
   }
 
   Future<void> captureImage(ImageSource imageSource) async {
@@ -238,8 +317,7 @@ class _PlantProfileState extends State<PlantProfile> {
         context,
         MaterialPageRoute(builder: (context) => PlantProfile(imageFile)),
       );
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   EnableButton() {
