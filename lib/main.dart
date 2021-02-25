@@ -4,16 +4,14 @@ import 'package:stycling/settings.dart';
 
 import 'Profile/ProfilePage.dart';
 import 'Registration/Login.dart';
-import 'Walkthrough/Page2.dart';
-import 'Walkthrough/Page3.dart';
+import 'Walkthrough/Walkthrough.dart';
 import 'settings.dart';
-import 'Walkthrough/Page1.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp2 extends StatelessWidget {
+/* class MyApp2 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -22,10 +20,10 @@ class MyApp2 extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Page1(),
+      //home: Walkthrough(),
     );
   }
-}
+} */
 
 class ExampleHomePage extends StatefulWidget {
   @override
@@ -106,7 +104,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Page1(),
+      home: Walkthrough(),
       //home: TabBarDemo(),
       //home: MyStatefulWidget(),
       //home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -563,7 +561,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     });
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(

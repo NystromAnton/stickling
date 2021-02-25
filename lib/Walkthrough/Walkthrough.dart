@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:stycling/Registration/Login.dart';
-import 'package:stycling/Walkthrough/Page1.dart';
 import 'package:stycling/main.dart';
 import 'package:stycling/Registration/Signup.dart';
 
@@ -10,16 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import 'Page3.dart';
-
-class Page2 extends StatefulWidget {
-  Page2() {}
+class Walkthrough extends StatefulWidget {
+  Walkthrough() {}
 
   @override
-  _Page2State createState() => _Page2State();
+  _WalkthroughState createState() => _WalkthroughState();
 }
 
-class _Page2State extends State<Page2> {
+class _WalkthroughState extends State<Walkthrough> {
   @override
   void dispose() {
     super.dispose();
@@ -30,6 +27,97 @@ class _Page2State extends State<Page2> {
     return Scaffold(
       body: PageView(
         children: <Widget>[
+          Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 120),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Image.asset('assets/sticklinglogo.png'),
+                ),
+                Text(
+                  'Stickling',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Marko One',
+                  ),
+                ),
+              ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 70.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Just like Tinder but for plants!',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontFamily: 'Lato',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                left: 80,
+                right: 80,
+              ),
+              child: Text(
+                'Match with plants nearby to make a trade.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Lato',
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Image.asset('assets/page1pic.png'),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Swipe left to learn more!',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                ),
+                child: Text(
+                  'Log in',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontFamily: 'Lato',
+                    color: Colors.grey[700],
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
           Column(
             children: [
               Row(
@@ -362,7 +450,7 @@ class _Page2State extends State<Page2> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 50),
+                    padding: EdgeInsets.only(top: 20),
                     child: Image.asset(
                       'assets/flower3.png',
                       height: 250,
@@ -374,7 +462,7 @@ class _Page2State extends State<Page2> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 40),
+                    padding: EdgeInsets.only(top: 20),
                     child: Text(
                       'Chat with your matches and',
                       style: TextStyle(
@@ -410,7 +498,7 @@ class _Page2State extends State<Page2> {
                       top: 40,
                     ),
                     child: Text(
-                      'Once you’ve matched with another',
+                      'Once you have matched with another',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Lato',
@@ -460,14 +548,14 @@ class _Page2State extends State<Page2> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
               Padding(
-              padding: EdgeInsets.only(top: 40),
+              padding: EdgeInsets.only(top: 30),
               child: RaisedButton(
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Signup()),
                 ),
                 child: Text(
-                  'Let\'s go!',
+                  'Sign up!',
                   style: TextStyle(
                     fontSize: 25,
                     fontFamily: 'Lato',
@@ -482,6 +570,29 @@ class _Page2State extends State<Page2> {
                 ),
               ),
             ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      ),
+                      child: Text(
+                        'Log in',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'Lato',
+                          color: Colors.grey[800],
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Padding(
