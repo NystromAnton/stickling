@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:stycling/settings.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 import 'Profile/ProfilePage.dart';
 import 'Registration/Login.dart';
@@ -270,12 +271,40 @@ class TabBarDemo extends StatelessWidget {
                             minWidth: MediaQuery.of(context).size.width * 0.8,
                             minHeight: MediaQuery.of(context).size.width * 0.8,
                             cardBuilder: (context, index) => Card(
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.asset(
-                                    '${welcomeImages[index]}',
-                                    fit: BoxFit.cover,
-                                  )),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                child: Carousel(
+                                  boxFit: BoxFit.cover,
+                                  borderRadius: true,
+                                  radius: Radius.circular(20),
+                                  autoplay: false,
+                                  dotSize: 4.0,
+                                  dotIncreasedColor: Color(0xFF65C27A),
+                                  dotBgColor: Colors.transparent,
+                                  dotPosition: DotPosition.bottomCenter,
+                                  dotVerticalPadding: 10.0,
+                                  showIndicator: true,
+                                  indicatorBgPadding: 7.0,
+                                  images: [
+                                    //How to add the pictures from the multi_image_picker here
+
+                                    Image.asset(
+                                      'assets/stickling2.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Image.asset(
+                                      'assets/stickling3.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Image.asset(
+                                      'assets/stickling4.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             cardController: controller = CardController(),
                             swipeUpdateCallback:
@@ -561,7 +590,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     });
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(
