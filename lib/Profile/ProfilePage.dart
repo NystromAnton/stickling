@@ -112,7 +112,7 @@ class _PlantProfileState extends State<PlantProfile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                /* SizedBox(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Carousel(
@@ -128,6 +128,7 @@ class _PlantProfileState extends State<PlantProfile> {
                     showIndicator: true,
                     indicatorBgPadding: 7.0,
                     images: [
+                      //How to add the pictures from the multi_image_picker here
                       Image.asset(
                         'assets/stickling1.jpg',
                         fit: BoxFit.cover,
@@ -146,29 +147,8 @@ class _PlantProfileState extends State<PlantProfile> {
                       ),
                     ],
                   ),
-                ),*/
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: widget.imageFile == null
-                      ? Container(
-                          height: 375,
-                          width: 375,
-                          child: GestureDetector(
-                            onTap: () {
-                              CaptureImage();
-                            },
-                            child: Icon(
-                              Icons.control_point_outlined,
-                              size: 80,
-                              color: Color(0xFF000000).withOpacity(0.1),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                              color: Color(0xFFD9D9D9).withOpacity(.5),
-                              borderRadius: BorderRadius.circular(10)),
-                        )
-                      : null, /*Container(
+                ),  
+                      /* Container(
                           height: 375,
                           width: 375,
                           decoration: BoxDecoration(
@@ -181,8 +161,7 @@ class _PlantProfileState extends State<PlantProfile> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                        ),*/
-                ),
+                        ), */
               ],
             ),
             Row(
@@ -282,7 +261,7 @@ class _PlantProfileState extends State<PlantProfile> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 300,
+        maxImages: 5,
         enableCamera: true,
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),

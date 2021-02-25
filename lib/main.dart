@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:stycling/settings.dart';
+import 'package:stycling/test.dart';
 
 import 'Profile/ProfilePage.dart';
 import 'Registration/Login.dart';
