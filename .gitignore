@@ -9,11 +9,17 @@
 .history
 .svn/
 
+.env
+
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
+
+# Dependencies
+**/node_modules
+/node_modules
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
