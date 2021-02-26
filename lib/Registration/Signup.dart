@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 class Signup extends StatefulWidget {
   Signup() {}
 
@@ -29,30 +31,40 @@ class _SignupState extends State<Signup> {
     passwordController.dispose();
     super.dispose();
   }
-  Future<String> apiRequest(String url, Map jsonMap) async {
-    HttpClient httpClient = new HttpClient();
-    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
-    request.headers.set('content-type', 'application/json');
-    request.add(utf8.encode(json.encode(jsonMap)));
-    HttpClientResponse response = await request.close();
-    // todo - you should check the response.statusCode
-    String reply = await response.transform(utf8.decoder).join();
-    httpClient.close();
-    return reply;
-  }
-  var isEnabled = false;
-  String url =
-      'http://localhost:3000/users/signup';
-  Map map = {
-    "name": "",
-    "email":"abc@gmail.com",
-    "Password":"12345",
-    "location":{
-      "cordinates":(12345,12345)
-    }
-  };
+  Future<String> requestMethod(String url) async {
+    var url = "http://10.0.2.2:3000/users/signup";
+    var body = json.encode({
+    "name": firstnameController.text,
+    "email": emailController.text,
+    "password":passwordController.text,
+    "location": {
+    "type": "Point",
+    "coordinates": [17.617210, 59.858770]
+    }});
 
-  // print(await apiRequest(url, map));
+    Map<String,String> headers = {
+      'Content-type' : 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final response =
+    await http.post(url, body: body, headers: headers);
+    final responseJson = response.body.toString();
+    print("result "+responseJson);
+    return responseJson;
+  }
+  // var isEnabled = false;
+  String url =
+      'http://10.0.2.2:8000/users/signup';
+  // Map map =
+  // };
+  var isEnabled = false;
+
+  @override
+  void initState() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -269,11 +281,8 @@ class _SignupState extends State<Signup> {
                     flex: 0,
                     child: RaisedButton(
                       onPressed: isEnabled
-                          ? () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TabBarDemo()),
-                              )
+                          ? () => CheckRegistration()
+
                           : null,
                       child: Text(
                         'Sign up',
@@ -310,5 +319,28 @@ class _SignupState extends State<Signup> {
         isEnabled = false;
       }
     });
+  }
+
+  CheckRegistration() {
+
+    requestMethod(url).then((value) {
+     print("Result "+value);
+     if(value!="user posted"){
+       Fluttertoast.showToast(
+           msg:value ,
+           toastLength: Toast.LENGTH_SHORT,
+           gravity: ToastGravity.BOTTOM,
+           timeInSecForIosWeb: 1,
+           backgroundColor: Colors.red,
+           textColor: Colors.white,
+           fontSize: 16.0);
+     }else{
+       Navigator.push(
+         context,
+         MaterialPageRoute(builder: (context) => TabBarDemo()),
+       );
+     }
+    }
+    );
   }
 }
