@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:stycling/main.dart';
 
@@ -29,6 +30,7 @@ class _SignupState extends State<Signup> {
     passwordController.dispose();
     super.dispose();
   }
+
   Future<String> apiRequest(String url, Map jsonMap) async {
     HttpClient httpClient = new HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
@@ -40,15 +42,16 @@ class _SignupState extends State<Signup> {
     httpClient.close();
     return reply;
   }
+
   var isEnabled = false;
-  String url =
-      'http://localhost:3000/users/signup';
+  String url = 'http://localhost:3000/users/signup';
   Map map = {
-    "name": "",
-    "email":"abc@gmail.com",
-    "Password":"12345",
-    "location":{
-      "cordinates":(12345,12345)
+    "name": "Helena",
+    "email": "abc@gmail.com",
+    "password": "12345",
+    "location": {
+      "type": "Point",
+      "coordinates": [17.617210, 59.858770]
     }
   };
 
@@ -59,11 +62,12 @@ class _SignupState extends State<Signup> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Row(children: [
-              Container(
+            Row(
+              children: [
+                Container(
                   padding: const EdgeInsets.only(top: 55),
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
                     child: IconButton(
@@ -74,7 +78,8 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                 ),
-            ],),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child:
@@ -300,10 +305,10 @@ class _SignupState extends State<Signup> {
   EnableButton() {
     setState(() {
       if (emailController.text.length > 0 &&
-          passwordController.text.length > 0 && 
-          firstnameController.text.length > 0 && 
+          passwordController.text.length > 0 &&
+          firstnameController.text.length > 0 &&
           lastnameController.text.length > 0 &&
-          confirmPasswordController.text.length > 0 && 
+          confirmPasswordController.text.length > 0 &&
           passwordController.text == confirmPasswordController.text) {
         isEnabled = true;
       } else {

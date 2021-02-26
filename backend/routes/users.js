@@ -27,7 +27,7 @@ router.post("/signup", async function (req, res, next) {
     await newUser.save();
     res.send("user posted");
   } catch (err) {
-    console.error(err.message);
+    console.error("Issue with signup "+err.message);
     res.status(500).json({ message: "Server error" });
   }
 });
