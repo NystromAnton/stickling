@@ -9,6 +9,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+
 class Signup extends StatefulWidget {
   Signup() {}
 
@@ -31,39 +32,38 @@ class _SignupState extends State<Signup> {
     passwordController.dispose();
     super.dispose();
   }
-  Future<String> requestMethod(String url) async {
-    var url = "http://10.0.2.2:3000/users/signup";
-    var body = json.encode({
-    "name": firstnameController.text,
-    "email": emailController.text,
-    "password":passwordController.text,
-    "location": {
-    "type": "Point",
-    "coordinates": [17.617210, 59.858770]
-    }});
 
-    Map<String,String> headers = {
-      'Content-type' : 'application/json',
+  Future<String> requestMethod(String url) async {
+    var url = "http://localhost:3000/users/signup";
+    var body = json.encode({
+      "name": firstnameController.text,
+      "email": emailController.text,
+      "password": passwordController.text,
+      "location": {
+        "type": "Point",
+        "coordinates": [17.617210, 59.858770]
+      }
+    });
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
       'Accept': 'application/json',
     };
 
-    final response =
-    await http.post(url, body: body, headers: headers);
+    final response = await http.post(url, body: body, headers: headers);
     final responseJson = response.body.toString();
-    print("result "+responseJson);
+    print("result " + responseJson);
     return responseJson;
   }
+
   // var isEnabled = false;
-  String url =
-      'http://10.0.2.2:8000/users/signup';
+  String url = 'http://localhost:3000/users/signup';
   // Map map =
   // };
   var isEnabled = false;
 
   @override
-  void initState() {
-
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +71,12 @@ class _SignupState extends State<Signup> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Row(children: [
-              Container(
+            Row(
+              children: [
+                Container(
                   padding: const EdgeInsets.only(top: 55),
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
                     child: IconButton(
@@ -86,7 +87,8 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                 ),
-            ],),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child:
@@ -280,10 +282,7 @@ class _SignupState extends State<Signup> {
                   Expanded(
                     flex: 0,
                     child: RaisedButton(
-                      onPressed: isEnabled
-                          ? () => CheckRegistration()
-
-                          : null,
+                      onPressed: isEnabled ? () => CheckRegistration() : null,
                       child: Text(
                         'Sign up',
                         style: TextStyle(fontSize: 25),
@@ -309,10 +308,10 @@ class _SignupState extends State<Signup> {
   EnableButton() {
     setState(() {
       if (emailController.text.length > 0 &&
-          passwordController.text.length > 0 && 
-          firstnameController.text.length > 0 && 
+          passwordController.text.length > 0 &&
+          firstnameController.text.length > 0 &&
           lastnameController.text.length > 0 &&
-          confirmPasswordController.text.length > 0 && 
+          confirmPasswordController.text.length > 0 &&
           passwordController.text == confirmPasswordController.text) {
         isEnabled = true;
       } else {
@@ -322,25 +321,23 @@ class _SignupState extends State<Signup> {
   }
 
   CheckRegistration() {
-
     requestMethod(url).then((value) {
-     print("Result "+value);
-     if(value!="user posted"){
-       Fluttertoast.showToast(
-           msg:value ,
-           toastLength: Toast.LENGTH_SHORT,
-           gravity: ToastGravity.BOTTOM,
-           timeInSecForIosWeb: 1,
-           backgroundColor: Colors.red,
-           textColor: Colors.white,
-           fontSize: 16.0);
-     }else{
-       Navigator.push(
-         context,
-         MaterialPageRoute(builder: (context) => TabBarDemo()),
-       );
-     }
-    }
-    );
+      print("Result " + value);
+      if (value != "user posted") {
+        Fluttertoast.showToast(
+            msg: value,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TabBarDemo()),
+        );
+      }
+    });
   }
 }
