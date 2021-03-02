@@ -29,7 +29,8 @@ class _LoginState extends State<Login> {
   }
 
   Future<String> requestMethod(String url) async {
-    var url = "http://localhost:3000/users/login";
+
+
     var body = json.encode({
       "email": emailController.text,
       "password": passwordController.text,
@@ -51,7 +52,17 @@ class _LoginState extends State<Login> {
   var isEnabled = false;
 
   @override
-  void initState() {}
+  void initState() {
+
+
+    if(Platform.isAndroid){
+      url = "http://10.0.2.2:3000/users/login";
+    }
+    else{
+      url = "http://localhost:3000/users/login";
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {

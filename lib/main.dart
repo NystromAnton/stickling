@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:stycling/Profile/EditProfile.dart';
 import 'package:stycling/settings.dart';
 
 import 'Profile/ProfilePage.dart';
@@ -8,22 +10,8 @@ import 'Walkthrough/Walkthrough.dart';
 import 'settings.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Main());
 }
-
-/* class MyApp2 extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      //home: Walkthrough(),
-    );
-  }
-} */
 
 class ExampleHomePage extends StatefulWidget {
   @override
@@ -93,7 +81,7 @@ class _ExampleHomePageState extends State<ExampleHomePage>
   }
 }
 
-class MyApp extends StatelessWidget {
+class Main extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -453,43 +441,51 @@ class TabBarDemo extends StatelessWidget {
                                                           color: Colors.black,
                                                           fontSize: 25),
                                                     ),
-                                                    Container(
-                                                      width: 90,
-                                                      height: 35,
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                            color: Colors
-                                                                .grey[500],
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          20))),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(
-                                                              Icons
-                                                                  .edit_outlined,
-                                                              color:
-                                                                  Colors.grey,
-                                                              size: 25),
-                                                          Text(
-                                                            "Edit",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Lato',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 20),
-                                                          ),
-                                                        ],
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                            builder: (context) => EditProfile(flowerImages[i], Title[i],   Description[i])));
+                                                      },
+                                                      child: Container(
+                                                        width: 90,
+                                                        height: 35,
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                              color: Colors
+                                                                  .grey[500],
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            20))),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(
+                                                                Icons
+                                                                    .edit_outlined,
+                                                                color:
+                                                                    Colors.grey,
+                                                                size: 25),
+                                                            Text(
+                                                              "Edit",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Lato',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 20),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     )
                                                   ],

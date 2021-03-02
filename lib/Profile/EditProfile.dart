@@ -7,19 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:stycling/Profile/ProfilePage.dart';
 
-class PlantProfile extends StatefulWidget {
-  File imageFile;
+class EditProfile extends StatefulWidget {
+  String imageFile;
+  String title;
+  String Description;
 
-  PlantProfile(File imageFile) {
+  EditProfile(String imageFile, String title,String Description) {
     this.imageFile = imageFile;
+    this.title=title;
+    this.Description=Description;
+
   }
 
   @override
-  _PlantProfileState createState() => _PlantProfileState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _PlantProfileState extends State<PlantProfile> {
+class _EditProfileState extends State<EditProfile> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
@@ -37,6 +43,15 @@ class _PlantProfileState extends State<PlantProfile> {
   Asset asset_one=null;
   var isEnabled = false;
   List<Widget> images_Asscets = List<Widget>();
+
+  @override
+  void initState() {
+  titleController.text=  widget.title;
+  descriptionController.text=  widget.Description;
+  print("Title 1 :" +widget.title);
+  print("Title 1 :" +widget.Description);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +80,7 @@ class _PlantProfileState extends State<PlantProfile> {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 55, left: 10, right: 30),
+                    const EdgeInsets.only(top: 55, left: 10, right: 30),
                     child: TextField(
                       textDirection: TextDirection.ltr,
                       controller: titleController,
@@ -80,8 +95,9 @@ class _PlantProfileState extends State<PlantProfile> {
                         fillColor: Color(0xFF65C27A),
                         border: InputBorder.none,
                         prefixIcon:
-                            Icon(Icons.edit, color: Colors.grey, size: 25),
-                        hintText: 'Title',
+                        Icon(Icons.edit, color: Colors.grey, size: 25),
+                       // labelText:  titleController.text,
+                        hintText: titleController.text,
                         alignLabelWithHint: true,
                         hintStyle: TextStyle(
                           fontSize: 35,
@@ -90,23 +106,21 @@ class _PlantProfileState extends State<PlantProfile> {
                     ),
                   ),
                 ),
-                images.length==0
-                    ? Container()
-                    : GestureDetector(
-                        onTap: () {
-                          images.clear();
-                          images_Asscets.clear();
-                          loadAssets();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 48.0, right: 20),
-                          child: Icon(
-                            Icons.control_point_outlined,
-                            size: 60,
-                            color: Color(0xFF000000).withOpacity(0.1),
-                          ),
-                        ),
-                      ),
+          GestureDetector(
+                  onTap: () {
+                    images.clear();
+                    images_Asscets.clear();
+                    loadAssets();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 48.0, right: 20),
+                    child: Icon(
+                      Icons.control_point_outlined,
+                      size: 60,
+                      color: Color(0xFF000000).withOpacity(0.1),
+                    ),
+                  ),
+                ),
               ],
             ),
             Row(
@@ -115,32 +129,16 @@ class _PlantProfileState extends State<PlantProfile> {
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   // child:
-                   child: images.length==0
-
-                  ? Container(
-                      height: 375,
-                      width: 375,
-                      child: GestureDetector(
-                        onTap: () {
-                          loadAssets();
-                        },
-                        child: Icon(
-                          Icons.control_point_outlined,
-                          size: 80,
-                          color: Color(0xFF000000).withOpacity(0.1),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9).withOpacity(.5),
-                          borderRadius: BorderRadius.circular(10)),
-                    )
-                       :
-                   SizedBox(
-                       height: 375.0,
-                       width: 375.0,
-                       child: Carousel(
-                         images: images_Asscets
-                       )),
+                  child:
+                  SizedBox(
+                      height: 375.0,
+                      width: 375.0,
+                      child: Image.asset(
+                        widget.imageFile,
+                        width: 375.0,
+                        height: 375.0,
+                        fit: BoxFit.cover,
+                      )),
 
                   // : Container(
                   //     height: 375,
@@ -174,7 +172,8 @@ class _PlantProfileState extends State<PlantProfile> {
                       },
                       cursorColor: Colors.grey,
                       decoration: InputDecoration(
-                        hintText: 'Describe your plant...',
+                        labelText:  descriptionController.text,
+
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFFD9D9D9).withOpacity(.5),
@@ -300,10 +299,10 @@ class _PlantProfileState extends State<PlantProfile> {
     try {
       final imageFile = await ImagePicker.pickImage(source: imageSource);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => PlantProfile(imageFile)),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => PlantProfile(imageFile)),
+      // );
     } catch (e) {}
   }
 

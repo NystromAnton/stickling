@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,6 +9,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stycling/Registration/Login.dart';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class SettingsPage extends StatefulWidget {
   SettingsPage();
 
@@ -29,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final confirmPasswordController = TextEditingController();
 
   List _selectedAnimals= new List();
-
+  double _currentSliderValue = 20;
   @override
   void dispose() {
     confirmPasswordController.dispose();
@@ -37,7 +41,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 
-  double _currentSliderValue = 20;
+
   String dropdownValue = 'Plant types';
   String _currentSelectedValue;
 
@@ -71,6 +75,15 @@ class _SettingsPageState extends State<SettingsPage> {
     _selectedPlantTypes5 = _tags;
     // passwordController.addListener(EnableButton);
     // confirmPasswordController.addListener(EnableButton);
+
+      GetSaveSliderValue().then((value) {
+        setState(() {
+          _currentSliderValue=value;
+        });
+
+      });
+
+
     super.initState();
   }
 
@@ -198,9 +211,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     activeColor: Color(0xFF65C27A),
                     inactiveColor: Colors.grey[400],
                     //label: _currentSliderValue.toStringAsFixed(0),
-                    onChanged: (double value) {
+                    onChanged: (double value) async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      await prefs.setDouble('_currentSliderValue', value);
+
                       setState(
                         () {
+
                           _currentSliderValue = value;
                         },
                       );
@@ -449,7 +466,12 @@ class _SettingsPageState extends State<SettingsPage> {
         ]).show();
   }
 
+  Future<double> GetSaveSliderValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    double value = prefs.getDouble('_currentSliderValue') ;
 
+    return value;
+  }
 }
 
 class MyDialog extends StatefulWidget {
@@ -482,7 +504,10 @@ class _MyDialogState extends State<MyDialog> {
   void initState() {
      passwordController.addListener(EnableButton);
      confirmPasswordController.addListener(EnableButton);
+
+
   }
+
   void printObject(Object object) {
     // Encode your object and then decode your object to Map variable
     Map jsonMapped = json.decode(json.encode(object));

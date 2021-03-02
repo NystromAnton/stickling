@@ -34,7 +34,15 @@ class _SignupState extends State<Signup> {
   }
 
   Future<String> requestMethod(String url) async {
-    var url = "http://localhost:3000/users/signup";
+    var url;
+
+    if(Platform.isAndroid){
+       url = "http://10.0.2.2:3000/users/signup";
+    }
+    else{
+      url = "http://localhost:3000/users/signup";
+    }
+
     var body = json.encode({
       "name": firstnameController.text,
       "email": emailController.text,
@@ -63,7 +71,15 @@ class _SignupState extends State<Signup> {
   var isEnabled = false;
 
   @override
-  void initState() {}
+  void initState()
+  {
+    if(Platform.isAndroid){
+      url = "http://10.0.2.2:3000/users/signup";
+    }
+    else{
+      url = "http://localhost:3000/users/signup";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
