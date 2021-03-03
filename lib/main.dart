@@ -9,10 +9,13 @@ import 'Registration/Login.dart';
 import 'Walkthrough/Walkthrough.dart';
 import 'settings.dart';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(Main());
 }
-
 class ExampleHomePage extends StatefulWidget {
   @override
   _ExampleHomePageState createState() => _ExampleHomePageState();

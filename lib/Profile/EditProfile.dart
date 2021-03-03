@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stycling/Profile/ProfilePage.dart';
-
+import 'package:http/http.dart' as http;
 class EditProfile extends StatefulWidget {
   String imageFile;
   String title;

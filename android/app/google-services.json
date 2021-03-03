@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "146308352607",
+    "project_id": "stickling-de8db",
+    "storage_bucket": "stickling-de8db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146308352607:android:e5f0185b7e3edcb08b29ea",
+        "android_client_info": {
+          "package_name": "com.example.stycling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146308352607-kiiq5nqhtfiag9e59dq5pov95r5emm1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi3ZmowFoa3IxCzLozjBtoGUiv4zsg7dc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146308352607-kiiq5nqhtfiag9e59dq5pov95r5emm1i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

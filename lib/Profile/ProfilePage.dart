@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
+
 import 'dart:io';
 
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:http/http.dart' as http;
 class PlantProfile extends StatefulWidget {
   File imageFile;
 
@@ -96,7 +99,9 @@ class _PlantProfileState extends State<PlantProfile> {
                         onTap: () {
                           images.clear();
                           images_Asscets.clear();
-                          loadAssets();
+                          // loadAssets();
+                          getImage();
+
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(top: 48.0, right: 20),
@@ -222,7 +227,46 @@ class _PlantProfileState extends State<PlantProfile> {
       ),
     );
   }
+  Future getImage() async {
 
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child("UserID" + DateTime.now().toString());
+    UploadTask uploadTask = ref.putFile(image);
+    uploadTask.then((res) {
+      res.ref.getDownloadURL().then((value) =>
+
+          requestMethod("",value).then((value) =>
+
+              print( "Response of Add Planet "+ value)
+          )
+      );
+
+
+    });
+  }
+  Future<String> requestMethod(String url,String imageurl) async {
+
+      print( "Image URL"+ imageurl);
+    var body = json.encode({
+      "id": "603deaea4c586814e80dffe3",
+      "title":titleController.text,
+      "desc": descriptionController.text,
+      "pic": imageurl,
+      "type": "Tulpan"
+    });
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final response = await http.post("http://10.0.2.2:3000/plants/add-plant", body: body, headers: headers);
+    final responseJson = response.body.toString();
+    print("result " + responseJson);
+    return responseJson;
+  }
   Future<void> loadAssets() async {
     List<Asset> resultList = List<Asset>();
     String error = 'No Error Dectected';
@@ -256,6 +300,7 @@ class _PlantProfileState extends State<PlantProfile> {
 
       for(int i =0;i<images.length;i++){
         Asset asset = images[i];
+        print("Image File "+asset.toString());
         asset= images[0];
 
         images_Asscets.add(
