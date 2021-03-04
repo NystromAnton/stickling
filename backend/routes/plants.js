@@ -2,6 +2,14 @@ var express = require("express");
 var router = express.Router();
 const User = require("../models/userModel");
 const Plant = require("../models/plantModel");
+const Preference = require("../models/preferenceModel");
+
+router.get("/swipe-deck/:id", async function (req, res, next) {
+    var id = req.params.id;
+    var preference = await Preference.find({user: id});
+    res.json(plants);
+});
+
 
 /* GET all plants from a user */
 router.get("/:id", async function (req, res, next) {
@@ -9,6 +17,7 @@ router.get("/:id", async function (req, res, next) {
   var plants = await Plant.find({ user: id });
   res.json(plants);
 });
+
 router.post("/add-plant", async function (req, res, next) {
   var form = req.body;
   var userId = form.id;
