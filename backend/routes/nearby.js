@@ -3,8 +3,11 @@ var router = express.Router();
 const User = require("../models/userModel");
 const Plant = require("../models/plantModel");
 const Match = require("../models/matchModel");
+const Preference = require("../models/preferenceModel");
+const mongoose = require("mongoose");
 
-router.get("/", async function(req, res, next){
+
+router.get("/:id", async function(req, res, next){
     var coord = req.query.q;
     var splitCoord = coord.split(",");
     var long = parseFloat(splitCoord[0]);
@@ -12,27 +15,60 @@ router.get("/", async function(req, res, next){
     console.log(lat);
     console.log(long);
 
+    var id = req.params.id;
+    console.log(id)
+    var preference = await Preference.find({ user: id });
+    console.log(preference)
+    var types = preference[0].types;
+    var distance = preference[0].distance;
     User.aggregate([
-        {
+        {  
             $geoNear: {
                 near: {
                     type: "Point",
                     coordinates: [long, lat],
                 },
                 distanceField: "dist.calculated",
-                maxDistance: 2,
+                maxDistance: Number(distance),
                 spherical: true,
                 },
             },
-        
+            
+            {
+
+                $lookup: {
+                    from: Plant.collection.name,
+                    localField: "_id",
+                    foreignField: "user",
+                    as: "plants",
+                    
+                },
+            },
+            
+            { $unwind: "$plants" } ,
+            {
+                $match: { "plants.type": { $in: types } }
+             },
+    
+            {
+                $project: {
+                    _id: 0,
+                    plants: 1,
+                },
+            },
     ],
     (err, data)=> {
         if(err) {
             next(err);
             return;
         }
-        console.log(data);
-        res.json(data);
+        var arr = [];
+        for(i = 0; i < data.length; i++) {
+            arr.push(data[i].plants);
+            
+        }
+        console.log(arr);
+        res.json(arr);
     })
 });
 

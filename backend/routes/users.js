@@ -35,7 +35,7 @@ router.post("/login", async function (req, res, next) {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-    match = user.comparePassword(user, req.body.password);
+    match = await user.comparePassword(user, req.body.password);
     if (match) {
       console.log("här inne");
 
@@ -47,6 +47,9 @@ router.post("/login", async function (req, res, next) {
       };
 
       res.send(user._id);
+    }
+    else {
+      res.send("Email and password doesn't match")
     }
   } catch (e) {
     res.send("login failed");

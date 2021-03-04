@@ -10,6 +10,7 @@ var usersRouter = require("./routes/users");
 var plantRouter = require("./routes/plants");
 var matchRouter = require("./routes/match");
 var nearbyRouter = require("./routes/nearby");
+var preferenceRouter = require("./routes/preferences");
 
 
 var app = express();
@@ -31,6 +32,7 @@ app.use("/users", usersRouter);
 app.use("/plants", plantRouter);
 app.use("/match", matchRouter);
 app.use("/nearby", nearbyRouter);
+app.use("/preference", preferenceRouter);
 
 
 
