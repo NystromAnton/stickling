@@ -25,7 +25,7 @@ router.post("/signup", async function (req, res, next) {
     newUser.password = await bcrypt.hash(newUser.password, 10);
 
     await newUser.save();
-    res.send("user posted");
+    res.send(newUser);
   } catch (err) {
     console.error("Issue with signup "+err.message);
     res.status(500).json({ message: "Server error" });
@@ -47,9 +47,8 @@ router.post("/login", async function (req, res, next) {
       };
 
       res.send(user._id);
-    }
-    else {
-      res.send("Email and password doesn't match")
+    } else {
+      res.send("Email and password doesn't match");
     }
   } catch (e) {
     res.send("login failed");
