@@ -45,7 +45,10 @@ router.get("/:id", async function (req, res, next) {
 
       { $unwind: "$plants" },
       {
-        $match: { "plants.type": { $in: types }, "plants.user": { $ne: id } },
+        $match: {
+          "plants.type": { $in: types },
+          "plants.user": { $ne: mongoose.Types.ObjectId(id) },
+        },
       },
       {
         $project: {
