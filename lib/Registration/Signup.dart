@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:stycling/Registration/Login.dart';
 import 'package:stycling/main.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -34,14 +35,7 @@ class _SignupState extends State<Signup> {
   }
 
   Future<String> requestMethod(String url) async {
-    var url;
 
-    if(Platform.isAndroid){
-       url = "http://10.0.2.2:3000/users/signup";
-    }
-    else{
-      url = "http://localhost:3000/users/signup";
-    }
 
     var body = json.encode({
       "name": firstnameController.text,
@@ -65,7 +59,7 @@ class _SignupState extends State<Signup> {
   }
 
   // var isEnabled = false;
-  String url = 'http://localhost:3000/users/signup';
+  String url = 'https://sticklingar.herokuapp.com/users/signup';
   // Map map =
   // };
   var isEnabled = false;
@@ -73,12 +67,9 @@ class _SignupState extends State<Signup> {
   @override
   void initState()
   {
-    if(Platform.isAndroid){
-      url = "http://10.0.2.2:3000/users/signup";
-    }
-    else{
-      url = "http://localhost:3000/users/signup";
-    }
+
+      url = "https://sticklingar.herokuapp.com/users/signup";
+
   }
 
   @override
@@ -351,7 +342,7 @@ class _SignupState extends State<Signup> {
       } else {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TabBarDemo()),
+          MaterialPageRoute(builder: (context) => Login()),
         );
       }
     });

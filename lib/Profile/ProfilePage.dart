@@ -13,9 +13,10 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:http/http.dart' as http;
 class PlantProfile extends StatefulWidget {
   File imageFile;
-
-  PlantProfile(File imageFile) {
+  String currentUserID;
+  PlantProfile(File imageFile, String currentUserID) {
     this.imageFile = imageFile;
+    this.currentUserID=currentUserID;
   }
 
   @override
@@ -99,8 +100,8 @@ class _PlantProfileState extends State<PlantProfile> {
                         onTap: () {
                           images.clear();
                           images_Asscets.clear();
-                          // loadAssets();
-                          getImage();
+                          loadAssets();
+
 
                         },
                         child: Padding(
@@ -163,6 +164,10 @@ class _PlantProfileState extends State<PlantProfile> {
                 ),
               ],
             ),
+
+            Wrap(
+              children: [],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -198,13 +203,14 @@ class _PlantProfileState extends State<PlantProfile> {
                 ),
               ],
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Expanded(
                   flex: 0,
                   child: RaisedButton(
-                    onPressed: isEnabled ? () => Navigator.pop : null,
+                    onPressed: isEnabled ? () =>  getImage() : null,
                     child: Text(
                       'Upload plant',
                       style: TextStyle(fontSize: 25),
@@ -232,9 +238,10 @@ class _PlantProfileState extends State<PlantProfile> {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child("UserID" + DateTime.now().toString());
+    Reference ref = storage.ref().child(widget.currentUserID + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(image);
     uploadTask.then((res) {
+
       res.ref.getDownloadURL().then((value) =>
 
           requestMethod("",value).then((value) =>
@@ -250,11 +257,11 @@ class _PlantProfileState extends State<PlantProfile> {
 
       print( "Image URL"+ imageurl);
     var body = json.encode({
-      "id": "603deaea4c586814e80dffe3",
+      "id":widget.currentUserID,
       "title":titleController.text,
       "desc": descriptionController.text,
-      "pic": imageurl,
-      "type": "Tulpan"
+      "pic": imageurl.toString(),
+      "type": "tulpan"
     });
 
     Map<String, String> headers = {
@@ -262,7 +269,7 @@ class _PlantProfileState extends State<PlantProfile> {
       'Accept': 'application/json',
     };
 
-    final response = await http.post("http://10.0.2.2:3000/plants/add-plant", body: body, headers: headers);
+    final response = await http.post("https://sticklingar.herokuapp.com/plants/add-plant", body: body, headers: headers);
     final responseJson = response.body.toString();
     print("result " + responseJson);
     return responseJson;
@@ -274,7 +281,9 @@ class _PlantProfileState extends State<PlantProfile> {
     try {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 5,
+
         enableCamera: true,
+
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
@@ -293,9 +302,11 @@ class _PlantProfileState extends State<PlantProfile> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
+      // File assetFile = resultList as File;
+      // print("Asset File "+assetFile.absolute.toString());
     setState(() {
       images = resultList;
+
       print("images Size "+ images.length.toString());
 
       for(int i =0;i<images.length;i++){
@@ -347,14 +358,14 @@ class _PlantProfileState extends State<PlantProfile> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PlantProfile(imageFile)),
+        MaterialPageRoute(builder: (context) => PlantProfile(imageFile,widget.currentUserID)),
       );
     } catch (e) {}
   }
 
   EnableButton() {
     setState(() {
-      if (widget.imageFile == null) {
+      if (images_Asscets == null) {
         isEnabled = false;
       } else {
         if (descriptionController.text.length > 0 &&

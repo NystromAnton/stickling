@@ -55,12 +55,9 @@ class _LoginState extends State<Login> {
   void initState() {
 
 
-    if(Platform.isAndroid){
-      url = "http://10.0.2.2:3000/users/login";
-    }
-    else{
-      url = "http://localhost:3000/users/login";
-    }
+
+      url = "https://sticklingar.herokuapp.com/users/login";
+
 
   }
 
@@ -281,10 +278,25 @@ class _LoginState extends State<Login> {
             textColor: Colors.white,
             fontSize: 16.0);
       } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => TabBarDemo()),
-        );
+        if(value=="Email and password doesn't match"){
+          Fluttertoast.showToast(
+              msg: value,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }else{
+
+        String newvalue  = value.substring(1,value.length-1);
+        print("NewValue "+newvalue );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TabBarDemo(newvalue)),
+          );
+        }
+
       }
     });
   }

@@ -1,87 +1,23 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stycling/Profile/EditProfile.dart';
 import 'package:stycling/settings.dart';
 
 import 'Profile/ProfilePage.dart';
-import 'Registration/Login.dart';
 import 'Walkthrough/Walkthrough.dart';
 import 'settings.dart';
 
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(Main());
-}
-class ExampleHomePage extends StatefulWidget {
-  @override
-  _ExampleHomePageState createState() => _ExampleHomePageState();
-}
-
-class _ExampleHomePageState extends State<ExampleHomePage>
-    with TickerProviderStateMixin {
-  List<String> welcomeImages = [
-    "assets/stickling1.jpg",
-    "assets/stickling2.jpg",
-    "assets/stickling3.jpg",
-    "assets/stickling1.jpg",
-    "assets/stickling2.jpg",
-    "assets/stickling3.jpg",
-    "assets/stickling1.jpg",
-    "assets/stickling2.jpg",
-    "assets/stickling3.jpg",
-    "assets/stickling1.jpg",
-    "assets/stickling2.jpg",
-    "assets/stickling3.jpg",
-    "assets/stickling1.jpg",
-    "assets/stickling2.jpg",
-    "assets/stickling3.jpg",
-    "assets/stickling4.png"
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    CardController controller; //Use this to trigger swap.
-
-    return new Scaffold(
-      body: new Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: new TinderSwapCard(
-            swipeUp: true,
-            swipeDown: true,
-            orientation: AmassOrientation.BOTTOM,
-            totalNum: welcomeImages.length,
-            stackNum: 3,
-            swipeEdge: 5.0,
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-            maxHeight: MediaQuery.of(context).size.width * 0.9,
-            minWidth: MediaQuery.of(context).size.width * 0.8,
-            minHeight: MediaQuery.of(context).size.width * 0.8,
-            cardBuilder: (context, index) => Card(
-              child: Image.asset('${welcomeImages[index]}'),
-            ),
-            cardController: controller = CardController(),
-            swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
-              /// Get swiping card's alignment
-              if (align.x < 0) {
-                //Card is LEFT swiping
-              } else if (align.x > 0) {
-                //Card is RIGHT swiping
-              }
-            },
-            swipeCompleteCallback:
-                (CardSwipeOrientation orientation, int index) {
-              /// Get orientation & index of swiped card!
-            },
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class Main extends StatelessWidget {
@@ -110,7 +46,21 @@ class MyStatefulWidget extends StatefulWidget {
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
 
-class TabBarDemo extends StatelessWidget {
+@override
+void initState() {}
+
+class TabBarDemo extends StatefulWidget {
+  String CurrentUserID;
+
+  TabBarDemo(String CurrentUserID) {
+    this.CurrentUserID = CurrentUserID;
+  }
+
+  @override
+  _TabBarDemoState createState() => _TabBarDemoState();
+}
+
+class _TabBarDemoState extends State<TabBarDemo> {
   final List<String> flowerImages = [
     "assets/stickling1.jpg",
     "assets/stickling2.jpg",
@@ -148,6 +98,7 @@ class TabBarDemo extends StatelessWidget {
     "Flower 3",
     "Flower 4"
   ];
+
   final List<String> Description = [
     "Description 1",
     "Description 2",
@@ -168,26 +119,74 @@ class TabBarDemo extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    print("Init state is working ");
+    requestMethod("").then((value) => print("API RESULT " + value.toString()));
+  }
+
+  Future<List<dynamic>> requestMethod(String url) async {
+    Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
+    print("Current User ID " + widget.CurrentUserID);
+
+    String url = "https://sticklingar.herokuapp.com/nearby/" +
+        widget.CurrentUserID +
+        "/?q=17.61721,59.85877";
+    print("URL " + url.toString());
+    final response = await http.get(url);
+
+    print("response " + response.toString());
+    final responseJson = json.decode(response.body.toString());
+
+    print("result " + responseJson.toString());
+    // Map map =json.decode(response.body);
+    // print("map " + map.toString());
+    List<dynamic> users = (json.decode(response.body) as List);
+
+    return users;
+  }
+
+  Future<String> SwipeRight(String userID, String PlantID) async {
+    var body =
+        json.encode({"userId": widget.CurrentUserID, "plantId": PlantID});
+    print("USER ID " + widget.CurrentUserID);
+    print("Plant  ID " + PlantID);
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final response = await http.post("https://sticklingar.herokuapp.com/match",
+        body: body, headers: headers);
+    final responseJson = response.body.toString();
+    print("result " + responseJson);
+    return responseJson;
+  }
+
+  Future<String> Addpreprefernces(String userID, String PlantID) async {
+    var body = json.encode({
+      "id": widget.CurrentUserID,
+      "types": ["monstera", "tulpan"],
+      "distance": 100
+    });
+
+    print("USER ID " + widget.CurrentUserID);
+    print("Plant  ID " + PlantID);
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final response = await http.post(
+        "https://sticklingar.herokuapp.com/preference/add-preference",
+        body: body,
+        headers: headers);
+    final responseJson = response.body.toString();
+    print("result " + responseJson);
+    return responseJson;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<String> welcomeImages = [
-      "assets/stickling1.jpg",
-      "assets/stickling1.jpg",
-      "assets/stickling2.jpg",
-      "assets/stickling3.jpg",
-      "assets/stickling1.jpg",
-      "assets/stickling2.jpg",
-      "assets/stickling3.jpg",
-      "assets/stickling1.jpg",
-      "assets/stickling2.jpg",
-      "assets/stickling3.jpg",
-      "assets/stickling1.jpg",
-      "assets/stickling2.jpg",
-      "assets/stickling3.jpg",
-      "assets/stickling1.jpg",
-      "assets/stickling2.jpg",
-      "assets/stickling3.jpg",
-      "assets/stickling4.png"
-    ];
     CardController controller;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -229,101 +228,237 @@ class TabBarDemo extends StatelessWidget {
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(top: 30),
-                              child: Text(
-                                'Julia\'s Palettblad',
-                                style: TextStyle(
-                                  fontSize: 35,
-                                  fontFamily: 'Lato',
+                  FutureBuilder(
+                    future: requestMethod(""),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                            child: CircularProgressIndicator(
+                          backgroundColor: Colors.teal,
+                        ));
+                      } else {
+                        // List<String> list = snapshot.data;
+                        print("SNAPSHOT" + snapshot.data.toString());
+                        List images = snapshot.data;
+                        print(
+                            "SNAPSHOT" + snapshot.data[0]["title"].toString());
+                        print("SNAPSHOT" + images.length.toString());
+                        List<String> welcomeImages = List<String>();
+                        for (int i = 0; i < images.length; i++) {
+                          welcomeImages.add(images[i]["pic"]);
+                        }
+                        return Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: 550,
+                                child: new TinderSwapCard(
+                                  swipeUp: true,
+                                  swipeDown: true,
+                                  orientation: AmassOrientation.RIGHT,
+                                  totalNum: welcomeImages.length,
+                                  stackNum: 3,
+                                  swipeEdge: 4.0,
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width * 1.0,
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 1.0,
+                                  minWidth:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  minHeight:
+                                      MediaQuery.of(context).size.height * 0.8,
+                                  cardBuilder: (context, index) => Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Card(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 28.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                      EdgeInsets.only(top: 30),
+                                                  child: Text(
+                                                    images[index]['title']
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 40,
+                                                      fontFamily: 'Lato',
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 350,
+                                              width: 350,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      welcomeImages[index],
+                                                  placeholder: (context, url) =>
+                                                      SizedBox(
+                                                    width: 5,
+                                                    height: 5,
+                                                    child:
+                                                        new CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.teal,
+                                                    ),
+                                                  ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          new Icon(Icons.error),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  cardController: controller = CardController(),
+                                  swipeUpdateCallback:
+                                      (DragUpdateDetails details,
+                                          Alignment align) {
+                                    /// Get swiping card's alignment
+                                    if (align.x < 0) {
+                                      //Card is LEFT swiping
+                                      print("Card swipe Left");
+                                    } else if (align.x > 0) {
+                                      //Card is RIGHT swiping
+
+                                    }
+                                  },
+                                  swipeCompleteCallback:
+                                      (CardSwipeOrientation orientation,
+                                          int index) {
+                                    if (orientation ==
+                                        CardSwipeOrientation.LEFT) {
+                                    } else if (orientation ==
+                                        CardSwipeOrientation.RIGHT) {
+                                      SwipeRight("", images[index]['_id'])
+                                          .then((value) {
+                                        print("Result " + value);
+                                        if (value
+                                            .contains("Match object created")) {
+                                        } else {
+                                          Alert(
+                                            context: context,
+                                            type: AlertType.success,
+                                            title: "New Match",
+                                            desc: "Great! You got a new Match",
+                                            buttons: [
+                                              DialogButton(
+                                                child: Text(
+                                                  "Chat",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20),
+                                                ),
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                width: 120,
+                                              )
+                                            ],
+                                          ).show();
+                                        }
+                                      });
+                                    }
+
+                                    /// Get orientation & index of swiped card!
+                                  },
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          child: new TinderSwapCard(
-                            swipeUp: true,
-                            swipeDown: true,
-                            orientation: AmassOrientation.RIGHT,
-                            totalNum: welcomeImages.length,
-                            stackNum: 3,
-                            swipeEdge: 4.0,
-                            maxWidth: MediaQuery.of(context).size.width * 1.0,
-                            maxHeight: MediaQuery.of(context).size.width * 1.0,
-                            minWidth: MediaQuery.of(context).size.width * 0.8,
-                            minHeight: MediaQuery.of(context).size.width * 0.8,
-                            cardBuilder: (context, index) => Card(
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.asset(
-                                    '${welcomeImages[index]}',
-                                    fit: BoxFit.cover,
-                                  )),
-                            ),
-                            cardController: controller = CardController(),
-                            swipeUpdateCallback:
-                                (DragUpdateDetails details, Alignment align) {
-                              /// Get swiping card's alignment
-                              if (align.x < 0) {
-                                //Card is LEFT swiping
-                              } else if (align.x > 0) {
-                                //Card is RIGHT swiping
-                              }
-                            },
-                            swipeCompleteCallback:
-                                (CardSwipeOrientation orientation, int index) {
-                              /// Get orientation & index of swiped card!
-                            },
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      height: 90,
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          border: Border.all(
+                                            color: Colors.grey[400],
+                                          )),
+                                      child: IconButton(
+                                          icon: Icon(Icons.close,
+                                              color: Colors.red[700]),
+                                          onPressed: null,
+                                          iconSize: 60),
+                                    ),
+                                    Container(
+                                      height: 90,
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          border: Border.all(
+                                            color: Colors.grey[400],
+                                          )),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          //
+                                          // SwipeRight( "", images[0]['_id']).then((value) {
+                                          //   print("Result "+ value);
+                                          //   if(value.contains("Match object created")){
+                                          //
+                                          //   }else{
+                                          //     Alert(
+                                          //       context: context,
+                                          //       type: AlertType.success,
+                                          //       title: "New Match",
+                                          //       desc: "Great! You got a new Match",
+                                          //       buttons: [
+                                          //         DialogButton(
+                                          //           child: Text(
+                                          //             "Chat",
+                                          //             style: TextStyle(color: Colors.white, fontSize: 20),
+                                          //           ),
+                                          //           onPressed: () => Navigator.pop(context),
+                                          //           width: 120,
+                                          //         )
+                                          //       ],
+                                          //     ).show();
+                                          //   }
+                                          //
+                                          // }
+                                        },
+                                        child: IconButton(
+                                            icon: Icon(Icons.favorite_rounded,
+                                                color: Colors.pink[300]),
+                                            onPressed: null,
+                                            iconSize: 55),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              height: 90,
-                              width: 90,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(25),
-                                  border: Border.all(
-                                    color: Colors.grey[400],
-                                  )),
-                              child: IconButton(
-                                  icon:
-                                      Icon(Icons.close, color: Colors.red[700]),
-                                  onPressed: null,
-                                  iconSize: 60),
-                            ),
-                            Container(
-                              height: 90,
-                              width: 90,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(25),
-                                  border: Border.all(
-                                    color: Colors.grey[400],
-                                  )),
-                              child: IconButton(
-                                  icon: Icon(Icons.favorite_rounded,
-                                      color: Colors.pink[300]),
-                                  onPressed: null,
-                                  iconSize: 55),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                        );
+                      }
+                    },
                   ),
                   Container(
                     color: Colors.white,
+                    child: Text("No Chat Functionaility right noe"),
                   ),
                   Container(
                     child: Column(
@@ -383,8 +518,8 @@ class TabBarDemo extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            PlantProfile(null)),
+                                        builder: (context) => PlantProfile(
+                                            null, widget.CurrentUserID)),
                                   );
                                 },
                               )
@@ -445,23 +580,32 @@ class TabBarDemo extends StatelessWidget {
                                                           fontSize: 25),
                                                     ),
                                                     GestureDetector(
-                                                      onTap: (){
+                                                      onTap: () {
                                                         Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                            builder: (context) => EditProfile(flowerImages[i], Title[i],   Description[i])));
+                                                                builder: (context) =>
+                                                                    EditProfile(
+                                                                        flowerImages[
+                                                                            i],
+                                                                        Title[
+                                                                            i],
+                                                                        Description[
+                                                                            i])));
                                                       },
                                                       child: Container(
                                                         width: 90,
                                                         height: 35,
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                              color: Colors
-                                                                  .grey[500],
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      500],
+                                                                ),
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
                                                                         .circular(
                                                                             20))),
                                                         child: Row(
