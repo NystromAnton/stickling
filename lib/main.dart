@@ -139,7 +139,7 @@ class TabBarDemo extends StatelessWidget {
     "assets/stickling4.png"
   ];
 
-  final List<String> Title = [
+  final List<String> title = [
     "Flower 1",
     "Flower 2",
     "Flower 1",
@@ -157,7 +157,7 @@ class TabBarDemo extends StatelessWidget {
     "Flower 3",
     "Flower 4"
   ];
-  final List<String> Description = [
+  final List<String> description = [
     "Description 1",
     "Description 2",
     "Description 1",
@@ -247,7 +247,7 @@ class TabBarDemo extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.only(top: 30),
                               child: Text(
-                                'Julia\'s Palettblad',
+                                '${title[0]}',
                                 style: TextStyle(
                                   fontSize: 35,
                                   fontFamily: 'Lato',
@@ -284,6 +284,7 @@ class TabBarDemo extends StatelessWidget {
                               if (align.x < 0) {
                                 //Card is LEFT swiping
                               } else if (align.x > 0) {
+                                print("right swipe");
                                 //Card is RIGHT swiping
                               }
                             },
@@ -445,7 +446,7 @@ class TabBarDemo extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      Title[i],
+                                                      title[i],
                                                       style: TextStyle(
                                                           fontFamily: 'Lato',
                                                           fontWeight:
@@ -499,7 +500,7 @@ class TabBarDemo extends StatelessWidget {
                                                 padding:
                                                     EdgeInsets.only(left: 20),
                                                 child: Text(
-                                                  Description[i],
+                                                  description[i],
                                                   maxLines: 2,
                                                   style: TextStyle(
                                                       fontFamily: 'Lato',

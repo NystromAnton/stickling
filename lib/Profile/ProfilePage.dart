@@ -238,8 +238,7 @@ class _PlantProfileState extends State<PlantProfile> {
         context,
         MaterialPageRoute(builder: (context) => PlantProfile(imageFile)),
       );
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   EnableButton() {
