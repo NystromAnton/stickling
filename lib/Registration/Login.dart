@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   Login() {}
@@ -25,7 +28,39 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+  Future<String> requestMethod(String url) async {
+
+
+    var body = json.encode({
+      "email": emailController.text,
+      "password": passwordController.text,
+    });
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final response = await http.post(url, body: body, headers: headers);
+    final responseJson = response.body.toString();
+    print("result " + responseJson);
+    return responseJson;
+  }
+
+  String url = 'http://localhost:3000/users/login';
+
   var isEnabled = false;
+
+  @override
+  void initState() {
+
+
+
+      url = "https://sticklingar.herokuapp.com/users/login";
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,13 +181,7 @@ class _LoginState extends State<Login> {
                 Expanded(
                   flex: 0,
                   child: RaisedButton(
-                    onPressed: isEnabled
-                        ? () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TabBarDemo()),
-                            )
-                        : null,
+                    onPressed: isEnabled ? () => ValidateUser() : null,
                     child: Text(
                       'Log in',
                       style: TextStyle(
@@ -232,6 +261,42 @@ class _LoginState extends State<Login> {
         isEnabled = true;
       } else {
         isEnabled = false;
+      }
+    });
+  }
+
+  ValidateUser() {
+    requestMethod(url).then((value) {
+      print("Result " + value);
+      if (value == "login failed") {
+        Fluttertoast.showToast(
+            msg: value,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        if(value=="Email and password doesn't match"){
+          Fluttertoast.showToast(
+              msg: value,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }else{
+
+        String newvalue  = value.substring(1,value.length-1);
+        print("NewValue "+newvalue );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TabBarDemo(newvalue)),
+          );
+        }
+
       }
     });
   }

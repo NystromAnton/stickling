@@ -1,11 +1,16 @@
-import 'dart:io';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:stycling/Registration/Login.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
 class SettingsPage extends StatefulWidget {
   SettingsPage();
 
@@ -26,6 +31,9 @@ class PlantType {
 class _SettingsPageState extends State<SettingsPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  List _selectedAnimals= new List();
+  double _currentSliderValue = 20;
   @override
   void dispose() {
     confirmPasswordController.dispose();
@@ -33,7 +41,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 
-  double _currentSliderValue = 20;
+
   String dropdownValue = 'Plant types';
   String _currentSelectedValue;
 
@@ -61,14 +69,71 @@ class _SettingsPageState extends State<SettingsPage> {
   final _multiSelectKey = GlobalKey<FormFieldState>();
 
   var isEnabled = false;
+
   @override
   void initState() {
     _selectedPlantTypes5 = _tags;
+    // passwordController.addListener(EnableButton);
+    // confirmPasswordController.addListener(EnableButton);
+
+      GetSaveSliderValue().then((value) {
+        setState(() {
+          print("Value current "+value.toString());
+          if(value!=null){
+            _currentSliderValue=value;
+          }else{
+            _currentSliderValue=20;
+          }
+
+        });
+
+      });
+    _determinePosition().then((value) =>
+        print("Position "+ value.toString())
+    );
+
     super.initState();
   }
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error(
+            'Location permissions are denied');
+      }
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
   @override
   Widget build(BuildContext context) {
+    print("Checking State");
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -190,9 +255,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     activeColor: Color(0xFF65C27A),
                     inactiveColor: Colors.grey[400],
                     //label: _currentSliderValue.toStringAsFixed(0),
-                    onChanged: (double value) {
+                    onChanged: (double value) async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      await prefs.setDouble('_currentSliderValue', value);
+
                       setState(
                         () {
+
                           _currentSliderValue = value;
                         },
                       );
@@ -228,8 +297,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   alignment: Alignment.centerLeft,
                   //width: MediaQuery.of(context).size.width * 0.9,
                   child: MultiSelectChipField(
+
                     items: _items,
+
                     scroll: false,
+                    onTap: (values) {
+                      _selectedAnimals = values;
+                      inspect(values);
+
+                      print("Result "+  json.encode(values.toString()));
+                    },
                     title: Text("Plant types:"),
                     chipColor: Colors.grey[400],
                     selectedChipColor: Color(0xFF65C27A),
@@ -259,7 +336,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RaisedButton(
-                    onPressed: () => _onAlertWithCustomContentPressed(context),
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (_) {
+                          return MyDialog();
+                        }),
+
                     padding: EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
                     color: Color(0xFF65C27A),
@@ -286,7 +368,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RaisedButton(
-                    onPressed: () => _onAlertWithCustomContentPressed(context),
+                    // onPressed: () => _onAlertWithCustomContentPressed(context),
+                    onPressed: () =>  Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Login()),
+            ),
+
                     padding: EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
                     color: Colors.grey,
@@ -338,6 +426,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   _onAlertWithCustomContentPressed(context) {
+    print("IsEnabled Test" + isEnabled.toString());
     Alert(
         context: context,
         title: "Change password",
@@ -359,9 +448,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                  onChanged: (text) {
-                    EnableButton();
-                  },
+                  // onChanged: (text) {
+                  //   print("Password changing");
+                  //   EnableButton();
+                  // },
                 ),
               ),
             ),
@@ -381,29 +471,69 @@ class _SettingsPageState extends State<SettingsPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                  onChanged: (text) {
-                    EnableButton();
-                  },
+                  // onChanged: (text) {
+                  //   print("Confirm Password changing");
+                  //   EnableButton();
+                  // },
                 ),
               ),
             ),
           ],
         ),
         buttons: [
-          DialogButton(
-            onPressed: isEnabled ? () => Navigator.pop(context) : null,
-            child: Text(
-              "Change password",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            color: Color(0xFF65C27A),
-            radius: BorderRadius.circular(20),
-          )
+          isEnabled
+              ? DialogButton(
+                  onPressed: isEnabled ? () => Navigator.pop(context) : null,
+                  child: Text(
+                    "Change password",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  color: Color(0xFF65C27A),
+                  radius: BorderRadius.circular(20),
+                )
+              : DialogButton(
+                  onPressed: () => Fluttertoast.showToast(
+                      msg: "You password is not matched",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0),
+                  child: Text(
+                    "Change password",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  color: Colors.grey,
+                  radius: BorderRadius.circular(20),
+                )
         ]).show();
   }
 
+  Future<double> GetSaveSliderValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    double value = prefs.getDouble('_currentSliderValue') ;
+
+    return value;
+  }
+}
+
+class MyDialog extends StatefulWidget {
+  @override
+  _MyDialogState createState() => new _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  Color _c = Colors.redAccent;
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  var isEnabled = false;
+
   EnableButton() {
+    print("Text Input 1");
     setState(() {
+      isEnabled = true;
+      print("Text Input 2");
       if (passwordController.text.length > 0 &&
           confirmPasswordController.text.length > 0 &&
           passwordController.text == confirmPasswordController.text) {
@@ -412,5 +542,114 @@ class _SettingsPageState extends State<SettingsPage> {
         isEnabled = false;
       }
     });
+  }
+
+  @override
+  void initState() {
+     passwordController.addListener(EnableButton);
+     confirmPasswordController.addListener(EnableButton);
+
+
+  }
+
+  void printObject(Object object) {
+    // Encode your object and then decode your object to Map variable
+    Map jsonMapped = json.decode(json.encode(object));
+
+    // Using JsonEncoder for spacing
+    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+
+    // encode it to string
+    String prettyPrint = encoder.convert(jsonMapped);
+
+    // print or debugPrint your object
+    debugPrint(prettyPrint);
+  }
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content:   Container(
+        height: 220,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding:
+              const EdgeInsets.only(top: 25, left: 8, right: 8, bottom: 8),
+              child: Theme(
+                data: ThemeData(primaryColor: Colors.grey),
+                child: TextField(
+                  controller: passwordController,
+                  cursorColor: Colors.grey,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  // onChanged: (text) {
+                  //   print("Password changing");
+                  //   EnableButton();
+                  // },
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+              const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 2),
+              child: Theme(
+                data: ThemeData(primaryColor: Colors.grey),
+                child: TextField(
+                  controller: confirmPasswordController,
+                  cursorColor: Colors.grey,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  // onChanged: (text) {
+                  //   print("Confirm Password changing");
+                  //   EnableButton();
+                  // },
+                ),
+              ),
+            ),
+            isEnabled
+                ? DialogButton(
+              onPressed: isEnabled ? () => Navigator.pop(context) : null,
+              child: Text(
+                "Change password",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              color: Color(0xFF65C27A),
+              radius: BorderRadius.circular(20),
+            )
+                : DialogButton(
+              onPressed: () => Fluttertoast.showToast(
+                  msg: "You password is not matched",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0),
+              child: Text(
+                "Change password",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              color: Colors.grey,
+              radius: BorderRadius.circular(20),
+            )
+          ],
+        ),
+      ),
+      actions: <Widget>[
+
+      ],
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:stycling/Registration/Login.dart';
 import 'package:stycling/main.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class Signup extends StatefulWidget {
   Signup() {}
@@ -31,31 +35,44 @@ class _SignupState extends State<Signup> {
     super.dispose();
   }
 
-  Future<String> apiRequest(String url, Map jsonMap) async {
-    HttpClient httpClient = new HttpClient();
-    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
-    request.headers.set('content-type', 'application/json');
-    request.add(utf8.encode(json.encode(jsonMap)));
-    HttpClientResponse response = await request.close();
-    // todo - you should check the response.statusCode
-    String reply = await response.transform(utf8.decoder).join();
-    httpClient.close();
-    return reply;
+  Future<String> requestMethod(String url) async {
+
+
+    var body = json.encode({
+      "name": firstnameController.text,
+      "email": emailController.text,
+      "password": passwordController.text,
+      "location": {
+        "type": "Point",
+        "coordinates": [17.617210, 59.858770]
+      }
+    });
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final response = await http.post(url, body: body, headers: headers);
+    final responseJson = response.body.toString();
+    print("result " + responseJson);
+    return responseJson;
   }
 
+  // var isEnabled = false;
+  String url = 'https://sticklingar.herokuapp.com/users/signup';
+  // Map map =
+  // };
   var isEnabled = false;
-  String url = 'http://localhost:3000/users/signup';
-  Map map = {
-    "name": "Helena",
-    "email": "abc@gmail.com",
-    "password": "12345",
-    "location": {
-      "type": "Point",
-      "coordinates": [17.617210, 59.858770]
-    }
-  };
 
-  // print(await apiRequest(url, map));
+  @override
+  void initState()
+  {
+
+      url = "https://sticklingar.herokuapp.com/users/signup";
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -273,13 +290,7 @@ class _SignupState extends State<Signup> {
                   Expanded(
                     flex: 0,
                     child: RaisedButton(
-                      onPressed: isEnabled
-                          ? () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TabBarDemo()),
-                              )
-                          : null,
+                      onPressed: isEnabled ? () => CheckRegistration() : null,
                       child: Text(
                         'Sign up',
                         style: TextStyle(fontSize: 25),
@@ -313,6 +324,27 @@ class _SignupState extends State<Signup> {
         isEnabled = true;
       } else {
         isEnabled = false;
+      }
+    });
+  }
+
+  CheckRegistration() {
+    requestMethod(url).then((value) {
+      print("Result " + value);
+      if (value != "user posted") {
+        Fluttertoast.showToast(
+            msg: value,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Login()),
+        );
       }
     });
   }

@@ -1,29 +1,31 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'dart:io';
 
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:stycling/Profile/ProfilePage.dart';
 import 'package:http/http.dart' as http;
-class PlantProfile extends StatefulWidget {
-  File imageFile;
-  String currentUserID;
-  PlantProfile(File imageFile, String currentUserID) {
+class EditProfile extends StatefulWidget {
+  String imageFile;
+  String title;
+  String Description;
+
+  EditProfile(String imageFile, String title,String Description) {
     this.imageFile = imageFile;
-    this.currentUserID=currentUserID;
+    this.title=title;
+    this.Description=Description;
+
   }
 
   @override
-  _PlantProfileState createState() => _PlantProfileState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _PlantProfileState extends State<PlantProfile> {
+class _EditProfileState extends State<EditProfile> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
@@ -41,6 +43,15 @@ class _PlantProfileState extends State<PlantProfile> {
   Asset asset_one=null;
   var isEnabled = false;
   List<Widget> images_Asscets = List<Widget>();
+
+  @override
+  void initState() {
+  titleController.text=  widget.title;
+  descriptionController.text=  widget.Description;
+  print("Title 1 :" +widget.title);
+  print("Title 1 :" +widget.Description);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +80,7 @@ class _PlantProfileState extends State<PlantProfile> {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 55, left: 10, right: 30),
+                    const EdgeInsets.only(top: 55, left: 10, right: 30),
                     child: TextField(
                       textDirection: TextDirection.ltr,
                       controller: titleController,
@@ -84,8 +95,9 @@ class _PlantProfileState extends State<PlantProfile> {
                         fillColor: Color(0xFF65C27A),
                         border: InputBorder.none,
                         prefixIcon:
-                            Icon(Icons.edit, color: Colors.grey, size: 25),
-                        hintText: 'Title',
+                        Icon(Icons.edit, color: Colors.grey, size: 25),
+                       // labelText:  titleController.text,
+                        hintText: titleController.text,
                         alignLabelWithHint: true,
                         hintStyle: TextStyle(
                           fontSize: 35,
@@ -94,25 +106,21 @@ class _PlantProfileState extends State<PlantProfile> {
                     ),
                   ),
                 ),
-                images.length==0
-                    ? Container()
-                    : GestureDetector(
-                        onTap: () {
-                          images.clear();
-                          images_Asscets.clear();
-                          loadAssets();
-
-
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 48.0, right: 20),
-                          child: Icon(
-                            Icons.control_point_outlined,
-                            size: 60,
-                            color: Color(0xFF000000).withOpacity(0.1),
-                          ),
-                        ),
-                      ),
+          GestureDetector(
+                  onTap: () {
+                    images.clear();
+                    images_Asscets.clear();
+                    loadAssets();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 48.0, right: 20),
+                    child: Icon(
+                      Icons.control_point_outlined,
+                      size: 60,
+                      color: Color(0xFF000000).withOpacity(0.1),
+                    ),
+                  ),
+                ),
               ],
             ),
             Row(
@@ -121,32 +129,16 @@ class _PlantProfileState extends State<PlantProfile> {
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   // child:
-                   child: images.length==0
-
-                  ? Container(
-                      height: 375,
-                      width: 375,
-                      child: GestureDetector(
-                        onTap: () {
-                          loadAssets();
-                        },
-                        child: Icon(
-                          Icons.control_point_outlined,
-                          size: 80,
-                          color: Color(0xFF000000).withOpacity(0.1),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9).withOpacity(.5),
-                          borderRadius: BorderRadius.circular(10)),
-                    )
-                       :
-                   SizedBox(
-                       height: 375.0,
-                       width: 375.0,
-                       child: Carousel(
-                         images: images_Asscets
-                       )),
+                  child:
+                  SizedBox(
+                      height: 375.0,
+                      width: 375.0,
+                      child: Image.asset(
+                        widget.imageFile,
+                        width: 375.0,
+                        height: 375.0,
+                        fit: BoxFit.cover,
+                      )),
 
                   // : Container(
                   //     height: 375,
@@ -164,10 +156,6 @@ class _PlantProfileState extends State<PlantProfile> {
                 ),
               ],
             ),
-
-            Wrap(
-              children: [],
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -184,7 +172,8 @@ class _PlantProfileState extends State<PlantProfile> {
                       },
                       cursorColor: Colors.grey,
                       decoration: InputDecoration(
-                        hintText: 'Describe your plant...',
+                        labelText:  descriptionController.text,
+
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFFD9D9D9).withOpacity(.5),
@@ -203,14 +192,13 @@ class _PlantProfileState extends State<PlantProfile> {
                 ),
               ],
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Expanded(
                   flex: 0,
                   child: RaisedButton(
-                    onPressed: isEnabled ? () =>  getImage() : null,
+                    onPressed: isEnabled ? () => Navigator.pop : null,
                     child: Text(
                       'Upload plant',
                       style: TextStyle(fontSize: 25),
@@ -233,47 +221,7 @@ class _PlantProfileState extends State<PlantProfile> {
       ),
     );
   }
-  Future getImage() async {
 
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child(widget.currentUserID + DateTime.now().toString());
-    UploadTask uploadTask = ref.putFile(image);
-    uploadTask.then((res) {
-
-      res.ref.getDownloadURL().then((value) =>
-
-          requestMethod("",value).then((value) =>
-
-              print( "Response of Add Planet "+ value)
-          )
-      );
-
-
-    });
-  }
-  Future<String> requestMethod(String url,String imageurl) async {
-
-      print( "Image URL"+ imageurl);
-    var body = json.encode({
-      "id":widget.currentUserID,
-      "title":titleController.text,
-      "desc": descriptionController.text,
-      "pic": imageurl.toString(),
-      "type": "tulpan"
-    });
-
-    Map<String, String> headers = {
-      'Content-type': 'application/json',
-      'Accept': 'application/json',
-    };
-
-    final response = await http.post("https://sticklingar.herokuapp.com/plants/add-plant", body: body, headers: headers);
-    final responseJson = response.body.toString();
-    print("result " + responseJson);
-    return responseJson;
-  }
   Future<void> loadAssets() async {
     List<Asset> resultList = List<Asset>();
     String error = 'No Error Dectected';
@@ -281,9 +229,7 @@ class _PlantProfileState extends State<PlantProfile> {
     try {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 5,
-
         enableCamera: true,
-
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
@@ -302,16 +248,13 @@ class _PlantProfileState extends State<PlantProfile> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-      // File assetFile = resultList as File;
-      // print("Asset File "+assetFile.absolute.toString());
+
     setState(() {
       images = resultList;
-
       print("images Size "+ images.length.toString());
 
       for(int i =0;i<images.length;i++){
         Asset asset = images[i];
-        print("Image File "+asset.toString());
         asset= images[0];
 
         images_Asscets.add(
@@ -356,16 +299,16 @@ class _PlantProfileState extends State<PlantProfile> {
     try {
       final imageFile = await ImagePicker.pickImage(source: imageSource);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => PlantProfile(imageFile,widget.currentUserID)),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => PlantProfile(imageFile)),
+      // );
     } catch (e) {}
   }
 
   EnableButton() {
     setState(() {
-      if (images_Asscets == null) {
+      if (widget.imageFile == null) {
         isEnabled = false;
       } else {
         if (descriptionController.text.length > 0 &&
