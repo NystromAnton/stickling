@@ -11,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+
 class PlantProfile extends StatefulWidget {
   File imageFile;
   String currentUserID;
@@ -36,6 +38,7 @@ class _PlantProfileState extends State<PlantProfile> {
 
   File _imageFile;
   List<Asset> images = List<Asset>();
+  List<File> imageFiles = List<File>();
   String _error = 'No Error Dectected';
   Asset asset =null;
   Asset asset_one=null;
@@ -100,6 +103,7 @@ class _PlantProfileState extends State<PlantProfile> {
                         onTap: () {
                           images.clear();
                           images_Asscets.clear();
+                      
                           loadAssets();
 
 
@@ -235,12 +239,12 @@ class _PlantProfileState extends State<PlantProfile> {
   }
   Future getImage() async {
 
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = imageFiles[0];
 
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child(widget.currentUserID + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(image);
-    uploadTask.then((res) {
+    await uploadTask.then((res) {
 
       res.ref.getDownloadURL().then((value) =>
 
@@ -249,9 +253,8 @@ class _PlantProfileState extends State<PlantProfile> {
               print( "Response of Add Planet "+ value)
           )
       );
-
-
     });
+    Navigator.pop(context);
   }
   Future<String> requestMethod(String url,String imageurl) async {
 
@@ -275,10 +278,12 @@ class _PlantProfileState extends State<PlantProfile> {
     return responseJson;
   }
   Future<void> loadAssets() async {
+    
     List<Asset> resultList = List<Asset>();
     String error = 'No Error Dectected';
-
+    
     try {
+
       resultList = await MultiImagePicker.pickImages(
         maxImages: 5,
 
@@ -305,14 +310,16 @@ class _PlantProfileState extends State<PlantProfile> {
       // File assetFile = resultList as File;
       // print("Asset File "+assetFile.absolute.toString());
     setState(() {
-      images = resultList;
+images = resultList;
 
       print("images Size "+ images.length.toString());
 
       for(int i =0;i<images.length;i++){
         Asset asset = images[i];
         print("Image File "+asset.toString());
+        print("random");
         asset= images[0];
+
 
         images_Asscets.add(
             AssetThumb(
@@ -321,7 +328,19 @@ class _PlantProfileState extends State<PlantProfile> {
               height: 300,
             )
         );
+      
       }
+
+images.forEach((imageAsset) async {
+final filePath = await FlutterAbsolutePath.getAbsolutePath(imageAsset.identifier);
+
+File tempFile = File(filePath);
+print(tempFile);
+if (tempFile.existsSync()) {
+    imageFiles.add(tempFile);
+}
+});
+      
       _error = error;
     });
   }

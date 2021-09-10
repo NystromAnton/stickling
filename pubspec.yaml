@@ -40,6 +40,7 @@ dependencies:
   firebase_storage: ^5.0.1
   firebase_core : ^0.5.0
   cached_network_image: "2.5.1"
+  flutter_absolute_path: ^1.0.6
 
 dev_dependencies:
   flutter_test:
