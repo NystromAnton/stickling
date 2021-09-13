@@ -123,6 +123,23 @@ class _TabBarDemoState extends State<TabBarDemo> {
     print("Init state is working ");
     requestMethod("").then((value) => print("API RESULT " + value.toString()));
   }
+Future<List<dynamic>> getMyPlants(String url) async {
+
+    String url = "https://sticklingar.herokuapp.com/plants/" +
+        widget.CurrentUserID;
+    print("URL " + url.toString());
+    final response = await http.get(url);
+
+    print("response " + response.toString());
+    final responseJson = json.decode(response.body.toString());
+
+    print("result " + responseJson.toString());
+    // Map map =json.decode(response.body);
+    // print("map " + map.toString());
+    List<dynamic> plants = (json.decode(response.body) as List);
+
+    return plants;
+  }
 
   Future<List<dynamic>> requestMethod(String url) async {
     Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
@@ -237,12 +254,11 @@ class _TabBarDemoState extends State<TabBarDemo> {
                           backgroundColor: Colors.teal,
                         ));
                       } else {
-                        // List<String> list = snapshot.data;
-                        print("SNAPSHOT" + snapshot.data.toString());
+                        
                         List images = snapshot.data;
-                        print(
-                            "SNAPSHOT" + snapshot.data[0]["title"].toString());
-                        print("SNAPSHOT" + images.length.toString());
+                        print("-----");
+                        print(images);
+                        
                         List<String> welcomeImages = List<String>();
                         for (int i = 0; i < images.length; i++) {
                           welcomeImages.add(images[i]["pic"]);
@@ -332,9 +348,9 @@ class _TabBarDemoState extends State<TabBarDemo> {
                                       (DragUpdateDetails details,
                                           Alignment align) {
                                     /// Get swiping card's alignment
-                                    if (align.x < 0) {
+                                   if (align.x < 0) {
                                       //Card is LEFT swiping
-                                      print("Card swipe Left");
+                                    
                                     } else if (align.x > 0) {
                                       //Card is RIGHT swiping
 
@@ -528,10 +544,24 @@ class _TabBarDemoState extends State<TabBarDemo> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 28.0),
-                          child: Container(
+                          child: 
+                          FutureBuilder(
+                            future: getMyPlants(""),
+                            builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                            child: CircularProgressIndicator(
+                          backgroundColor: Colors.teal,
+                        ));
+                      } else {
+                        // List<String> list = snapshot.data;
+                        print("SNAPSHOT" + snapshot.data.toString());
+                        List plantImages = snapshot.data;
+                        
+                        return Container(
                             height: 500,
                             child: ListView.builder(
-                              itemCount: flowerImages.length,
+                              itemCount: plantImages.length,
                               itemBuilder: (context, i) {
                                 return Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -544,12 +574,23 @@ class _TabBarDemoState extends State<TabBarDemo> {
                                         ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
-                                            child: Image.asset(
-                                              flowerImages[i],
-                                              width: 100.0,
-                                              height: 400.0,
-                                              fit: BoxFit.cover,
-                                            )),
+                                            child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      plantImages[i]["pic"],
+                                                  placeholder: (context, url) =>
+                                                      SizedBox(
+                                                    width: 80,
+                                                    height: 80,
+                                                    child:
+                                                        new CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.teal,
+                                                    ),
+                                                  ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          new Icon(Icons.error),
+                                                ),),
                                         Expanded(
                                           child: Column(
                                             mainAxisAlignment:
@@ -571,13 +612,13 @@ class _TabBarDemoState extends State<TabBarDemo> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      Title[i],
+                                                      plantImages[i]["title"],
                                                       style: TextStyle(
                                                           fontFamily: 'Lato',
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors.black,
-                                                          fontSize: 25),
+                                                          fontSize: 20),
                                                     ),
                                                     GestureDetector(
                                                       onTap: () {
@@ -586,12 +627,12 @@ class _TabBarDemoState extends State<TabBarDemo> {
                                                             MaterialPageRoute(
                                                                 builder: (context) =>
                                                                     EditProfile(
-                                                                        flowerImages[
-                                                                            i],
-                                                                        Title[
-                                                                            i],
-                                                                        Description[
-                                                                            i])));
+                                                                        plantImages[
+                                                                            i]["pic"],
+                                                                        plantImages[
+                                                                            i]["title"],
+                                                                        plantImages[
+                                                                            i]["desc"])));
                                                       },
                                                       child: Container(
                                                         width: 90,
@@ -642,7 +683,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
                                                 padding:
                                                     EdgeInsets.only(left: 20),
                                                 child: Text(
-                                                  Description[i],
+                                                  plantImages[i]["desc"],
                                                   maxLines: 2,
                                                   style: TextStyle(
                                                       fontFamily: 'Lato',
@@ -661,7 +702,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
                                 );
                               },
                             ),
-                          ),
+                          );}} ), 
                         )
                       ],
                     ),
