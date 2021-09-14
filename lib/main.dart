@@ -288,7 +288,7 @@ Future<List<dynamic>> getMyPlants(String url) async {
                                     child: Card(
                                       elevation: 10,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Padding(
                                         padding:
@@ -415,7 +415,10 @@ Future<List<dynamic>> getMyPlants(String url) async {
                                       child: IconButton(
                                           icon: Icon(Icons.close,
                                               color: Colors.red[700]),
-                                          onPressed: null,
+                                          onPressed: () => {
+                                            TriggerDirection.left,
+                                            print("nope")
+                                          },
                                           iconSize: 60),
                                     ),
                                     Container(
@@ -428,41 +431,38 @@ Future<List<dynamic>> getMyPlants(String url) async {
                                           border: Border.all(
                                             color: Colors.grey[400],
                                           )),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          //
-                                          // SwipeRight( "", images[0]['_id']).then((value) {
-                                          //   print("Result "+ value);
-                                          //   if(value.contains("Match object created")){
-                                          //
-                                          //   }else{
-                                          //     Alert(
-                                          //       context: context,
-                                          //       type: AlertType.success,
-                                          //       title: "New Match",
-                                          //       desc: "Great! You got a new Match",
-                                          //       buttons: [
-                                          //         DialogButton(
-                                          //           child: Text(
-                                          //             "Chat",
-                                          //             style: TextStyle(color: Colors.white, fontSize: 20),
-                                          //           ),
-                                          //           onPressed: () => Navigator.pop(context),
-                                          //           width: 120,
-                                          //         )
-                                          //       ],
-                                          //     ).show();
-                                          //   }
-                                          //
-                                          // }
-                                        },
                                         child: IconButton(
                                             icon: Icon(Icons.favorite_rounded,
                                                 color: Colors.pink[300]),
-                                            onPressed: null,
+                                            onPressed: () => {
+                                              {TriggerDirection.right,
+                                                SwipeRight( "", images[0]['_id']).then((value) {
+                                             print("Result "+ value);
+                                             if(value.contains("Match object created")){
+                                          
+                                             }else{
+                                              Alert(
+                                                 context: context,
+                                                 type: AlertType.success,
+                                                 title: "New Match",
+                                                 desc: "Great! You got a new Match",
+                                                 buttons: [
+                                                   DialogButton(
+                                                     child: Text(
+                                                       "Chat",
+                                                       style: TextStyle(color: Colors.white, fontSize: 20),
+                                                     ),
+                                                     onPressed: () => Navigator.pop(context),
+                                                     width: 120,
+                                                   )
+                                                 ],
+                                               ).show();
+                                             }
+                                           }
+                                                )},
+                                            },
                                             iconSize: 55),
                                       ),
-                                    ),
                                   ],
                                 ),
                               )
