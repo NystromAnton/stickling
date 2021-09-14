@@ -48,7 +48,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Chats'),
+        title: Text('My Matches'),
       ),
       body: buildAllChatList(),
     );

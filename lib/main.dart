@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -13,6 +14,8 @@ import 'package:stycling/settings.dart';
 import 'Profile/ProfilePage.dart';
 import 'Walkthrough/Walkthrough.dart';
 import 'settings.dart';
+import 'Chat/AllChatsPage.dart';
+import 'Chat/ChatModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -456,10 +459,8 @@ class _TabBarDemoState extends State<TabBarDemo> {
                       }
                     },
                   ),
-                  Container(
-                    color: Colors.white,
-                    child: Text("No Chat Functionaility right noe"),
-                  ),
+                  //Chat container
+                  ScopedModel(model: ChatModel(), child: AllChatsPage()),
                   Container(
                     child: Column(
                       children: <Widget>[
