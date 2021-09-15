@@ -1,7 +1,14 @@
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter_socket_io/flutter_socket_io.dart';
+import 'package:flutter_socket_io/flutter_socket_io.dart'; //
+//import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
 import 'dart:convert';
+
+import 'package:adhara_socket_io/adhara_socket_io.dart' as IO;
+import 'package:flutter/material.dart';
+
+import 'data.dart';
 
 import './User.dart';
 import './Message.dart';
@@ -26,7 +33,7 @@ class ChatModel extends Model {
         users.where((user) => user.chatID != currentUser.chatID).toList();
 
     socketIO = SocketIOManager().createSocketIO(
-        '<ENTER_YOUR_SERVER_URL_HERE>', '/',
+        'https://sticklingar.herokuapp.com', '/',
         query: 'chatID=${currentUser.chatID}');
     socketIO.init();
 
