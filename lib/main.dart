@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stycling/Profile/EditProfile.dart';
 import 'package:stycling/settings.dart';
-
 import 'Profile/ProfilePage.dart';
 import 'Walkthrough/Walkthrough.dart';
 import 'settings.dart';
@@ -118,15 +117,17 @@ class _TabBarDemoState extends State<TabBarDemo> {
     "Description 2"
   ];
 
+  CardController cardController = new CardController();
+
   @override
   void initState() {
     print("Init state is working ");
     requestMethod("").then((value) => print("API RESULT " + value.toString()));
   }
-Future<List<dynamic>> getMyPlants(String url) async {
 
-    String url = "https://sticklingar.herokuapp.com/plants/" +
-        widget.CurrentUserID;
+  Future<List<dynamic>> getMyPlants(String url) async {
+    String url =
+        "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
     print("URL " + url.toString());
     final response = await http.get(url);
 
@@ -254,11 +255,10 @@ Future<List<dynamic>> getMyPlants(String url) async {
                           backgroundColor: Colors.teal,
                         ));
                       } else {
-                        
                         List images = snapshot.data;
                         print("-----");
                         print(images);
-                        
+
                         List<String> welcomeImages = List<String>();
                         for (int i = 0; i < images.length; i++) {
                           welcomeImages.add(images[i]["pic"]);
@@ -275,6 +275,7 @@ Future<List<dynamic>> getMyPlants(String url) async {
                                   totalNum: welcomeImages.length,
                                   stackNum: 3,
                                   swipeEdge: 4.0,
+                                  cardController: cardController,
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 1.0,
                                   maxHeight:
@@ -343,14 +344,14 @@ Future<List<dynamic>> getMyPlants(String url) async {
                                       ),
                                     ),
                                   ),
-                                  cardController: controller = CardController(),
+                                  //cardController: controller = CardController(),
                                   swipeUpdateCallback:
                                       (DragUpdateDetails details,
                                           Alignment align) {
                                     /// Get swiping card's alignment
-                                   if (align.x < 0) {
+                                    if (align.x < 0) {
                                       //Card is LEFT swiping
-                                    
+
                                     } else if (align.x > 0) {
                                       //Card is RIGHT swiping
 
@@ -415,9 +416,10 @@ Future<List<dynamic>> getMyPlants(String url) async {
                                       child: IconButton(
                                           icon: Icon(Icons.close,
                                               color: Colors.red[700]),
-                                          onPressed: () => {
-                                            TriggerDirection.left,
-                                            print("nope")
+                                          onPressed: () {
+                                            cardController.triggerLeft();
+                                            //TriggerDirection.left,
+                                            //print("nope")
                                           },
                                           iconSize: 60),
                                     ),
@@ -431,38 +433,48 @@ Future<List<dynamic>> getMyPlants(String url) async {
                                           border: Border.all(
                                             color: Colors.grey[400],
                                           )),
-                                        child: IconButton(
-                                            icon: Icon(Icons.favorite_rounded,
-                                                color: Colors.pink[300]),
-                                            onPressed: () => {
-                                              {TriggerDirection.right,
-                                                SwipeRight( "", images[0]['_id']).then((value) {
-                                             print("Result "+ value);
-                                             if(value.contains("Match object created")){
-                                          
-                                             }else{
-                                              Alert(
-                                                 context: context,
-                                                 type: AlertType.success,
-                                                 title: "New Match",
-                                                 desc: "Great! You got a new Match",
-                                                 buttons: [
-                                                   DialogButton(
-                                                     child: Text(
-                                                       "Chat",
-                                                       style: TextStyle(color: Colors.white, fontSize: 20),
-                                                     ),
-                                                     onPressed: () => Navigator.pop(context),
-                                                     width: 120,
-                                                   )
-                                                 ],
-                                               ).show();
-                                             }
-                                           }
-                                                )},
-                                            },
-                                            iconSize: 55),
-                                      ),
+                                      child: IconButton(
+                                          icon: Icon(Icons.favorite_rounded,
+                                              color: Colors.pink[300]),
+                                          onPressed: () => {
+                                                {
+                                                  //TriggerDirection.right,
+                                                  SwipeRight(
+                                                          "", images[0]['_id'])
+                                                      .then((value) {
+                                                    print("Result " + value);
+                                                    if (value.contains(
+                                                        "Match object created")) {
+                                                    } else {
+                                                      Alert(
+                                                        context: context,
+                                                        type: AlertType.success,
+                                                        title: "New Match",
+                                                        desc:
+                                                            "Great! You got a new Match",
+                                                        buttons: [
+                                                          DialogButton(
+                                                            child: Text(
+                                                              "Chat",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 20),
+                                                            ),
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            width: 120,
+                                                          )
+                                                        ],
+                                                      ).show();
+                                                    }
+                                                  }),
+                                                  cardController.triggerRight(),
+                                                },
+                                              },
+                                          iconSize: 55),
+                                    ),
                                   ],
                                 ),
                               )
@@ -544,165 +556,176 @@ Future<List<dynamic>> getMyPlants(String url) async {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 28.0),
-                          child: 
-                          FutureBuilder(
-                            future: getMyPlants(""),
-                            builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                            child: CircularProgressIndicator(
-                          backgroundColor: Colors.teal,
-                        ));
-                      } else {
-                        // List<String> list = snapshot.data;
-                        print("SNAPSHOT" + snapshot.data.toString());
-                        List plantImages = snapshot.data;
-                        
-                        return Container(
-                            height: 500,
-                            child: ListView.builder(
-                              itemCount: plantImages.length,
-                              itemBuilder: (context, i) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Container(
-                                    height: 100,
-                                    width: 150,
-                                    color: Colors.white,
-                                    child: Row(
-                                      children: [
-                                        ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                            child: CachedNetworkImage(
-                                                  imageUrl:
-                                                      plantImages[i]["pic"],
-                                                  placeholder: (context, url) =>
-                                                      SizedBox(
-                                                    width: 80,
-                                                    height: 80,
-                                                    child:
-                                                        new CircularProgressIndicator(
-                                                      backgroundColor:
-                                                          Colors.teal,
+                          child: FutureBuilder(
+                              future: getMyPlants(""),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator(
+                                    backgroundColor: Colors.teal,
+                                  ));
+                                } else {
+                                  // List<String> list = snapshot.data;
+                                  print("SNAPSHOT" + snapshot.data.toString());
+                                  List plantImages = snapshot.data;
+
+                                  return Container(
+                                    height: 500,
+                                    child: ListView.builder(
+                                      itemCount: plantImages.length,
+                                      itemBuilder: (context, i) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Container(
+                                            height: 100,
+                                            width: 150,
+                                            color: Colors.white,
+                                            child: Row(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: plantImages[i]
+                                                        ["pic"],
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            SizedBox(
+                                                      width: 80,
+                                                      height: 80,
+                                                      child:
+                                                          new CircularProgressIndicator(
+                                                        backgroundColor:
+                                                            Colors.teal,
+                                                      ),
                                                     ),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        new Icon(Icons.error),
                                                   ),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          new Icon(Icons.error),
-                                                ),),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 8.0,
-                                                  right: 10,
-                                                  left: 20,
                                                 ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      plantImages[i]["title"],
-                                                      style: TextStyle(
-                                                          fontFamily: 'Lato',
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black,
-                                                          fontSize: 20),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    EditProfile(
-                                                                        plantImages[
-                                                                            i]["pic"],
-                                                                        plantImages[
-                                                                            i]["title"],
-                                                                        plantImages[
-                                                                            i]["desc"])));
-                                                      },
-                                                      child: Container(
-                                                        width: 90,
-                                                        height: 35,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                border:
-                                                                    Border.all(
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      500],
-                                                                ),
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            20))),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          bottom: 8.0,
+                                                          right: 10,
+                                                          left: 20,
+                                                        ),
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
-                                                                  .center,
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
-                                                            Icon(
-                                                                Icons
-                                                                    .edit_outlined,
-                                                                color:
-                                                                    Colors.grey,
-                                                                size: 25),
                                                             Text(
-                                                              "Edit",
+                                                              plantImages[i]
+                                                                  ["title"],
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       'Lato',
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .normal,
+                                                                          .bold,
                                                                   color: Colors
                                                                       .black,
                                                                   fontSize: 20),
                                                             ),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => EditProfile(
+                                                                            plantImages[i]["pic"],
+                                                                            plantImages[i]["title"],
+                                                                            plantImages[i]["desc"])));
+                                                              },
+                                                              child: Container(
+                                                                width: 90,
+                                                                height: 35,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        border: Border
+                                                                            .all(
+                                                                          color:
+                                                                              Colors.grey[500],
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(20))),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Icon(
+                                                                        Icons
+                                                                            .edit_outlined,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        size:
+                                                                            25),
+                                                                    Text(
+                                                                      "Edit",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              'Lato',
+                                                                          fontWeight: FontWeight
+                                                                              .normal,
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              20),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
                                                           ],
                                                         ),
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Text(
-                                                  plantImages[i]["desc"],
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                      fontFamily: 'Lato',
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.black,
-                                                      fontSize: 20),
-                                                ),
-                                              ),
-                                            ],
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20),
+                                                        child: Text(
+                                                          plantImages[i]
+                                                              ["desc"],
+                                                          maxLines: 2,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Lato',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 20),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        )
-                                      ],
+                                        );
+                                      },
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );}} ), 
+                                  );
+                                }
+                              }),
                         )
                       ],
                     ),
