@@ -60,9 +60,9 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(width: 10.0),
               FloatingActionButton(
                 onPressed: () {
-                  model.sendMessage(
+                  /* model.sendMessage(
                       textEditingController.text, widget.friend.chatID);
-                  textEditingController.text = '';
+                  textEditingController.text = '';*/
                 },
                 elevation: 0,
                 child: Icon(Icons.send),
