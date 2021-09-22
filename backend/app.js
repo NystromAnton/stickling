@@ -11,6 +11,7 @@ var plantRouter = require("./routes/plants");
 var matchRouter = require("./routes/match");
 var nearbyRouter = require("./routes/nearby");
 var preferenceRouter = require("./routes/preferences");
+var chatRoomRouter = require("./routes/chatRoom");
 var chatRouter = require("./routes/chat");
 
 var app = express();
@@ -33,6 +34,7 @@ app.use("/plants", plantRouter);
 app.use("/match", matchRouter);
 app.use("/nearby", nearbyRouter);
 app.use("/preference", preferenceRouter);
+app.use("/chatRoom", chatRoomRouter);
 app.use("/chat", chatRouter);
 
 // catch 404 and forward to error handler
