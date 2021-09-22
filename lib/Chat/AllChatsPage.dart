@@ -48,7 +48,12 @@ class _AllChatsPageState extends State<AllChatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Matches'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'My Matches',
+          style: TextStyle(color: Color(0xff000000), fontSize: 25),
+        ),
+        elevation: 0,
       ),
       body: buildAllChatList(),
     );

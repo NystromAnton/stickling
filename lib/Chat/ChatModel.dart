@@ -5,11 +5,10 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
 import 'dart:convert';
 
-import 'package:adhara_socket_io/adhara_socket_io.dart' as IO;
+//import 'package:adhara_socket_io/adhara_socket_io.dart' as IO;
 import 'package:flutter/material.dart';
 
-import 'data.dart';
-
+//import 'data.dart';
 import './User.dart';
 import './Message.dart';
 
@@ -47,7 +46,7 @@ class ChatModel extends Model {
     socketIO.connect();
   }
 
-  void sendMessage(String text, String receiverChatID) {
+  /*void sendMessage(String text, String receiverChatID) {
     messages.add(Message(text, currentUser.chatID, receiverChatID));
     socketIO.sendMessage(
       'send_message',
@@ -64,5 +63,12 @@ class ChatModel extends Model {
     return messages
         .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
         .toList();
+  }
+}*/
+
+  List<Message> getMessagesForChatID(String id) {
+    Message message = new Message("hej", "1", "2");
+    List<Message> list = [message];
+    return list;
   }
 }
