@@ -110,6 +110,7 @@ unlinked.ds
 unlinked_spec.ds
 
 # Android related
+/android
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
 **/android/captures/
@@ -151,6 +152,7 @@ unlinked_spec.ds
 **/ios/Runner/GeneratedPluginRegistrant.*
 **/ios/Runner.xcodeproj/project.pbxproj
 **/ios/Podfile.lock
+/ios
 
 
 # macOS
@@ -169,3 +171,4 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+ios/Runner.xcodeproj/project.pbxproj

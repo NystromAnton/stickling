@@ -3,7 +3,7 @@ description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -38,8 +38,9 @@ dependencies:
   carousel_pro: "1.0.0"
   geolocator:
   firebase_storage: ^5.0.1
-  firebase_core : ^0.5.0
+  firebase_core: ^0.5.0
   cached_network_image: "2.5.1"
+  scoped_model: ^1.0.1
   flutter_absolute_path: ^1.0.6
 
 dev_dependencies:
@@ -51,7 +52,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -59,21 +59,21 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-      - assets/icon.png
-      - assets/sticklinglogo.png
-      - assets/myprofileicon.png
-      - assets/chaticon.png
-      - assets/flower1.png
-      - assets/flower2.png
-      - assets/flower3.png
-      - assets/stickling1.jpg
-      - assets/stickling2.jpg
-      - assets/stickling3.jpg
-      - assets/stickling4.png
-      - assets/page1pic.png
+    - assets/icon.png
+    - assets/sticklinglogo.png
+    - assets/myprofileicon.png
+    - assets/chaticon.png
+    - assets/flower1.png
+    - assets/flower2.png
+    - assets/flower3.png
+    - assets/stickling1.jpg
+    - assets/stickling2.jpg
+    - assets/stickling3.jpg
+    - assets/stickling4.png
+    - assets/page1pic.png
   #   - images/a_dot_ham.jpeg'
 
-  fonts: 
+  fonts:
     - family: Marko One
       fonts:
         - asset: fonts/MarkoOne-Regular.ttf
@@ -89,7 +89,6 @@ flutter:
         - asset: fonts/Lato-Italic.ttf
         - asset: fonts/Lato-Light.ttf
         - asset: fonts/Lato-LightItalic.ttf
-        
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
