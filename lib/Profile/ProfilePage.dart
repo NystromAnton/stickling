@@ -18,7 +18,7 @@ class PlantProfile extends StatefulWidget {
   String currentUserID;
   PlantProfile(File imageFile, String currentUserID) {
     this.imageFile = imageFile;
-    this.currentUserID=currentUserID;
+    this.currentUserID = currentUserID;
   }
 
   @override
@@ -40,14 +40,13 @@ class _PlantProfileState extends State<PlantProfile> {
   List<Asset> images = List<Asset>();
   List<File> imageFiles = List<File>();
   String _error = 'No Error Dectected';
-  Asset asset =null;
-  Asset asset_one=null;
+  Asset asset = null;
+  Asset asset_one = null;
   var isEnabled = false;
   List<Widget> images_Asscets = List<Widget>();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -82,7 +81,6 @@ class _PlantProfileState extends State<PlantProfile> {
                       onChanged: (text) {
                         EnableButton();
                       },
-                      //enableInteractiveSelection: false,
                       decoration: InputDecoration(
                         fillColor: Color(0xFF65C27A),
                         border: InputBorder.none,
@@ -97,16 +95,14 @@ class _PlantProfileState extends State<PlantProfile> {
                     ),
                   ),
                 ),
-                images.length==0
+                images.length == 0
                     ? Container()
                     : GestureDetector(
                         onTap: () {
                           images.clear();
                           images_Asscets.clear();
-                      
+
                           loadAssets();
-
-
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(top: 48.0, right: 20),
@@ -124,51 +120,31 @@ class _PlantProfileState extends State<PlantProfile> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  // child:
-                   child: images.length==0
-
-                  ? Container(
-                      height: 375,
-                      width: 375,
-                      child: GestureDetector(
-                        onTap: () {
-                          loadAssets();
-                        },
-                        child: Icon(
-                          Icons.control_point_outlined,
-                          size: 80,
-                          color: Color(0xFF000000).withOpacity(0.1),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9).withOpacity(.5),
-                          borderRadius: BorderRadius.circular(10)),
-                    )
-                       :
-                   SizedBox(
-                       height: 375.0,
-                       width: 375.0,
-                       child: Carousel(
-                         images: images_Asscets
-                       )),
-
-                  // : Container(
-                  //     height: 375,
-                  //     width: 375,
-                  //     decoration: BoxDecoration(
-                  //         color: Color(0xFFD9D9D9).withOpacity(.5),
-                  //         borderRadius: BorderRadius.circular(10)),
-                  //     child: ClipRRect(
-                  //       borderRadius: BorderRadius.circular(10.0),
-                  //       child: Image.file(
-                  //         widget.imageFile,
-                  //         fit: BoxFit.cover,
-                  //       ),
-                  //     )),
+                  child: images.length == 0
+                      ? Container(
+                          height: 375,
+                          width: 375,
+                          child: GestureDetector(
+                            onTap: () {
+                              loadAssets();
+                            },
+                            child: Icon(
+                              Icons.control_point_outlined,
+                              size: 80,
+                              color: Color(0xFF000000).withOpacity(0.1),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFD9D9D9).withOpacity(.5),
+                              borderRadius: BorderRadius.circular(10)),
+                        )
+                      : SizedBox(
+                          height: 375.0,
+                          width: 375.0,
+                          child: Carousel(images: images_Asscets)),
                 ),
               ],
             ),
-
             Wrap(
               children: [],
             ),
@@ -207,14 +183,13 @@ class _PlantProfileState extends State<PlantProfile> {
                 ),
               ],
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Expanded(
                   flex: 0,
                   child: RaisedButton(
-                    onPressed: isEnabled ? () =>  getImage() : null,
+                    onPressed: isEnabled ? () => getImage() : null,
                     child: Text(
                       'Upload plant',
                       style: TextStyle(fontSize: 25),
@@ -237,31 +212,25 @@ class _PlantProfileState extends State<PlantProfile> {
       ),
     );
   }
-  Future getImage() async {
 
+  Future getImage() async {
     var image = imageFiles[0];
 
     FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child(widget.currentUserID + DateTime.now().toString());
+    Reference ref =
+        storage.ref().child(widget.currentUserID + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(image);
     await uploadTask.then((res) {
-
-      res.ref.getDownloadURL().then((value) =>
-
-          requestMethod("",value).then((value) =>
-
-              print( "Response of Add Planet "+ value)
-          )
-      );
+      res.ref.getDownloadURL().then((value) => requestMethod("", value)
+          .then((value) => print("Response of Add Planet " + value)));
     });
     Navigator.pop(context);
   }
-  Future<String> requestMethod(String url,String imageurl) async {
 
-      print( "Image URL"+ imageurl);
+  Future<String> requestMethod(String url, String imageurl) async {
     var body = json.encode({
-      "id":widget.currentUserID,
-      "title":titleController.text,
+      "id": widget.currentUserID,
+      "title": titleController.text,
       "desc": descriptionController.text,
       "pic": imageurl.toString(),
       "type": "tulpan"
@@ -272,23 +241,23 @@ class _PlantProfileState extends State<PlantProfile> {
       'Accept': 'application/json',
     };
 
-    final response = await http.post("https://sticklingar.herokuapp.com/plants/add-plant", body: body, headers: headers);
+    final response = await http.post(
+        "https://sticklingar.herokuapp.com/plants/add-plant",
+        body: body,
+        headers: headers);
     final responseJson = response.body.toString();
-    print("result " + responseJson);
+
     return responseJson;
   }
+
   Future<void> loadAssets() async {
-    
     List<Asset> resultList = List<Asset>();
     String error = 'No Error Dectected';
-    
-    try {
 
+    try {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 5,
-
         enableCamera: true,
-
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
@@ -307,40 +276,33 @@ class _PlantProfileState extends State<PlantProfile> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-      // File assetFile = resultList as File;
-      // print("Asset File "+assetFile.absolute.toString());
+
     setState(() {
-images = resultList;
+      images = resultList;
 
-      print("images Size "+ images.length.toString());
-
-      for(int i =0;i<images.length;i++){
+      for (int i = 0; i < images.length; i++) {
         Asset asset = images[i];
-        print("Image File "+asset.toString());
-        print("random");
-        asset= images[0];
 
+        asset = images[0];
 
-        images_Asscets.add(
-            AssetThumb(
-              asset: asset,
-              width: 300,
-              height: 300,
-            )
-        );
-      
+        images_Asscets.add(AssetThumb(
+          asset: asset,
+          width: 300,
+          height: 300,
+        ));
       }
 
-images.forEach((imageAsset) async {
-final filePath = await FlutterAbsolutePath.getAbsolutePath(imageAsset.identifier);
+      images.forEach((imageAsset) async {
+        final filePath =
+            await FlutterAbsolutePath.getAbsolutePath(imageAsset.identifier);
 
-File tempFile = File(filePath);
-print(tempFile);
-if (tempFile.existsSync()) {
-    imageFiles.add(tempFile);
-}
-});
-      
+        File tempFile = File(filePath);
+
+        if (tempFile.existsSync()) {
+          imageFiles.add(tempFile);
+        }
+      });
+
       _error = error;
     });
   }
@@ -377,7 +339,9 @@ if (tempFile.existsSync()) {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PlantProfile(imageFile,widget.currentUserID)),
+        MaterialPageRoute(
+            builder: (context) =>
+                PlantProfile(imageFile, widget.currentUserID)),
       );
     } catch (e) {}
   }
