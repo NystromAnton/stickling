@@ -225,8 +225,6 @@ class _SwipeTabState extends State<SwipeTab> {
                               },
                             );
                           }
-
-                          /// Get orientation & index of swiped card!
                         },
                       ),
                     ),
@@ -263,9 +261,39 @@ class _SwipeTabState extends State<SwipeTab> {
                             child: IconButton(
                                 icon: Icon(Icons.favorite_rounded,
                                     color: Colors.pink[300]),
-                                onPressed: () {
-                                  cardController.triggerRight();
-                                },
+                                onPressed: () => {
+                                      {
+                                        SwipeRight("", images[0]['_id'])
+                                            .then((value) {
+                                          print("Result " + value);
+                                          if (value.contains(
+                                              "Match object created")) {
+                                          } else {
+                                            Alert(
+                                              context: context,
+                                              type: AlertType.success,
+                                              title: "New Match",
+                                              desc:
+                                                  "Great! You got a new Match",
+                                              buttons: [
+                                                DialogButton(
+                                                  child: Text(
+                                                    "Chat",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20),
+                                                  ),
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  width: 120,
+                                                )
+                                              ],
+                                            ).show();
+                                          }
+                                        }),
+                                        cardController.triggerRight(),
+                                      },
+                                    },
                                 iconSize: 55),
                           ),
                         ],
