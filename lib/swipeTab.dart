@@ -28,6 +28,8 @@ class _SwipeTabState extends State<SwipeTab> {
     requestMethod("").then((value) => print("API RESULT " + value.toString()));
   }
 
+  CardController cardController = new CardController();
+
   Future<List<dynamic>> getMyPlants(String url) async {
     String url =
         "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
@@ -180,7 +182,7 @@ class _SwipeTabState extends State<SwipeTab> {
                             ),
                           ),
                         ),
-                        cardController: controller = CardController(),
+                        cardController: cardController,
                         swipeUpdateCallback:
                             (DragUpdateDetails details, Alignment align) {
                           /// Get swiping card's alignment
@@ -244,7 +246,9 @@ class _SwipeTabState extends State<SwipeTab> {
                                 )),
                             child: IconButton(
                                 icon: Icon(Icons.close, color: Colors.red[700]),
-                                onPressed: null,
+                                onPressed: () {
+                                  cardController.triggerLeft();
+                                },
                                 iconSize: 60),
                           ),
                           Container(
@@ -259,7 +263,9 @@ class _SwipeTabState extends State<SwipeTab> {
                             child: IconButton(
                                 icon: Icon(Icons.favorite_rounded,
                                     color: Colors.pink[300]),
-                                onPressed: null,
+                                onPressed: () {
+                                  cardController.triggerRight();
+                                },
                                 iconSize: 55),
                           ),
                         ],

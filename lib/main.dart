@@ -59,13 +59,8 @@ class TabBarDemo extends StatefulWidget {
 }
 
 class _TabBarDemoState extends State<TabBarDemo> {
-
-  CardController cardController = new CardController();
-
   @override
-  void initState() {
-   
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +104,6 @@ class _TabBarDemoState extends State<TabBarDemo> {
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-
                   SwipeTab(widget.CurrentUserID),
                   ChatTab(widget.CurrentUserID),
                   ProfileTab(widget.CurrentUserID),
