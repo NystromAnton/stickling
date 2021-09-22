@@ -12,6 +12,7 @@ import 'package:stycling/Profile/EditProfile.dart';
 import 'package:stycling/ProfileTab.dart';
 import 'package:stycling/settings.dart';
 import 'package:stycling/swipeTab.dart';
+import 'Profile/ProfilePage.dart';
 import 'Walkthrough/Walkthrough.dart';
 
 void main() async {
@@ -58,6 +59,14 @@ class TabBarDemo extends StatefulWidget {
 }
 
 class _TabBarDemoState extends State<TabBarDemo> {
+
+  CardController cardController = new CardController();
+
+  @override
+  void initState() {
+   
+  }
+
   @override
   Widget build(BuildContext context) {
     CardController controller;
@@ -100,6 +109,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
+
                   SwipeTab(widget.CurrentUserID),
                   ChatTab(widget.CurrentUserID),
                   ProfileTab(widget.CurrentUserID),
