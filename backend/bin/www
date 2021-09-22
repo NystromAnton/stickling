@@ -29,6 +29,44 @@ server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
 
+//const url =
+// process.env.NODE_ENV === "production"
+//  ? "https://www.mender.se"
+// : "http://localhost:8080";
+const io = require("socket.io")(server, {
+  cors: {
+    // Allow requests across different ports on localhost.
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+// socket io
+io.on("connection", function (socket) {
+  //Get the chatID of the user and join in a room of the same chatID
+  chatID = socket.handshake.query.chatID;
+  socket.join(chatID);
+
+  //Leave the room if the user closes the socket
+  socket.on("disconnect", () => {
+    socket.leave(chatID);
+  });
+
+  //Send message to only a particular user
+  socket.on("send_message", (message) => {
+    receiverChatID = message.receiverChatID;
+    senderChatID = message.senderChatID;
+    content = message.content;
+
+    //Send message to only that particular room
+    socket.in(receiverChatID).emit("receive_message", {
+      content: content,
+      senderChatID: senderChatID,
+      receiverChatID: receiverChatID,
+    });
+  });
+});
+
 /**
  * Normalize a port into a number, string, or false.
  */
