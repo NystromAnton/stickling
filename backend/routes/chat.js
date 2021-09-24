@@ -1,8 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var mongoose = require("mongoose");
-const { body, validationResult } = require("express-validator");
-
 const chat = require("../models/chatModel");
 const User = require("../models/userModel");
 
