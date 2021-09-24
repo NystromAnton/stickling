@@ -77,7 +77,7 @@ class _PlantProfileState extends State<PlantProfile> {
                       controller: titleController,
                       style: TextStyle(fontSize: 30),
                       cursorColor: Colors.black,
-                      showCursor: false,
+                      showCursor: true,
                       onChanged: (text) {
                         EnableButton();
                       },
@@ -122,8 +122,8 @@ class _PlantProfileState extends State<PlantProfile> {
                   padding: const EdgeInsets.only(top: 15),
                   child: images.length == 0
                       ? Container(
-                          height: 375,
-                          width: 375,
+                          height: MediaQuery.of(context).size.height * 0.40,
+                          width: MediaQuery.of(context).size.width * 0.98,
                           child: GestureDetector(
                             onTap: () {
                               loadAssets();
@@ -139,9 +139,15 @@ class _PlantProfileState extends State<PlantProfile> {
                               borderRadius: BorderRadius.circular(10)),
                         )
                       : SizedBox(
-                          height: 375.0,
-                          width: 375.0,
-                          child: Carousel(images: images_Asscets)),
+                          height: MediaQuery.of(context).size.height * 0.40,
+                          width: MediaQuery.of(context).size.width * 0.98, 
+                          child: Carousel(
+                            images: images_Asscets,
+                            dotSize: 4,
+                            dotBgColor: Colors.transparent,
+                            dotSpacing: 15,
+                            autoplay: false,
+                            )),
                 ),
               ],
             ),
@@ -158,7 +164,7 @@ class _PlantProfileState extends State<PlantProfile> {
                       textAlign: TextAlign.left,
                       textAlignVertical: TextAlignVertical.top,
                       controller: descriptionController,
-                      maxLines: 5,
+                      maxLines: 3,
                       onChanged: (text) {
                         EnableButton();
                       },

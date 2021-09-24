@@ -72,7 +72,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 60,
+            toolbarHeight: 10,
             backgroundColor: Colors.white,
             bottom: TabBar(
               physics: NeverScrollableScrollPhysics(),
@@ -99,8 +99,8 @@ class _TabBarDemoState extends State<TabBarDemo> {
               ],
             ),
           ),
-          body: SingleChildScrollView(
-            child: Container(
+          body: 
+            Container(
               height: 850,
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
@@ -113,7 +113,6 @@ class _TabBarDemoState extends State<TabBarDemo> {
             ),
           ),
         ),
-      ),
     );
   }
 }

@@ -133,14 +133,14 @@ class _SwipeTabState extends State<SwipeTab> {
                         minWidth: MediaQuery.of(context).size.width * 0.8,
                         minHeight: MediaQuery.of(context).size.height * 0.8,
                         cardBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                          padding: const EdgeInsets.only(top: 10.0),
                           child: Card(
                             elevation: 10,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 28.0),
+                              padding: const EdgeInsets.only(top: 28),
                               child: Column(
                                 children: [
                                   Row(
@@ -159,8 +159,8 @@ class _SwipeTabState extends State<SwipeTab> {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 350,
-                                    width: 350,
+                                    height: MediaQuery.of(context).size.height * 0.4,
+                                    width: MediaQuery.of(context).size.width * 1.0,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
@@ -176,6 +176,29 @@ class _SwipeTabState extends State<SwipeTab> {
                                             new Icon(Icons.error),
                                       ),
                                     ),
+                                  ),
+                                  Row(children: [
+                                      
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 12),
+                                        child: Container(
+                                              padding: EdgeInsets.only(top: 10),
+                                              child: Text(
+                                                images[index]['desc'].toString(),
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontFamily: 'Lato',
+                                                ),
+                                              ),
+                                            ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
