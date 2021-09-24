@@ -36,7 +36,7 @@ class _ChatTabState extends State<ChatTab> {
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
-          child: Text("No Chat Functionaility right noe"),
+          child: Text("No Chat Functionaility right now"),
         ),
       ),
     );
