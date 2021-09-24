@@ -59,14 +59,10 @@ router.post("/", function (req, res, next) {
     res.json(post);
     /*Chat.create(
       {
-        chatRoom: mongoose.Types.ObjectId(post._id),
-        fromID: null,
-        menderID: mongoose.Types.ObjectId(post.menderID),
-        userID: mongoose.Types.ObjectId(post.userID),
-        message: "chatt skapad",
-        created_date: post.createdDate,
-        clientViewed: false,
-        menderViewed: false,
+        user1: mongoose.Types.ObjectId(post.user1),
+        user2: mongoose.Types.ObjectId(post.user2),
+        plant1: mongoose.Types.ObjectId(post.match),
+        plant2: mongoose.Types.ObjectId(post.match),
       },
       function (err, post) {
         if (err) return next(err);
