@@ -3,6 +3,7 @@ var router = express.Router();
 const User = require("../models/userModel");
 const Plant = require("../models/plantModel");
 const Match = require("../models/matchModel");
+const ChatRoom = require("../models/chatRoomModel");
 
 /* GET all plants from a user */
 router.get("/:id", async function (req, res, next) {
