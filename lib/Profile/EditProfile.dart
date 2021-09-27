@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,16 +10,16 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stycling/Profile/ProfilePage.dart';
 import 'package:http/http.dart' as http;
+
 class EditProfile extends StatefulWidget {
   String imageFile;
   String title;
-  String Description;
+  String description;
 
-  EditProfile(String imageFile, String title,String Description) {
+  EditProfile(String imageFile, String title, String description) {
     this.imageFile = imageFile;
-    this.title=title;
-    this.Description=Description;
-
+    this.title = title;
+    this.description = description;
   }
 
   @override
@@ -39,23 +40,19 @@ class _EditProfileState extends State<EditProfile> {
   File _imageFile;
   List<Asset> images = List<Asset>();
   String _error = 'No Error Dectected';
-  Asset asset =null;
-  Asset asset_one=null;
+  Asset asset = null;
+  Asset asset_one = null;
   var isEnabled = false;
   List<Widget> images_Asscets = List<Widget>();
 
   @override
   void initState() {
-  titleController.text=  widget.title;
-  descriptionController.text=  widget.Description;
-  print("Title 1 :" +widget.title);
-  print("Title 1 :" +widget.Description);
-
+    titleController.text = widget.title;
+    descriptionController.text = widget.description;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -80,23 +77,21 @@ class _EditProfileState extends State<EditProfile> {
                 Expanded(
                   child: Padding(
                     padding:
-                    const EdgeInsets.only(top: 55, left: 10, right: 30),
+                        const EdgeInsets.only(top: 55, left: 10, right: 30),
                     child: TextField(
                       textDirection: TextDirection.ltr,
                       controller: titleController,
                       style: TextStyle(fontSize: 30),
                       cursorColor: Colors.black,
-                      showCursor: false,
+                      showCursor: true,
                       onChanged: (text) {
                         EnableButton();
                       },
-                      //enableInteractiveSelection: false,
                       decoration: InputDecoration(
                         fillColor: Color(0xFF65C27A),
                         border: InputBorder.none,
                         prefixIcon:
-                        Icon(Icons.edit, color: Colors.grey, size: 25),
-                       // labelText:  titleController.text,
+                            Icon(Icons.edit, color: Colors.grey, size: 25),
                         hintText: titleController.text,
                         alignLabelWithHint: true,
                         hintStyle: TextStyle(
@@ -106,7 +101,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
-          GestureDetector(
+                GestureDetector(
                   onTap: () {
                     images.clear();
                     images_Asscets.clear();
@@ -128,18 +123,21 @@ class _EditProfileState extends State<EditProfile> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  // child:
-                  child:
-                  SizedBox(
-                      height: 375.0,
-                      width: 375.0,
-                      child: Image.asset(
-                        widget.imageFile,
-                        width: 375.0,
-                        height: 375.0,
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.40,
+                      width: MediaQuery.of(context).size.width * 0.98,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.imageFile,
                         fit: BoxFit.cover,
-                      )),
-
+                      )
+                      /*Carousel(
+                      images: images_Asscets,
+                      dotSize: 4,
+                      dotBgColor: Colors.transparent,
+                      dotSpacing: 15,
+                      autoplay: false,
+                      ),*/
+                      ),
                   // : Container(
                   //     height: 375,
                   //     width: 375,
@@ -172,8 +170,7 @@ class _EditProfileState extends State<EditProfile> {
                       },
                       cursorColor: Colors.grey,
                       decoration: InputDecoration(
-                        labelText:  descriptionController.text,
-
+                        labelText: descriptionController.text,
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFFD9D9D9).withOpacity(.5),
@@ -251,19 +248,17 @@ class _EditProfileState extends State<EditProfile> {
 
     setState(() {
       images = resultList;
-      print("images Size "+ images.length.toString());
+      print("images Size " + images.length.toString());
 
-      for(int i =0;i<images.length;i++){
+      for (int i = 0; i < images.length; i++) {
         Asset asset = images[i];
-        asset= images[0];
+        asset = images[0];
 
-        images_Asscets.add(
-            AssetThumb(
-              asset: asset,
-              width: 300,
-              height: 300,
-            )
-        );
+        images_Asscets.add(AssetThumb(
+          asset: asset,
+          width: 300,
+          height: 300,
+        ));
       }
       _error = error;
     });
