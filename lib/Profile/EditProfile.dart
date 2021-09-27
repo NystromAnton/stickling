@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,12 @@ import 'package:http/http.dart' as http;
 class EditProfile extends StatefulWidget {
   String imageFile;
   String title;
-  String Description;
+  String description;
 
-  EditProfile(String imageFile, String title,String Description) {
+  EditProfile(String imageFile, String title,String description) {
     this.imageFile = imageFile;
-    this.title=title;
-    this.Description=Description;
+    this.title = title;
+    this.description = description;
 
   }
 
@@ -39,18 +40,15 @@ class _EditProfileState extends State<EditProfile> {
   File _imageFile;
   List<Asset> images = List<Asset>();
   String _error = 'No Error Dectected';
-  Asset asset =null;
-  Asset asset_one=null;
+  Asset asset = null;
+  Asset asset_one = null;
   var isEnabled = false;
   List<Widget> images_Asscets = List<Widget>();
 
   @override
   void initState() {
-  titleController.text=  widget.title;
-  descriptionController.text=  widget.Description;
-  print("Title 1 :" +widget.title);
-  print("Title 1 :" +widget.Description);
-
+  titleController.text =  widget.title;
+  descriptionController.text =  widget.description;
   }
 
   @override
@@ -86,17 +84,15 @@ class _EditProfileState extends State<EditProfile> {
                       controller: titleController,
                       style: TextStyle(fontSize: 30),
                       cursorColor: Colors.black,
-                      showCursor: false,
+                      showCursor: true,
                       onChanged: (text) {
                         EnableButton();
                       },
-                      //enableInteractiveSelection: false,
                       decoration: InputDecoration(
                         fillColor: Color(0xFF65C27A),
                         border: InputBorder.none,
                         prefixIcon:
                         Icon(Icons.edit, color: Colors.grey, size: 25),
-                       // labelText:  titleController.text,
                         hintText: titleController.text,
                         alignLabelWithHint: true,
                         hintStyle: TextStyle(
@@ -128,18 +124,20 @@ class _EditProfileState extends State<EditProfile> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  // child:
                   child:
                   SizedBox(
-                      height: 375.0,
-                      width: 375.0,
-                      child: Image.asset(
-                        widget.imageFile,
-                        width: 375.0,
-                        height: 375.0,
-                        fit: BoxFit.cover,
-                      )),
-
+                    height: MediaQuery.of(context).size.height * 0.40,
+                    width: MediaQuery.of(context).size.width * 0.98,
+                    child: CachedNetworkImage(imageUrl: widget.imageFile,
+                    fit: BoxFit.cover,)
+                    /*Carousel(
+                      images: images_Asscets,
+                      dotSize: 4,
+                      dotBgColor: Colors.transparent,
+                      dotSpacing: 15,
+                      autoplay: false,
+                      ),*/
+                    ),
                   // : Container(
                   //     height: 375,
                   //     width: 375,
@@ -253,9 +251,9 @@ class _EditProfileState extends State<EditProfile> {
       images = resultList;
       print("images Size "+ images.length.toString());
 
-      for(int i =0;i<images.length;i++){
+      for(int i = 0; i<images.length; i++){
         Asset asset = images[i];
-        asset= images[0];
+        asset = images[0];
 
         images_Asscets.add(
             AssetThumb(
