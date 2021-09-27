@@ -39,7 +39,6 @@ router.post("/", async function (req, res, next) {
           plant2: swipedPlant,
         });
         await newChatRoom.save();
-        res.send("Match object created");
         res.json(plants[0]);
       } else {
         const newMatch = new Match({
