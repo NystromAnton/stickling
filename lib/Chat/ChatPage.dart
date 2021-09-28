@@ -3,8 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import './User.dart';
 import './Message.dart';
-import './ChatModel.dart';
-
+/*
 class ChatPage extends StatefulWidget {
   final User friend;
   ChatPage(this.friend);
@@ -89,3 +88,4 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 }
+*/

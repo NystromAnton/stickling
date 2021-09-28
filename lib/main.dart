@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stycling/ChatTab.dart';
 import 'package:stycling/Profile/EditProfile.dart';
+import 'package:stycling/Chat/AllChatsPage.dart';
 import 'package:stycling/ProfileTab.dart';
 import 'package:stycling/settings.dart';
 import 'package:stycling/swipeTab.dart';
@@ -106,7 +107,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   SwipeTab(widget.CurrentUserID),
-                  ChatTab(widget.CurrentUserID),
+                  AllChatsPage(widget.CurrentUserID),
                   ProfileTab(widget.CurrentUserID),
                 ],
               ),
