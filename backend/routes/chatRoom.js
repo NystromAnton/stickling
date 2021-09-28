@@ -7,11 +7,12 @@ var Chat = require("../models/chatModel");
 
 // GET ALL USERS ROOMS BY userID
 router.get("/user/:id", function (req, res, next) {
+  var id = mongoose.Types.ObjectId(req.params.id);
   chatRoom.aggregate(
     [
       {
         $match: {
-          $or: [{ user1ID: req.params.id }, { user2ID: req.params.id }],
+          $or: [{ user1ID: id }, { user2ID: id }],
         },
       },
       {
