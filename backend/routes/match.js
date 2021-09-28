@@ -32,10 +32,10 @@ router.post("/", async function (req, res, next) {
           }
         );
         const newChatRoom = new ChatRoom({
-          user1: userId,
-          user2: swipedPlant.user,
-          plant1: match.likedPlant,
-          plant2: swipedPlant,
+          user1ID: userId,
+          user2ID: swipedPlant.user,
+          plant1ID: match.likedPlant,
+          plant2ID: swipedPlant,
         });
         await newChatRoom.save();
         res.send("Match object created");
