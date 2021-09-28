@@ -7,11 +7,56 @@ var Chat = require("../models/chatModel");
 
 // GET ALL USERS ROOMS BY userID
 router.get("/user/:id", function (req, res, next) {
-  chatRoom.find(
-    { $or: [{ user1: req.params.id }, { user2: req.params.id }] },
-    function (err, post) {
-      if (err) return next(err);
-      res.json(post);
+  chatRoom.aggregate(
+    [
+      {
+        $match: {
+          $or: [{ user1ID: req.params.id }, { user2ID: req.params.id }],
+        },
+      },
+      {
+        $lookup: {
+          from: User.collection.name,
+          localField: "user2ID",
+          foreignField: "_id",
+          as: "user2",
+        },
+      },
+      { $unwind: "$user2" },
+      {
+        $lookup: {
+          from: User.collection.name,
+          localField: "user1ID",
+          foreignField: "_id",
+          as: "user1",
+        },
+      },
+      { $unwind: "$user1" },
+      {
+        $lookup: {
+          from: Chat.collection.name,
+          localField: "_id",
+          foreignField: "chatRoom",
+          as: "chats",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          user1: 1,
+          user2: 1,
+          recent_chat: { $arrayElemAt: ["$chats", -1] },
+        },
+      },
+      { $sort: { recent_chat: -1 } },
+    ],
+    (err, data) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      //console.log(data)
+      res.json(data);
     }
   );
 });
