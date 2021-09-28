@@ -22,7 +22,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
     final response = await http.get(url);
 
     List<dynamic> chatRooms = (json.decode(response.body) as List);
-
+    print(chatRooms);
     return chatRooms;
   }
 
@@ -80,7 +80,8 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  chatRooms[i]["user1"],
+                                                  chatRooms[i]["user1"]
+                                                      ["username"],
                                                   style: TextStyle(
                                                       fontFamily: 'Lato',
                                                       fontWeight:
@@ -94,7 +95,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                           Padding(
                                             padding: EdgeInsets.only(left: 20),
                                             child: Text(
-                                              chatRooms[i]["user2"],
+                                              chatRooms[i]["user2"]["username"],
                                               maxLines: 2,
                                               style: TextStyle(
                                                   fontFamily: 'Lato',

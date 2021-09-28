@@ -14,10 +14,10 @@ import 'Profile/ProfilePage.dart';
 import 'settings.dart';
 
 class ProfileTab extends StatefulWidget {
-  String CurrentUserID;
+  String currentUserID;
 
-  ProfileTab(String CurrentUserID) {
-    this.CurrentUserID = CurrentUserID;
+  ProfileTab(String currentUserID) {
+    this.currentUserID = currentUserID;
   }
 
   @override
@@ -32,7 +32,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
   Future<List<dynamic>> getMyPlants(String url) async {
     String url =
-        "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
+        "https://sticklingar.herokuapp.com/plants/" + widget.currentUserID;
     final response = await http.get(url);
 
     final responseJson = json.decode(response.body.toString());
@@ -105,7 +105,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  PlantProfile(null, widget.CurrentUserID)),
+                                  PlantProfile(null, widget.currentUserID)),
                         );
                       },
                     )

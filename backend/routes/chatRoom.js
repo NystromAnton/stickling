@@ -52,10 +52,11 @@ router.get("/user/:id", function (req, res, next) {
     ],
     (err, data) => {
       if (err) {
+        console.log(err);
         next(err);
         return;
       }
-      //console.log(data)
+      console.log(data)
       res.json(data);
     }
   );
