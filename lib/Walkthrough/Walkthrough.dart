@@ -37,7 +37,7 @@ class _WalkthroughState extends State<Walkthrough> {
                       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
-                      child: Image.asset('assets/sticklinglogo.png'),
+                      child: Image.asset('assets/Group 2.png', height: 50),
                     ),
                     Text(
                       'Stickling',
