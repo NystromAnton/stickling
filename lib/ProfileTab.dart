@@ -50,8 +50,9 @@ class _ProfileTabState extends State<ProfileTab> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 15, left: 10),
+                padding: EdgeInsets.only(top: 15),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
                       icon: Icon(Icons.settings),
@@ -65,42 +66,21 @@ class _ProfileTabState extends State<ProfileTab> {
                       },
                       iconSize: 40,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 50.0),
-                      child: Text(
-                        'My Sticklings',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.bold),
-                      ),
+                    //Padding(
+                    //padding: const EdgeInsets.only(left: 50.0),
+                    //child:
+                    Text(
+                      'My Sticklings',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.bold),
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      child: RaisedButton(
-                        onPressed: null,
-                        padding: EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          'Add new plant',
-                          style: TextStyle(
-                            fontSize: 25,
-                            //fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontFamily: 'Lato',
-                          ),
-                        ),
-                        disabledColor: Color(0xFF65C27A),
-                      ),
-                      onTap: () {
+                    //),
+                    IconButton(
+                      icon: Icon(Icons.add_circle_rounded),
+                      color: Color(0xFF65C27A),
+                      onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -108,7 +88,8 @@ class _ProfileTabState extends State<ProfileTab> {
                                   PlantProfile(null, widget.currentUserID)),
                         );
                       },
-                    )
+                      iconSize: 40,
+                    ),
                   ],
                 ),
               ),
@@ -118,39 +99,56 @@ class _ProfileTabState extends State<ProfileTab> {
                   future: getMyPlants(""),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(
-                          child: CircularProgressIndicator(
-                        backgroundColor: Colors.teal,
-                      ));
+                      return Container(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: CupertinoActivityIndicator(
+                            radius: 20,
+                          ),
+                        ),
+                      );
                     } else {
                       List plantImages = snapshot.data;
 
                       return Container(
-                        height: 500,
+                        height: MediaQuery.of(context).size.height * 0.8,
                         child: ListView.builder(
                           itemCount: plantImages.length,
+                          reverse: false,
                           itemBuilder: (context, i) {
                             return Padding(
-                              padding: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: Container(
-                                height: 100,
-                                width: 150,
-                                color: Colors.white,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
                                 child: Row(
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: CachedNetworkImage(
-                                        imageUrl: plantImages[i]["pic"],
-                                        placeholder: (context, url) => SizedBox(
-                                          width: 80,
-                                          height: 80,
-                                          child: new CircularProgressIndicator(
-                                            backgroundColor: Colors.teal,
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.11,
+                                      width:
+                                          MediaQuery.of(context).size.height *
+                                              0.11,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: CachedNetworkImage(
+                                          imageUrl: plantImages[i]["pic"],
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              SizedBox(
+                                            //width: MediaQuery.of(context).size.width * 0.2,
+                                            //height: MediaQuery.of(context).size.height * 0.2,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: CupertinoActivityIndicator(
+                                                radius: 20,
+                                              ),
+                                            ),
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                              new Icon(Icons.error),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            new Icon(Icons.error),
                                       ),
                                     ),
                                     Expanded(
@@ -160,95 +158,83 @@ class _ProfileTabState extends State<ProfileTab> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Padding(
+                                          /*Padding(
                                             padding: const EdgeInsets.only(
-                                              bottom: 8.0,
-                                              right: 10,
+                                              right: 0,
                                               left: 20,
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  plantImages[i]["title"],
-                                                  style: TextStyle(
-                                                      fontFamily: 'Lato',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black,
-                                                      fontSize: 20),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                EditProfile(
-                                                                    plantImages[
-                                                                            i]
-                                                                        ["pic"],
-                                                                    plantImages[
-                                                                            i][
-                                                                        "title"],
-                                                                    plantImages[
-                                                                            i][
-                                                                        "desc"])));
-                                                  },
-                                                  child: Container(
-                                                    width: 90,
-                                                    height: 35,
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color:
-                                                              Colors.grey[500],
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20))),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Icon(
-                                                            Icons.edit_outlined,
-                                                            color: Colors.grey,
-                                                            size: 25),
-                                                        Text(
-                                                          "Edit",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Lato',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 20),
-                                                        ),
-                                                      ],
-                                                    ),
+                                            child: */
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12, top: 8.0),
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.45,
+                                                  child: Text(
+                                                    plantImages[i]["title"],
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Lato',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                        fontSize: 20),
                                                   ),
-                                                )
-                                              ],
-                                            ),
+                                                ),
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.edit_outlined),
+                                                onPressed: () {
+                                                  print(
+                                                      "HÄR ÄR BILDSTRINGEN!!!!! " +
+                                                          plantImages[i]
+                                                              ["pic"]);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditProfile(
+                                                                  plantImages[i]
+                                                                      ["pic"],
+                                                                  plantImages[i]
+                                                                      ["title"],
+                                                                  plantImages[i]
+                                                                      [
+                                                                      "desc"])));
+                                                },
+                                                iconSize: 30,
+                                                color: Colors.grey,
+                                              ),
+                                            ],
                                           ),
+                                          //),
                                           Padding(
-                                            padding: EdgeInsets.only(left: 20),
-                                            child: Text(
-                                              plantImages[i]["desc"],
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                  fontFamily: 'Lato',
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.black,
-                                                  fontSize: 20),
+                                            padding: EdgeInsets.only(left: 12),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.60,
+                                              child: Text(
+                                                plantImages[i]["desc"],
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    fontFamily: 'Lato',
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.black,
+                                                    fontSize: 16),
+                                              ),
                                             ),
                                           ),
                                         ],
