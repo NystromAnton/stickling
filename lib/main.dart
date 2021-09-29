@@ -73,28 +73,28 @@ class _TabBarDemoState extends State<TabBarDemo> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 5,
+            toolbarHeight: 8,
             backgroundColor: Colors.white,
             bottom: TabBar(
               physics: NeverScrollableScrollPhysics(),
               indicatorColor: Colors.green,
               labelColor: Color(0xFF65C27A),
-              unselectedLabelColor: Color(0xFFB2E5BE),
+              unselectedLabelColor: Color(0x6665C27A),
               tabs: [
                 Tab(
                     icon: ImageIcon(
-                  AssetImage("assets/sticklinglogo.png"),
-                  size: 50,
+                  AssetImage("assets/stickling_logo.png"),
+                  size: 40,
                 )),
                 Tab(
                     icon: ImageIcon(
                   AssetImage("assets/chaticon.png"),
-                  size: 50,
+                  size: 40,
                 )),
                 Tab(
                   icon: ImageIcon(
-                    AssetImage("assets/myprofileicon.png"),
-                    size: 50,
+                    AssetImage("assets/profile_icon.png"),
+                    size: 40,
                   ),
                 ),
               ],
