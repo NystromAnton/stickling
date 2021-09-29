@@ -50,19 +50,19 @@ class _WalkthroughState extends State<Walkthrough> {
                   ]),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 70.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Just like Tinder but for plants!',
+                  padding: const EdgeInsets.only(
+                      top: 50.0,
+                      left: 40,
+                      right: 40,
+                  ),
+                  child: Text(
+                        'Swipe through plants and find one you like!',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 22,
                           fontFamily: 'Lato',
                         ),
                       ),
-                    ],
-                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -71,12 +71,12 @@ class _WalkthroughState extends State<Walkthrough> {
                     right: 80,
                   ),
                   child: Text(
-                    'Match with plants nearby to make a trade.',
+                    'Match with plants near you and make a trade.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: 'Lato',
-                      color: Colors.grey[700],
+                      color: Colors.grey[600],
                     ),
                   ),
                 ),
@@ -92,7 +92,7 @@ class _WalkthroughState extends State<Walkthrough> {
                       Text(
                         'Swipe left to learn more!',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 22,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.bold,
                         ),
