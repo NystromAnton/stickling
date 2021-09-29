@@ -51,6 +51,14 @@ class _AllChatsPageState extends State<AllChatsPage> {
                         child: ListView.builder(
                           itemCount: chatRooms.length,
                           itemBuilder: (context, i) {
+                            String whichUser;
+                            if (chatRooms[i]["user1"]["_id"] ==
+                                widget.currentUserID) {
+                              whichUser = "user1";
+                            } else {
+                              whichUser = "user2";
+                            }
+
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Container(
@@ -80,8 +88,8 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  chatRooms[i]["user1"]
-                                                      ["username"],
+                                                  chatRooms[i][whichUser]
+                                                      ["name"],
                                                   style: TextStyle(
                                                       fontFamily: 'Lato',
                                                       fontWeight:
@@ -95,7 +103,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                           Padding(
                                             padding: EdgeInsets.only(left: 20),
                                             child: Text(
-                                              chatRooms[i]["user2"]["username"],
+                                              chatRooms[i]["recent_chat"],
                                               maxLines: 2,
                                               style: TextStyle(
                                                   fontFamily: 'Lato',

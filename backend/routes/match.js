@@ -32,14 +32,26 @@ router.post("/", async function (req, res, next) {
             $set: { matched: true },
           }
         );
-        const newChatRoom = new ChatRoom({
-          user1ID: userId,
-          user2ID: swipedPlant.user,
-          plant1ID: match.likedPlant,
-          plant2ID: swipedPlant,
+
+        var chatExist = await ChatRoom.find({
+          $or: [
+            { $and: [{ user1ID: userId }, { user2ID: swipedPlant.user }] },
+            { $and: [{ user1ID: swipedPlant.user }, { user2ID: userId }] },
+          ],
         });
-        await newChatRoom.save();
-        res.json(plants[0]);
+        console.log(chatExist);
+        if (chatExist.length < 1) {
+          const newChatRoom = new ChatRoom({
+            user1ID: userId,
+            user2ID: swipedPlant.user,
+            plant1ID: match.likedPlant,
+            plant2ID: swipedPlant,
+          });
+          await newChatRoom.save();
+          res.json(plants[0]);
+        } else {
+          res.send("Chat already exist");
+        }
       } else {
         const newMatch = new Match({
           firstLiked: userId,
