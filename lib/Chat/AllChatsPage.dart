@@ -19,7 +19,8 @@ class AllChatsPage extends StatefulWidget {
 
 class _AllChatsPageState extends State<AllChatsPage> {
   Future<List<dynamic>> getMyChatRooms() async {
-    String url = "http://localhost:3000/chatRoom/user/" + widget.currentUserID;
+    String url = "https://sticklingar.herokuapp.com/chatRoom/user/" +
+        widget.currentUserID;
     final response = await http.get(url);
 
     List<dynamic> chatRooms = (json.decode(response.body) as List);

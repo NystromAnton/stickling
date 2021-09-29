@@ -60,18 +60,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icon.png
-    - assets/sticklinglogo.png
-    - assets/myprofileicon.png
-    - assets/chaticon.png
-    - assets/flower1.png
-    - assets/flower2.png
-    - assets/flower3.png
-    - assets/stickling1.jpg
-    - assets/stickling2.jpg
-    - assets/stickling3.jpg
-    - assets/stickling4.png
-    - assets/page1pic.png
+    - assets/
   #   - images/a_dot_ham.jpeg'
 
   fonts:

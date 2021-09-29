@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
-                  child: Image.asset('assets/sticklinglogo.png'),
+                  child: Image.asset('assets/stickling_heart_logo.png', height: 50),
                 ),
                 Text(
                   'Stickling',
