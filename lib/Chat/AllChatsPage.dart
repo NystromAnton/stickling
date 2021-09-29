@@ -40,9 +40,10 @@ class _AllChatsPageState extends State<AllChatsPage> {
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
-                          child: CircularProgressIndicator(
-                        backgroundColor: Colors.teal,
-                      ));
+                          child: CupertinoActivityIndicator(
+                          radius: 20,
+                      ),
+                  );
                     } else {
                       List chatRooms = snapshot.data;
 

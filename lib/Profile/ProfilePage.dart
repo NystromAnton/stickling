@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:stycling/settings.dart';
+import 'package:stycling/tags.dart';
 
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,6 +15,7 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class PlantProfile extends StatefulWidget {
   File imageFile;
@@ -43,7 +47,7 @@ class _PlantProfileState extends State<PlantProfile> {
   Asset asset = null;
   Asset asset_one = null;
   var isEnabled = false;
-  List<Widget> images_Asscets = List<Widget>();
+  List images_Asscets = List();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +81,7 @@ class _PlantProfileState extends State<PlantProfile> {
                       controller: titleController,
                       style: TextStyle(fontSize: 30),
                       cursorColor: Colors.black,
-                      showCursor: false,
+                      showCursor: true,
                       onChanged: (text) {
                         EnableButton();
                       },
@@ -95,24 +99,6 @@ class _PlantProfileState extends State<PlantProfile> {
                     ),
                   ),
                 ),
-                images.length == 0
-                    ? Container()
-                    : GestureDetector(
-                        onTap: () {
-                          images.clear();
-                          images_Asscets.clear();
-
-                          loadAssets();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 48.0, right: 20),
-                          child: Icon(
-                            Icons.control_point_outlined,
-                            size: 60,
-                            color: Color(0xFF000000).withOpacity(0.1),
-                          ),
-                        ),
-                      ),
               ],
             ),
             Row(
@@ -122,15 +108,15 @@ class _PlantProfileState extends State<PlantProfile> {
                   padding: const EdgeInsets.only(top: 15),
                   child: images.length == 0
                       ? Container(
-                          height: 375,
-                          width: 375,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: MediaQuery.of(context).size.height * 0.25,
                           child: GestureDetector(
                             onTap: () {
                               loadAssets();
                             },
                             child: Icon(
                               Icons.control_point_outlined,
-                              size: 80,
+                              size: MediaQuery.of(context).size.height * 0.08,
                               color: Color(0xFF000000).withOpacity(0.1),
                             ),
                           ),
@@ -139,14 +125,63 @@ class _PlantProfileState extends State<PlantProfile> {
                               borderRadius: BorderRadius.circular(10)),
                         )
                       : SizedBox(
-                          height: 375.0,
-                          width: 375.0,
-                          child: Carousel(images: images_Asscets)),
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width * 1,
+                        child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: images.length + 1,
+                        itemBuilder: (context, i){
+                          if (i == 0) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Container(
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: MediaQuery.of(context).size.height * 0.25,
+                          child: GestureDetector(
+                              onTap: () {
+                                loadAssets();
+                              },
+                              child: Icon(
+                                Icons.control_point_outlined,
+                                size: MediaQuery.of(context).size.height * 0.08,
+                                color: Color(0xFF000000).withOpacity(0.1),
+                              ),
+                          ),
+                          decoration: BoxDecoration(
+                                color: Color(0xFFD9D9D9).withOpacity(.5),
+                                borderRadius: BorderRadius.circular(10)),
+                              ),
+                            );
+                            } else { return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              width: MediaQuery.of(context).size.height * 0.25,
+                              child: ClipRRect( borderRadius:  BorderRadius.circular(10),
+                              child: AssetThumb(
+                                  //width: (MediaQuery.of(context).size.height * 0.5).toInt(),
+                                 // height: (MediaQuery.of(context).size.height * 0.5).toInt(),
+                                 width: 500,
+                                 height: 500,
+                                  asset: images[i-1]),
+                              ),
+                            )
+                          );
+                            }
+                        })
+                          /*height: MediaQuery.of(context).size.height * 0.40,
+                          width: MediaQuery.of(context).size.width * 0.98,
+                          child: Carousel(
+                            images: images_Asscets,
+                            dotSize: 4,
+                            dotBgColor: Colors.transparent,
+                            dotSpacing: 15,
+                            autoplay: false,
+                          ),*/
+                ),
                 ),
               ],
-            ),
-            Wrap(
-              children: [],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -158,7 +193,7 @@ class _PlantProfileState extends State<PlantProfile> {
                       textAlign: TextAlign.left,
                       textAlignVertical: TextAlignVertical.top,
                       controller: descriptionController,
-                      maxLines: 5,
+                      maxLines: 3,
                       onChanged: (text) {
                         EnableButton();
                       },
@@ -251,7 +286,7 @@ class _PlantProfileState extends State<PlantProfile> {
   }
 
   Future<void> loadAssets() async {
-    List<Asset> resultList = List<Asset>();
+    List resultList;
     String error = 'No Error Dectected';
 
     try {
@@ -287,8 +322,8 @@ class _PlantProfileState extends State<PlantProfile> {
 
         images_Asscets.add(AssetThumb(
           asset: asset,
-          width: 300,
-          height: 300,
+          width: 700,
+          height: 700,
         ));
       }
 
@@ -348,7 +383,7 @@ class _PlantProfileState extends State<PlantProfile> {
 
   EnableButton() {
     setState(() {
-      if (images_Asscets == null) {
+      if (images == null) {
         isEnabled = false;
       } else {
         if (descriptionController.text.length > 0 &&
