@@ -273,12 +273,12 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: () => Navigator.push(
+                                        onPressed: null,/*() => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   AllChatsPage(widget.CurrentUserID)),
-                                        ),
+                                        ),*/
                                         width: 120,
                                       )
                                     ],
