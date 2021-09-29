@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:loading_gifs/loading_gifs.dart';
 
 class SwipeTab extends StatefulWidget {
   String CurrentUserID;
@@ -104,10 +105,14 @@ class _SwipeTabState extends State<SwipeTab> {
           future: requestMethod(""),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
-                  child: CircularProgressIndicator(
-                backgroundColor: Colors.teal,
-              ));
+              return Container(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: CupertinoActivityIndicator(
+                    radius: 20,
+                  ),
+                ),
+              );
             } else {
               List images = snapshot.data;
 
@@ -132,34 +137,44 @@ class _SwipeTabState extends State<SwipeTab> {
                         minWidth: MediaQuery.of(context).size.width * 0.8,
                         minHeight: MediaQuery.of(context).size.height * 0.8,
                         cardBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                          padding: const EdgeInsets.only(top: 10.0),
                           child: Card(
                             elevation: 10,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 28.0),
+                              padding: const EdgeInsets.only(top: 28),
                               child: Column(
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.only(top: 30),
-                                        child: Text(
-                                          images[index]['title'].toString(),
-                                          style: TextStyle(
-                                            fontSize: 40,
-                                            fontFamily: 'Lato',
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        padding: EdgeInsets.only(top: 15),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            images[index]['title'].toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 30,
+                                              fontFamily: 'Lato',
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 350,
-                                    width: 350,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.4,
+                                    width:
+                                        MediaQuery.of(context).size.width * 1.0,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
@@ -167,14 +182,56 @@ class _SwipeTabState extends State<SwipeTab> {
                                         placeholder: (context, url) => SizedBox(
                                           width: 5,
                                           height: 5,
-                                          child: new CircularProgressIndicator(
-                                            backgroundColor: Colors.teal,
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: CupertinoActivityIndicator(
+                                              radius: 20,
+                                            ),
                                           ),
                                         ),
                                         errorWidget: (context, url, error) =>
                                             new Icon(Icons.error),
                                       ),
                                     ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 12.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.location_on_outlined),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 12),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.72,
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text(
+                                            images[index]['desc'].toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'Lato',
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
