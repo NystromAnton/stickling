@@ -1,61 +1,218 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import './ChatPage.dart';
 import './User.dart';
-import './ChatModel.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 
 class AllChatsPage extends StatefulWidget {
+  String currentUserID;
+
+  AllChatsPage(String currentUserID) {
+    this.currentUserID = currentUserID;
+  }
   @override
   _AllChatsPageState createState() => _AllChatsPageState();
 }
 
 class _AllChatsPageState extends State<AllChatsPage> {
-  @override
-  void initState() {
-    super.initState();
-    ScopedModel.of<ChatModel>(context, rebuildOnChange: false).init();
-  }
+  Future<List<dynamic>> getMyChatRooms() async {
+    String url = "http://localhost:3000/chatRoom/user/" + widget.currentUserID;
+    final response = await http.get(url);
 
-  void friendClicked(User friend) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return ChatPage(friend);
-        },
-      ),
-    );
-  }
+    List<dynamic> chatRooms = (json.decode(response.body) as List);
 
-  Widget buildAllChatList() {
-    return ScopedModelDescendant<ChatModel>(
-      builder: (context, child, model) {
-        return ListView.builder(
-          itemCount: model.friendList.length,
-          itemBuilder: (BuildContext context, int index) {
-            User friend = model.friendList[index];
-            return ListTile(
-              title: Text(friend.name),
-              onTap: () => friendClicked(friend),
-            );
-          },
-        );
-      },
-    );
+    return chatRooms;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'My Matches',
-          style: TextStyle(color: Color(0xff000000), fontSize: 25),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 28.0),
+                child: FutureBuilder(
+                  future: getMyChatRooms(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                          child: CircularProgressIndicator(
+                        backgroundColor: Colors.teal,
+                      ));
+                    } else {
+                      List chatRooms = snapshot.data;
+
+                      return Container(
+                        height: 500,
+                        child: ListView.builder(
+                          itemCount: chatRooms.length,
+                          itemBuilder: (context, i) {
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                height: 100,
+                                width: 150,
+                                color: Colors.white,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 8.0,
+                                              right: 10,
+                                              left: 20,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  chatRooms[i]["user1"],
+                                                  style: TextStyle(
+                                                      fontFamily: 'Lato',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black,
+                                                      fontSize: 20),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 20),
+                                            child: Text(
+                                              chatRooms[i]["user2"],
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                  fontFamily: 'Lato',
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black,
+                                                  fontSize: 20),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
+              )
+            ],
+          ),
         ),
-        elevation: 0,
       ),
-      body: buildAllChatList(),
     );
   }
 }
+
+/*
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:stycling/Chat/ChatPage.dart';
+
+Future<List<Chat>> fetchAllChats() async {
+  final response =
+      await http.get(Uri.parse('https://sticklingar.herokuapp.com/chat/'));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return Album.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
+
+class Album {
+  final int userId;
+  final int id;
+  final String title;
+
+  Album({
+    required this.userId,
+    required this.id,
+    required this.title,
+  });
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
+    );
+  }
+}
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Future<Album> futureAlbum;
+
+  @override
+  void initState() {
+    super.initState();
+    futureAlbum = fetchAlbum();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Fetch Data Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Fetch Data Example'),
+        ),
+        body: Center(
+          child: FutureBuilder<ChatPage>(
+            future: futureAlbum,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data!.title);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+
+              // By default, show a loading spinner.
+              return const CircularProgressIndicator();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}*/

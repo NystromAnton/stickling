@@ -33,7 +33,7 @@ server.on("listening", onListening);
 // process.env.NODE_ENV === "production"
 //  ? "https://www.mender.se"
 // : "http://localhost:8080";
-const io = require("socket.io")(server, {
+/*const io = require("socket.io")(server, {
   cors: {
     // Allow requests across different ports on localhost.
     origin: "*",
@@ -65,7 +65,7 @@ io.on("connection", function (socket) {
       receiverChatID: receiverChatID,
     });
   });
-});
+});*/
 
 /**
  * Normalize a port into a number, string, or false.

@@ -3,6 +3,7 @@ var router = express.Router();
 const User = require("../models/userModel");
 const Plant = require("../models/plantModel");
 const Match = require("../models/matchModel");
+const ChatRoom = require("../models/chatRoomModel");
 
 /* GET all plants from a user */
 router.get("/:id", async function (req, res, next) {
@@ -32,12 +33,12 @@ router.post("/", async function (req, res, next) {
           }
         );
         const newChatRoom = new ChatRoom({
-          user1: userId,
-          user2: swipedPlant.user,
-          matchId: match._id,
+          user1ID: userId,
+          user2ID: swipedPlant.user,
+          plant1ID: match.likedPlant,
+          plant2ID: swipedPlant,
         });
         await newChatRoom.save();
-        res.send("Match object created");
         res.json(plants[0]);
       } else {
         const newMatch = new Match({
