@@ -7,6 +7,7 @@ import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:loading_gifs/loading_gifs.dart';
+import 'package:stycling/Chat/AllChatsPage.dart';
 
 class SwipeTab extends StatefulWidget {
   String CurrentUserID;
@@ -32,7 +33,7 @@ class _SwipeTabState extends State<SwipeTab> {
   CardController cardController = new CardController();
 
   Future<List<dynamic>> getMyPlants(String url) async {
-    String url = "http://localhost:3000/plants/" + widget.CurrentUserID;
+    String url = "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
     final response = await http.get(url);
 
     final responseJson = json.decode(response.body.toString());
@@ -45,7 +46,7 @@ class _SwipeTabState extends State<SwipeTab> {
   Future<List<dynamic>> requestMethod(String url) async {
     Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
 
-    String url = "http://localhost:3000/nearby/" +
+    String url = "https://sticklingar.herokuapp.com/nearby/" +
         widget.CurrentUserID +
         "/?q=17.61721,59.85877";
 
@@ -67,7 +68,7 @@ class _SwipeTabState extends State<SwipeTab> {
       'Accept': 'application/json',
     };
 
-    final response = await http.post("http://localhost:3000/match",
+    final response = await http.post("https://sticklingar.herokuapp.com/match/",
         body: body, headers: headers);
     final responseJson = response.body.toString();
 
@@ -87,7 +88,7 @@ class _SwipeTabState extends State<SwipeTab> {
     };
 
     final response = await http.post(
-        "http://localhost:3000/preference/add-preference",
+        "https://sticklingar.herokuapp.com/preference/add-preference/",
         body: body,
         headers: headers);
     final responseJson = response.body.toString();
@@ -272,7 +273,12 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: () => Navigator.pop(context),
+                                        onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AllChatsPage(widget.CurrentUserID)),
+                                        ),
                                         width: 120,
                                       )
                                     ],
@@ -318,37 +324,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                 icon: Icon(Icons.favorite_rounded,
                                     color: Colors.pink[300]),
                                 onPressed: () => {
-                                      {
-                                        SwipeRight("", images[0]['_id'])
-                                            .then((value) {
-                                          print("Result " + value);
-                                          if (value.contains(
-                                              "Match object created")) {
-                                          } else {
-                                            Alert(
-                                              context: context,
-                                              type: AlertType.success,
-                                              title: "New Match",
-                                              desc:
-                                                  "Great! You got a new Match",
-                                              buttons: [
-                                                DialogButton(
-                                                  child: Text(
-                                                    "Chat",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20),
-                                                  ),
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  width: 120,
-                                                )
-                                              ],
-                                            ).show();
-                                          }
-                                        }),
-                                        cardController.triggerRight(),
-                                      },
+                                      cardController.triggerRight(),
                                     },
                                 iconSize: 55),
                           ),
