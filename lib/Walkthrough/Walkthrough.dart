@@ -147,7 +147,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         padding: EdgeInsets.only(top: 50),
                         child: Image.asset(
                           'assets/walkthroughPlant1.png',
-                          height: 230,
+                          height: 210,
                         ),
                       ),
                     ],
@@ -226,7 +226,7 @@ class _WalkthroughState extends State<Walkthrough> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 40),
+                        padding: EdgeInsets.only(top: 30),
                         child: GestureDetector(
                           onTap: () => Navigator.push(
                             context,
@@ -246,7 +246,7 @@ class _WalkthroughState extends State<Walkthrough> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(40),
+                    padding: const EdgeInsets.only(top: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -297,7 +297,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         padding: EdgeInsets.only(top: 50),
                         child: Image.asset(
                           'assets/walkthroughPlant2.png',
-                          height: 230,
+                          height: 200,
                         ),
                       ),
                     ],
@@ -392,7 +392,7 @@ class _WalkthroughState extends State<Walkthrough> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 40),
+                        padding: EdgeInsets.only(top: 30),
                         child: GestureDetector(
                           onTap: () => Navigator.push(
                             context,
@@ -412,7 +412,7 @@ class _WalkthroughState extends State<Walkthrough> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(40),
+                    padding: const EdgeInsets.only(top: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -566,14 +566,14 @@ class _WalkthroughState extends State<Walkthrough> {
                   child: Text(
                     'Sign up!',
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 20,
                       fontFamily: 'Lato',
                     ),
                   ),
                   textColor: Colors.white,
                   color: Color(0xFF65C27A),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -585,7 +585,7 @@ class _WalkthroughState extends State<Walkthrough> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 15),
                       child: GestureDetector(
                         onTap: () => Navigator.push(
                           context,
