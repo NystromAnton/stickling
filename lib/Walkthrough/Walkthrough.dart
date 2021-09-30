@@ -81,8 +81,8 @@ class _WalkthroughState extends State<Walkthrough> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
-                  child: Image.asset('assets/page1pic.png'),
+                  padding: EdgeInsets.only(top: 40, bottom: 20),
+                  child: Image.asset('assets/page1pic.png', height: 120),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 30),
@@ -110,7 +110,7 @@ class _WalkthroughState extends State<Walkthrough> {
                     child: Text(
                       'Log in',
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
                         fontFamily: 'Lato',
                         color: Colors.grey[700],
                         decoration: TextDecoration.underline,
@@ -146,7 +146,8 @@ class _WalkthroughState extends State<Walkthrough> {
                       Padding(
                         padding: EdgeInsets.only(top: 50),
                         child: Image.asset(
-                          'assets/flower2.png',
+                          'assets/walkthroughPlant1.png',
+                          height: 230,
                         ),
                       ),
                     ],
@@ -159,7 +160,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         child: Text(
                           'Create a profile for your plant',
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 22,
                             fontFamily: 'Lato',
                             fontWeight: FontWeight.bold,
                           ),
@@ -177,7 +178,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         child: Text(
                           'Upload a photo and write a',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontFamily: 'Lato',
                             color: Colors.grey[600],
                           ),
@@ -195,7 +196,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         child: Text(
                           'short description of the plant',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontFamily: 'Lato',
                             color: Colors.grey[600],
                           ),
@@ -213,7 +214,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         child: Text(
                           'you wish to trade.',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontFamily: 'Lato',
                             color: Colors.grey[600],
                           ),
@@ -234,7 +235,7 @@ class _WalkthroughState extends State<Walkthrough> {
                           child: Text(
                             'Skip',
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                               fontFamily: 'Lato',
                               color: Colors.grey[800],
                               decoration: TextDecoration.underline,
@@ -295,7 +296,8 @@ class _WalkthroughState extends State<Walkthrough> {
                       Padding(
                         padding: EdgeInsets.only(top: 50),
                         child: Image.asset(
-                          'assets/flower1.png',
+                          'assets/walkthroughPlant2.png',
+                          height: 230,
                         ),
                       ),
                     ],
@@ -308,7 +310,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         child: Text(
                           'Swipe and match with other',
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 22,
                             fontFamily: 'Lato',
                             fontWeight: FontWeight.bold,
                           ),
@@ -324,7 +326,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         child: Text(
                           'plants near you',
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 22,
                             fontFamily: 'Lato',
                             fontWeight: FontWeight.bold,
                           ),
@@ -340,9 +342,9 @@ class _WalkthroughState extends State<Walkthrough> {
                           top: 40,
                         ),
                         child: Text(
-                          'Find the plants that you find attractive',
+                          'Find the plants that you want and',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontFamily: 'Lato',
                             color: Colors.grey[600],
                           ),
@@ -358,9 +360,9 @@ class _WalkthroughState extends State<Walkthrough> {
                           top: 5,
                         ),
                         child: Text(
-                          'and like them. If the same plant liked',
+                          'like them. If the same plant liked',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontFamily: 'Lato',
                             color: Colors.grey[600],
                           ),
@@ -378,7 +380,7 @@ class _WalkthroughState extends State<Walkthrough> {
                         child: Text(
                           'you back, you get a match.',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontFamily: 'Lato',
                             color: Colors.grey[600],
                           ),
@@ -399,7 +401,7 @@ class _WalkthroughState extends State<Walkthrough> {
                           child: Text(
                             'Skip',
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                               fontFamily: 'Lato',
                               color: Colors.grey[800],
                               decoration: TextDecoration.underline,
@@ -459,8 +461,8 @@ class _WalkthroughState extends State<Walkthrough> {
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: Image.asset(
-                        'assets/flower3.png',
-                        height: 250,
+                        'assets/walkthroughPlant3.png',
+                        height: 230,
                       ),
                     ),
                   ],
@@ -473,7 +475,7 @@ class _WalkthroughState extends State<Walkthrough> {
                       child: Text(
                         'Chat with your matches and',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 22,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.bold,
                         ),
@@ -489,7 +491,7 @@ class _WalkthroughState extends State<Walkthrough> {
                       child: Text(
                         'trade your plants',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 22,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.bold,
                         ),
@@ -507,7 +509,7 @@ class _WalkthroughState extends State<Walkthrough> {
                       child: Text(
                         'Once you have matched with another',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontFamily: 'Lato',
                           color: Colors.grey[600],
                         ),
@@ -525,7 +527,7 @@ class _WalkthroughState extends State<Walkthrough> {
                       child: Text(
                         'plant you are able to chat with them.',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontFamily: 'Lato',
                           color: Colors.grey[600],
                         ),
@@ -543,7 +545,7 @@ class _WalkthroughState extends State<Walkthrough> {
                       child: Text(
                         'Happy trading!',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontFamily: 'Lato',
                           color: Colors.grey[600],
                         ),
