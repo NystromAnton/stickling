@@ -5,11 +5,10 @@ const Plant = require("../models/plantModel");
 const Preference = require("../models/preferenceModel");
 
 router.get("/swipe-deck/:id", async function (req, res, next) {
-    var id = req.params.id;
-    var preference = await Preference.find({user: id});
-    res.json(plants);
+  var id = req.params.id;
+  var preference = await Preference.find({ user: id });
+  res.json(plants);
 });
-
 
 /* GET all plants from a user */
 router.get("/:id", async function (req, res, next) {
@@ -24,20 +23,18 @@ router.post("/add-plant", async function (req, res, next) {
   try {
     let user = await User.findById(userId);
     if (user) {
+      const newPlant = new Plant({
+        user: userId,
+        title: form.title,
+        desc: form.desc,
+        pic: form.pic,
+        type: form.type,
+      });
 
-    const newPlant = new Plant({
-      user: userId,
-      title: form.title,
-      desc: form.desc,
-      pic: form.pic,
-      type: form.type,
-    });
-
-    await newPlant.save();
-    res.send(newPlant);
-    }
-    else {
-    res.send("User doesn't exist")
+      await newPlant.save();
+      res.send(newPlant);
+    } else {
+      res.send("User doesn't exist");
     }
   } catch (err) {
     console.error(err.message);

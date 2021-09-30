@@ -14,7 +14,7 @@ const PlantSchema = new mongoose.Schema({
     type: String,
   },
   pic: {
-    type: String,
+    type: [String],
     required: true,
   },
   type: {
