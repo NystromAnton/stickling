@@ -67,13 +67,6 @@ router.get("/:id", async function (req, res, next) {
         next(err);
         return;
       }
-      /*
-      var arr = [];
-      for (i = 0; i < data.length; i++) {
-        arr.push(data[i].plants);
-      }
-      console.log(arr);
-      */
       res.json(data);
     }
   );
