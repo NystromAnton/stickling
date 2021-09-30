@@ -3,6 +3,7 @@ var router = express.Router();
 const User = require("../models/userModel");
 const Plant = require("../models/plantModel");
 const Match = require("../models/matchModel");
+const MySwipeHistory = require("../models/mySwipeHistory");
 const ChatRoom = require("../models/chatRoomModel");
 
 /* GET all plants from a user */
@@ -32,7 +33,16 @@ router.post("/", async function (req, res, next) {
             $set: { matched: true },
           }
         );
-
+        const newSwipeHistory = new MySwipeHistory({
+          myUserID: userId,
+          userID: swipedPlant.user,
+          plantID: swipedPlant._id,
+          title: swipedPlant.title,
+          desc: swipedPlant.desc,
+          type: swipedPlant.type,
+          matched: true,
+        });
+        await newSwipeHistory.save();
         var chatExist = await ChatRoom.find({
           $or: [
             { $and: [{ user1ID: userId }, { user2ID: swipedPlant.user }] },
@@ -57,7 +67,15 @@ router.post("/", async function (req, res, next) {
           firstLiked: userId,
           likedPlant: form.plantId,
         });
-        await newMatch.save();
+        const newSwipeHistory = new MySwipeHistory({
+          myUserID: userId,
+          userID: swipedPlant.user,
+          plantID: swipedPlant._id,
+          title: swipedPlant.title,
+          desc: swipedPlant.desc,
+          type: swipedPlant.type,
+        });
+        await newSwipeHistory.save();
         res.send("Match object created");
       }
     } else {
