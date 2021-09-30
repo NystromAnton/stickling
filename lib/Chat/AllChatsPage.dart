@@ -55,12 +55,15 @@ class _AllChatsPageState extends State<AllChatsPage> {
                               String otherUser;
                               String meUser;
                               String message = "";
+                              String otherUserPlant;
                               if (chatRooms[i]["user1"]["_id"] ==
                                   widget.currentUserID) {
                                 otherUser = "user1";
+                                otherUserPlant = "plant1";
                                 meUser = "user2";
                               } else {
                                 otherUser = "user2";
+                                otherUserPlant = "plant2";
                                 meUser = "user1";
                               }
                               if (chatRooms[i]["recent_chat"] != null) {
@@ -77,6 +80,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                         widget.currentUserID,
                                         chatRooms[i][otherUser]["name"],
                                         chatRooms[i][meUser]["name"],
+                                        chatRooms[i][otherUserPlant]["pic"][0],
                                       ),
                                     ),
                                   );

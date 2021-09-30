@@ -4,6 +4,7 @@ var mongoose = require("mongoose");
 var chatRoom = require("../models/chatRoomModel.js");
 var User = require("../models/userModel");
 var Chat = require("../models/chatModel");
+var Plant = require("../models/plantModel");
 
 // GET ALL USERS ROOMS BY userID
 router.get("/user/:id", function (req, res, next) {
@@ -35,6 +36,24 @@ router.get("/user/:id", function (req, res, next) {
       { $unwind: "$user1" },
       {
         $lookup: {
+          from: Plant.collection.name,
+          localField: "plant1ID",
+          foreignField: "_id",
+          as: "plant1",
+        },
+      },
+      { $unwind: "$plant1" },
+      {
+        $lookup: {
+          from: Plant.collection.name,
+          localField: "plant2ID",
+          foreignField: "_id",
+          as: "plant2",
+        },
+      },
+      { $unwind: "$plant2" },
+      {
+        $lookup: {
           from: Chat.collection.name,
           localField: "_id",
           foreignField: "chatRoom",
@@ -46,6 +65,8 @@ router.get("/user/:id", function (req, res, next) {
           _id: 1,
           user1: 1,
           user2: 1,
+          plant1: 1,
+          plant2: 1,
           recent_chat: { $arrayElemAt: ["$chats", -1] },
         },
       },
@@ -57,7 +78,7 @@ router.get("/user/:id", function (req, res, next) {
         next(err);
         return;
       }
-      console.log(data)
+      console.log(data);
       res.json(data);
     }
   );
