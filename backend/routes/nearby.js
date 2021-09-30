@@ -5,6 +5,9 @@ const Plant = require("../models/plantModel");
 const Match = require("../models/matchModel");
 const Preference = require("../models/preferenceModel");
 const mongoose = require("mongoose");
+const mySwipeHistory = require("../models/mySwipeHistory");
+
+function smartDeck() {}
 
 router.get("/:id", async function (req, res, next) {
   var coord = req.query.q;
@@ -39,6 +42,14 @@ router.get("/:id", async function (req, res, next) {
           localField: "_id",
           foreignField: "user",
           as: "plants",
+        },
+      },
+      {
+        $lookup: {
+          from: mySwipeHistory.collection.name,
+          localField: "_id",
+          foreignField: "myUserID",
+          as: "swipeHistory",
         },
       },
       { $unwind: "$plants" },
