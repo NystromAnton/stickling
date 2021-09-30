@@ -33,7 +33,8 @@ class _SwipeTabState extends State<SwipeTab> {
   CardController cardController = new CardController();
 
   Future<List<dynamic>> getMyPlants(String url) async {
-    String url = "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
+    String url =
+        "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
     final response = await http.get(url);
 
     final responseJson = json.decode(response.body.toString());
@@ -54,6 +55,8 @@ class _SwipeTabState extends State<SwipeTab> {
 
     final responseJson = json.decode(response.body.toString());
 
+    print("HERE");
+    print(responseJson);
     List<dynamic> users = (json.decode(response.body) as List);
 
     return users;
@@ -273,7 +276,8 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: null,/*() => Navigator.push(
+                                        onPressed: null,
+                                        /*() => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>

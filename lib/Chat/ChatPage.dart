@@ -20,6 +20,7 @@ class ChatPage extends StatefulWidget {
     this.otherName = otherName;
     this.myName = myName;
     this.plantPicUrl = plantPicUrl;
+    print("plantURL " + plantPicUrl);
   }
   @override
   _ChatPageState createState() => _ChatPageState();
