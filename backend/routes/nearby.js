@@ -33,7 +33,6 @@ router.get("/:id", async function (req, res, next) {
           spherical: true,
         },
       },
-
       {
         $lookup: {
           from: Plant.collection.name,
@@ -42,7 +41,6 @@ router.get("/:id", async function (req, res, next) {
           as: "plants",
         },
       },
-
       { $unwind: "$plants" },
       {
         $match: {
@@ -52,8 +50,11 @@ router.get("/:id", async function (req, res, next) {
       },
       {
         $project: {
-          _id: 0,
+          _id: 1,
           plants: 1,
+          name: 1,
+          email: 1,
+          distance: { $divide: ["$dist.calculated", 1000] },
         },
       },
     ],
@@ -62,12 +63,14 @@ router.get("/:id", async function (req, res, next) {
         next(err);
         return;
       }
+      /*
       var arr = [];
       for (i = 0; i < data.length; i++) {
         arr.push(data[i].plants);
       }
       console.log(arr);
-      res.json(arr);
+      */
+      res.json(data);
     }
   );
 });
