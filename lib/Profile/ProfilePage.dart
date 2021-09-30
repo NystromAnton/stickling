@@ -18,10 +18,10 @@ import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class PlantProfile extends StatefulWidget {
-  File imageFile;
+  List images;
   String currentUserID;
-  PlantProfile(File imageFile, String currentUserID) {
-    this.imageFile = imageFile;
+  PlantProfile(List images, String currentUserID) {
+    this.images = images;
     this.currentUserID = currentUserID;
   }
 
@@ -158,13 +158,13 @@ class _PlantProfileState extends State<PlantProfile> {
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.25,
                               width: MediaQuery.of(context).size.height * 0.25,
-                              child: ClipRRect( borderRadius:  BorderRadius.circular(10),
+                              child: ClipRRect( borderRadius: BorderRadius.circular(10),
                               child: AssetThumb(
                                   //width: (MediaQuery.of(context).size.height * 0.5).toInt(),
                                  // height: (MediaQuery.of(context).size.height * 0.5).toInt(),
                                  width: 500,
                                  height: 500,
-                                  asset: images[i-1]),
+                                 asset: images[i-1]),
                               ),
                             )
                           );
@@ -224,7 +224,7 @@ class _PlantProfileState extends State<PlantProfile> {
                 Expanded(
                   flex: 0,
                   child: RaisedButton(
-                    onPressed: isEnabled ? () => getImage() : null,
+                    onPressed: isEnabled ? () => uploadInfo() : null,
                     child: Text(
                       'Upload plant',
                       style: TextStyle(fontSize: 25),
@@ -248,21 +248,35 @@ class _PlantProfileState extends State<PlantProfile> {
     );
   }
 
-  Future getImage() async {
-    var image = imageFiles[0];
+   Future uploadInfo() async {
+        List<String> imageUrlList = []; 
+        FirebaseStorage storage = FirebaseStorage.instance;
+        for (var img in imageFiles) {
+          Reference ref = storage.ref().child(widget.currentUserID + DateTime.now().toString());
+          await ref.putFile(img);
+          final String downloadUrl = await ref.getDownloadURL();
+          imageUrlList.add(downloadUrl); 
+        }
+        await requestMethod("", imageUrlList);
+        Navigator.pop(context);
+     }
 
-    FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref =
-        storage.ref().child(widget.currentUserID + DateTime.now().toString());
-    UploadTask uploadTask = ref.putFile(image);
-    await uploadTask.then((res) {
-      res.ref.getDownloadURL().then((value) => requestMethod("", value)
-          .then((value) => print("Response of Add Planet " + value)));
-    });
-    Navigator.pop(context);
-  }
+  /*Future getImage() async {
+    List<String> imageUrlList = []; 
+    print("ImagesFiles; " + imageFiles.toString());
+      var image = imageFiles;
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref =
+          storage.ref().child(widget.currentUserID + DateTime.now().toString());
+      UploadTask uploadTask = ref.putFile(image);
+      await uploadTask.then((res) {
+        res.ref.getDownloadURL().then((value) => requestMethod("", [value])
+            .then((value) => print("Response of Add Planet " + value)));
+      });
+      Navigator.pop(context);
+  }*/
 
-  Future<String> requestMethod(String url, String imageurl) async {
+  Future<String> requestMethod(String url, List<String> imageurl) async {
     var body = json.encode({
       "id": widget.currentUserID,
       "title": titleController.text,
@@ -376,7 +390,7 @@ class _PlantProfileState extends State<PlantProfile> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                PlantProfile(imageFile, widget.currentUserID)),
+                PlantProfile(images, widget.currentUserID)),
       );
     } catch (e) {}
   }
