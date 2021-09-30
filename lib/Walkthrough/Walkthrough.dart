@@ -146,7 +146,8 @@ class _WalkthroughState extends State<Walkthrough> {
                       Padding(
                         padding: EdgeInsets.only(top: 50),
                         child: Image.asset(
-                          'assets/flower2.png',
+                          'assets/walkthroughPlant1.png',
+                          height: 230,
                         ),
                       ),
                     ],
@@ -295,7 +296,8 @@ class _WalkthroughState extends State<Walkthrough> {
                       Padding(
                         padding: EdgeInsets.only(top: 50),
                         child: Image.asset(
-                          'assets/flower1.png',
+                          'assets/walkthroughPlant2.png',
+                          height: 230,
                         ),
                       ),
                     ],
@@ -459,8 +461,8 @@ class _WalkthroughState extends State<Walkthrough> {
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: Image.asset(
-                        'assets/flower3.png',
-                        height: 250,
+                        'assets/walkthroughPlant3.png',
+                        height: 230,
                       ),
                     ),
                   ],
