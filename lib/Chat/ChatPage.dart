@@ -8,10 +8,18 @@ import 'dart:convert';
 
 class ChatPage extends StatefulWidget {
   String chatRoomID;
+  String currentUserID;
+  String otherName;
+  String myName;
+  String plantPicUrl;
 
   ChatPage(String chatRoomID, String currentUserID, String otherName,
-      String myName) {
+      String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
+    this.currentUserID = currentUserID;
+    this.otherName = otherName;
+    this.myName = myName;
+    this.plantPicUrl = plantPicUrl;
   }
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -34,6 +42,64 @@ class _ChatPageState extends State<ChatPage> {
         child: Container(
           child: Column(
             children: <Widget>[
+              AppBar(
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.white,
+                flexibleSpace: SafeArea(
+                  child: Container(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(widget.plantPicUrl),
+                          maxRadius: 20,
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                widget.otherName,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 6,
+                              ),
+                              Text(
+                                "Online",
+                                style: TextStyle(
+                                    color: Colors.grey.shade600, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.settings,
+                          color: Colors.black54,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 28.0),
                 child: FutureBuilder(
@@ -48,54 +114,34 @@ class _ChatPageState extends State<ChatPage> {
                       List chatMessages = snapshot.data;
 
                       return Container(
-                        height: 500,
+                        height: 700,
                         child: ListView.builder(
                           itemCount: chatMessages.length,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                          physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, i) {
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Container(
-                                height: 100,
-                                width: 150,
-                                color: Colors.white,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              bottom: 8.0,
-                                              right: 10,
-                                              left: 20,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  chatMessages[i]["message"],
-                                                  style: TextStyle(
-                                                      fontFamily: 'Lato',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black,
-                                                      fontSize: 20),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 14, right: 14, top: 10, bottom: 10),
+                              child: Align(
+                                alignment: (chatMessages[i]["fromID"] ==
+                                        widget.currentUserID
+                                    ? Alignment.topLeft
+                                    : Alignment.topRight),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: (chatMessages[i]["fromID"] ==
+                                            widget.currentUserID
+                                        ? Colors.grey.shade200
+                                        : Colors.blue[200]),
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  child: Text(
+                                    chatMessages[i]["message"],
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ),
                               ),
                             );
