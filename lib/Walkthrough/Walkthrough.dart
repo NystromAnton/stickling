@@ -81,8 +81,8 @@ class _WalkthroughState extends State<Walkthrough> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
-                  child: Image.asset('assets/page1pic.png'),
+                  padding: EdgeInsets.only(top: 40, bottom: 20),
+                  child: Image.asset('assets/page1pic.png', height: 120),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 30),
@@ -110,7 +110,7 @@ class _WalkthroughState extends State<Walkthrough> {
                     child: Text(
                       'Log in',
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
                         fontFamily: 'Lato',
                         color: Colors.grey[700],
                         decoration: TextDecoration.underline,
