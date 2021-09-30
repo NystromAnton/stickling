@@ -51,9 +51,13 @@ router.get("/:id", async function (req, res, next) {
       {
         $project: {
           _id: 1,
-          plants: 1,
-          name: 1,
+          userName: 1,
           email: 1,
+          plantID: "$plants._id",
+          pic: "$plants.pic",
+          title: "$plants.title",
+          desc: "$plants.desc",
+          type: "$plants.type",
           distance: { $divide: ["$dist.calculated", 1000] },
         },
       },
