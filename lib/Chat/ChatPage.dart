@@ -64,8 +64,7 @@ class _ChatPageState extends State<ChatPage> {
                           width: 2,
                         ),
                         CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              "<https://randomuser.me/api/portraits/men/5.jpg>"),
+                          backgroundImage: NetworkImage(widget.plantPicUrl),
                           maxRadius: 20,
                         ),
                         SizedBox(
