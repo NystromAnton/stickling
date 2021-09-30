@@ -75,7 +75,7 @@ class _ChatPageState extends State<ChatPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "",
+                                widget.otherName,
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
@@ -117,20 +117,30 @@ class _ChatPageState extends State<ChatPage> {
                         child: ListView.builder(
                           itemCount: chatMessages.length,
                           shrinkWrap: true,
-                          padding: EdgeInsets.only(top: 10,bottom: 10),
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
                           physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, i){
+                          itemBuilder: (context, i) {
                             return Container(
-                              padding: EdgeInsets.only(left: 14,right: 14,top: 10,bottom: 10),
+                              padding: EdgeInsets.only(
+                                  left: 14, right: 14, top: 10, bottom: 10),
                               child: Align(
-                                alignment: (chatMessages[i]["fromID"] == widget.currentUserID?Alignment.topLeft:Alignment.topRight),
+                                alignment: (chatMessages[i]["fromID"] ==
+                                        widget.currentUserID
+                                    ? Alignment.topLeft
+                                    : Alignment.topRight),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: (chatMessages[i]["fromID"] == widget.currentUserID?Colors.grey.shade200:Colors.blue[200]),
+                                    color: (chatMessages[i]["fromID"] ==
+                                            widget.currentUserID
+                                        ? Colors.grey.shade200
+                                        : Colors.blue[200]),
                                   ),
                                   padding: EdgeInsets.all(16),
-                                  child: Text(chatMessages[i]["message"], style: TextStyle(fontSize: 15),),
+                                  child: Text(
+                                    chatMessages[i]["message"],
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ),
                               ),
                             );
