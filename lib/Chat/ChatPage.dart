@@ -11,13 +11,15 @@ class ChatPage extends StatefulWidget {
   String currentUserID;
   String otherName;
   String myName;
+  String plantPicUrl;
 
   ChatPage(String chatRoomID, String currentUserID, String otherName,
-      String myName) {
+      String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
     this.currentUserID = currentUserID;
     this.otherName = otherName;
     this.myName = myName;
+    this.plantPicUrl = plantPicUrl;
   }
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -54,7 +56,7 @@ class _ChatPageState extends State<ChatPage> {
                       List chatMessages = snapshot.data;
 
                       return Container(
-                        height: 500,
+                        height: 700,
                         child: ListView.builder(
                           itemCount: chatMessages.length,
                           shrinkWrap: true,
