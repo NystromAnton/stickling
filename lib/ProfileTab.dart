@@ -194,14 +194,14 @@ class _ProfileTabState extends State<ProfileTab> {
                                               IconButton(
                                                 icon: Icon(Icons.edit_outlined),
                                                 onPressed: () {
-                                                  print(plantImages[i]["pic"]);
+                                                  print("plantImages: " + plantImages[i]["pic"].toString());
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               EditProfile(
                                                                   plantImages[i]
-                                                                      ["pic"].toString(),
+                                                                      ["pic"],
                                                                   plantImages[i]
                                                                       ["title"],
                                                                   plantImages[i]

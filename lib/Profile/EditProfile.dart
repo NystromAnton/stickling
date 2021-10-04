@@ -12,12 +12,12 @@ import 'package:stycling/Profile/ProfilePage.dart';
 import 'package:http/http.dart' as http;
 
 class EditProfile extends StatefulWidget {
-  String imageFile;
+  List<dynamic> images;
   String title;
   String description;
 
-  EditProfile(String imageFile, String title, String description) {
-    this.imageFile = imageFile;
+  EditProfile(List images, String title, String description) {
+    this.images = images;
     this.title = title;
     this.description = description;
   }
@@ -37,8 +37,8 @@ class _EditProfileState extends State<EditProfile> {
     super.dispose();
   }
 
-  File _imageFile;
-  List<Asset> images = List<Asset>();
+  List _imageFile;
+  //List<Asset> images = List<Asset>();
   String _error = 'No Error Dectected';
   Asset asset = null;
   Asset asset_one = null;
@@ -53,6 +53,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    print("test: " + widget.images.toString());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -114,9 +115,10 @@ class _EditProfileState extends State<EditProfile> {
                         child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        itemCount: images.length + 1,
+                        itemCount: widget.images.length + 1,
                         itemBuilder: (context, i){
                           if (i == 0) {
+                            print("images: " + widget.images.toString());
                             return Padding(
                               padding: const EdgeInsets.all(8),
                               child: Container(
@@ -137,18 +139,22 @@ class _EditProfileState extends State<EditProfile> {
                                 borderRadius: BorderRadius.circular(10)),
                               ),
                             );
-                            } else { return Padding(
+                            } else {
+                              return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.25,
                               width: MediaQuery.of(context).size.height * 0.25,
                               child: ClipRRect( borderRadius:  BorderRadius.circular(10),
-                              child: AssetThumb(
+                              child: CachedNetworkImage(
                                   //width: (MediaQuery.of(context).size.height * 0.5).toInt(),
                                   //height: (MediaQuery.of(context).size.height * 0.5).toInt(),
-                                 width: 500,
-                                 height: 500,
-                                  asset: images[i-1]),
+                                 //width: 500,
+                                 //height: 500,
+                                 // asset: widget.images[i-1]
+                                 imageUrl: widget.images[i-1],
+                                 fit: BoxFit.cover,
+                                 ),
                               ),
                             )
                           );
@@ -268,7 +274,7 @@ class _EditProfileState extends State<EditProfile> {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 5,
         enableCamera: true,
-        selectedAssets: images,
+        selectedAssets: widget.images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
           actionBarColor: "#abcdef",
@@ -288,12 +294,12 @@ class _EditProfileState extends State<EditProfile> {
     if (!mounted) return;
 
     setState(() {
-      images = resultList;
-      print("images Size " + images.length.toString());
+      widget.images = resultList;
+      print("images Size " + widget.images.length.toString());
 
-      for (int i = 0; i < images.length; i++) {
-        Asset asset = images[i];
-        asset = images[0];
+      for (int i = 0; i < widget.images.length; i++) {
+        Asset asset = widget.images[i];
+        asset = widget.images[0];
 
         images_Asscets.add(AssetThumb(
           asset: asset,
@@ -344,7 +350,7 @@ class _EditProfileState extends State<EditProfile> {
 
   EnableButton() {
     setState(() {
-      if (widget.imageFile == null) {
+      if (widget.images == null) {
         isEnabled = false;
       } else {
         if (descriptionController.text.length > 0 &&
