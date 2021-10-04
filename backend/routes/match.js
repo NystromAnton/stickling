@@ -58,7 +58,7 @@ router.post("/", async function (req, res, next) {
             plant2ID: swipedPlant,
           });
           await newChatRoom.save();
-          res.json("Match");
+          res.send("Match");
         } else {
           res.send("Chat already exist");
         }
