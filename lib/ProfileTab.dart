@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stycling/Profile/EditProfile.dart';
 import 'package:stycling/settings.dart';
+import 'package:collection/collection.dart';
 
 import 'Profile/ProfilePage.dart';
 import 'settings.dart';
@@ -109,7 +110,6 @@ class _ProfileTabState extends State<ProfileTab> {
                       );
                     } else {
                       List plantImages = snapshot.data;
-
                       return Container(
                         height: MediaQuery.of(context).size.height * 0.8,
                         child: ListView.builder(
@@ -133,7 +133,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(5),
                                         child: CachedNetworkImage(
-                                          imageUrl: plantImages[i]["pic"],
+                                          imageUrl: plantImages[i]["pic"][0],
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) =>
                                               SizedBox(
@@ -194,17 +194,14 @@ class _ProfileTabState extends State<ProfileTab> {
                                               IconButton(
                                                 icon: Icon(Icons.edit_outlined),
                                                 onPressed: () {
-                                                  print(
-                                                      "HÄR ÄR BILDSTRINGEN!!!!! " +
-                                                          plantImages[i]
-                                                              ["pic"]);
+                                                  print(plantImages[i]["pic"]);
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               EditProfile(
                                                                   plantImages[i]
-                                                                      ["pic"],
+                                                                      ["pic"].toString(),
                                                                   plantImages[i]
                                                                       ["title"],
                                                                   plantImages[i]
