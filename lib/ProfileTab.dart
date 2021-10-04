@@ -110,7 +110,6 @@ class _ProfileTabState extends State<ProfileTab> {
                       );
                     } else {
                       List plantImages = snapshot.data;
-                      print(plantImages[21]['pic']);
                       return Container(
                         height: MediaQuery.of(context).size.height * 0.8,
                         child: ListView.builder(
