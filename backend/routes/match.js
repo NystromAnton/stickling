@@ -55,7 +55,7 @@ router.post("/", async function (req, res, next) {
             user1ID: userId,
             user2ID: swipedPlant.user,
             plant1ID: match.likedPlant,
-            plant2ID: swipedPlant,
+            plant2ID: swipedPlant._id,
           });
           await newChatRoom.save();
           res.send("Match");
@@ -67,6 +67,7 @@ router.post("/", async function (req, res, next) {
           firstLiked: userId,
           likedPlant: form.plantId,
         });
+        await newMatch.save();
         const newSwipeHistory = new MySwipeHistory({
           myUserID: userId,
           userID: swipedPlant.user,
