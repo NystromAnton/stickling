@@ -125,7 +125,7 @@ class _SwipeTabState extends State<SwipeTab> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: 550,
+                      height: MediaQuery.of(context).size.height * 0.7,
                       child: new TinderSwapCard(
                         swipeUp: true,
                         swipeDown: true,
