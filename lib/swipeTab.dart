@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:loading_gifs/loading_gifs.dart';
 import 'package:stycling/Chat/AllChatsPage.dart';
+import 'package:stycling/Registration/Login.dart';
 
 class SwipeTab extends StatefulWidget {
   String CurrentUserID;
@@ -145,9 +146,10 @@ class _SwipeTabState extends State<SwipeTab> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: new InkWell(
-                              onTap: () {
-                                print("tapped");
-                              },
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Login()),
+                              ),
                             child: Padding(
                               padding: const EdgeInsets.only(top: 15),
                               child: Column(
