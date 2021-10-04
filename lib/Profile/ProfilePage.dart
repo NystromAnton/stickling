@@ -281,7 +281,7 @@ class _PlantProfileState extends State<PlantProfile> {
       "id": widget.currentUserID,
       "title": titleController.text,
       "desc": descriptionController.text,
-      "pic": imageurl.toString(),
+      "pic": imageurl,
       "type": "tulpan"
     });
 
