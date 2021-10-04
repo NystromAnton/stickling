@@ -76,7 +76,7 @@ router.post("/", async function (req, res, next) {
           type: swipedPlant.type,
         });
         await newSwipeHistory.save();
-        res.send("Match object created");
+        res.send("Swiped registered");
       }
     } else {
       res.send("User doesn't exist");
