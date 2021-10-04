@@ -144,8 +144,12 @@ class _SwipeTabState extends State<SwipeTab> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
+                            child: new InkWell(
+                              onTap: () {
+                                print("tapped");
+                              },
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 28),
+                              padding: const EdgeInsets.only(top: 15),
                               child: Column(
                                 children: [
                                   Row(
@@ -155,7 +159,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.75,
-                                        padding: EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: 5, bottom: 10),
                                         child: FittedBox(
                                           fit: BoxFit.scaleDown,
                                           child: Text(
@@ -199,7 +203,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 12.0),
+                                            const EdgeInsets.only(left: 16),
                                         child: Row(
                                           children: [
                                             Icon(Icons.location_on_outlined),
@@ -213,12 +217,9 @@ class _SwipeTabState extends State<SwipeTab> {
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 12),
+                                            const EdgeInsets.only(left: 16),
                                         child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.72,
+                                          width: MediaQuery.of(context).size.width * 0.72,
                                           padding: EdgeInsets.only(top: 10),
                                           child: Text(
                                             images[index]['desc'].toString(),
@@ -237,6 +238,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                 ],
                               ),
                             ),
+                          ),
                           ),
                         ),
                         cardController: cardController,
