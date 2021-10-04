@@ -122,7 +122,7 @@ class _SwipeTabState extends State<SwipeTab> {
 
               List<String> welcomeImages = List<String>();
               for (int i = 0; i < images.length; i++) {
-                welcomeImages.add(images[i]["pic"]);
+                welcomeImages.add(images[i]["pic"][0]);
               }
               return Container(
                 child: Column(
