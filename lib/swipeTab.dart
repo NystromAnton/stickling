@@ -59,9 +59,10 @@ class _SwipeTabState extends State<SwipeTab> {
     return users;
   }
 
-  Future<String> SwipeRight(String userID, String PlantID) async {
+  Future<String> swipeRight(String userID, String plantID) async {
+    print("HEJHEJEHEJEHEJEH" + plantID);
     var body =
-        json.encode({"userId": widget.CurrentUserID, "plantId": PlantID});
+        json.encode({"userId": widget.CurrentUserID, "plantId": plantID});
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -71,6 +72,7 @@ class _SwipeTabState extends State<SwipeTab> {
     final response = await http.post("https://sticklingar.herokuapp.com/match/",
         body: body, headers: headers);
     final responseJson = response.body.toString();
+    
 
     return responseJson;
   }
@@ -256,10 +258,12 @@ class _SwipeTabState extends State<SwipeTab> {
                           if (orientation == CardSwipeOrientation.LEFT) {
                           } else if (orientation ==
                               CardSwipeOrientation.RIGHT) {
-                            SwipeRight("", images[index]['_id']).then(
+                                print(images[index]);
+                            swipeRight("", images[index]['plantID']).then(
                               (value) {
-                                if (value.contains("Match object created")) {
-                                } else {
+                                if (value.contains("Match")) {
+                                  print(value);
+                                  print(images[index]['_id']);
                                   Alert(
                                     context: context,
                                     type: AlertType.success,
