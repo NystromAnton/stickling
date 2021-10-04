@@ -33,7 +33,8 @@ class _SwipeTabState extends State<SwipeTab> {
   CardController cardController = new CardController();
 
   Future<List<dynamic>> getMyPlants(String url) async {
-    String url = "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
+    String url =
+        "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
     final response = await http.get(url);
 
     final responseJson = json.decode(response.body.toString());
@@ -72,7 +73,6 @@ class _SwipeTabState extends State<SwipeTab> {
     final response = await http.post("https://sticklingar.herokuapp.com/match/",
         body: body, headers: headers);
     final responseJson = response.body.toString();
-    
 
     return responseJson;
   }
@@ -258,7 +258,7 @@ class _SwipeTabState extends State<SwipeTab> {
                           if (orientation == CardSwipeOrientation.LEFT) {
                           } else if (orientation ==
                               CardSwipeOrientation.RIGHT) {
-                                print(images[index]);
+                            print(images[index]);
                             swipeRight("", images[index]['plantID']).then(
                               (value) {
                                 if (value.contains("Match")) {
@@ -277,7 +277,8 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: null,/*() => Navigator.push(
+                                        onPressed: null,
+                                        /*() => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
