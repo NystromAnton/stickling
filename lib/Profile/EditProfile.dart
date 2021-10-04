@@ -101,21 +101,6 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    images.clear();
-                    images_Asscets.clear();
-                    loadAssets();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 48.0, right: 20),
-                    child: Icon(
-                      Icons.control_point_outlined,
-                      size: 60,
-                      color: Color(0xFF000000).withOpacity(0.1),
-                    ),
-                  ),
-                ),
               ],
             ),
             Row(
@@ -124,6 +109,62 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width * 1,
+                        child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: images.length + 1,
+                        itemBuilder: (context, i){
+                          if (i == 0) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Container(
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: MediaQuery.of(context).size.height * 0.25,
+                          child: GestureDetector(
+                              onTap: () {
+                                loadAssets();
+                              },
+                              child: Icon(
+                                Icons.control_point_outlined,
+                                size: MediaQuery.of(context).size.height * 0.08,
+                                color: Color(0xFF000000).withOpacity(0.1),
+                              ),
+                          ),
+                          decoration: BoxDecoration(
+                                color: Color(0xFFD9D9D9).withOpacity(.5),
+                                borderRadius: BorderRadius.circular(10)),
+                              ),
+                            );
+                            } else { return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              width: MediaQuery.of(context).size.height * 0.25,
+                              child: ClipRRect( borderRadius:  BorderRadius.circular(10),
+                              child: AssetThumb(
+                                  //width: (MediaQuery.of(context).size.height * 0.5).toInt(),
+                                  //height: (MediaQuery.of(context).size.height * 0.5).toInt(),
+                                 width: 500,
+                                 height: 500,
+                                  asset: images[i-1]),
+                              ),
+                            )
+                          );
+                            }
+                        })
+                          /*height: MediaQuery.of(context).size.height * 0.40,
+                          width: MediaQuery.of(context).size.width * 0.98,
+                          child: Carousel(
+                            images: images_Asscets,
+                            dotSize: 4,
+                            dotBgColor: Colors.transparent,
+                            dotSpacing: 15,
+                            autoplay: false,
+                          ),*/
+                ),
+                  /*SizedBox(
                       height: MediaQuery.of(context).size.height * 0.40,
                       width: MediaQuery.of(context).size.width * 0.98,
                       child: CachedNetworkImage(
@@ -137,7 +178,7 @@ class _EditProfileState extends State<EditProfile> {
                       dotSpacing: 15,
                       autoplay: false,
                       ),*/
-                      ),
+                      ),*/
                   // : Container(
                   //     height: 375,
                   //     width: 375,

@@ -297,15 +297,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   alignment: Alignment.centerLeft,
                   //width: MediaQuery.of(context).size.width * 0.9,
                   child: MultiSelectChipField(
-
                     items: _items,
-
                     scroll: false,
                     onTap: (values) {
                       _selectedAnimals = values;
                       inspect(values);
-
-                      print("Result "+  json.encode(values.toString()));
                     },
                     title: Text("Plant types:"),
                     chipColor: Colors.grey[400],
