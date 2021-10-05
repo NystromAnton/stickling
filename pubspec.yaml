@@ -36,13 +36,14 @@ dependencies:
   fluttertoast: "7.1.8"
   multi_image_picker: "4.7.15"
   carousel_pro: "1.0.0"
-  geolocator:
+  geolocator: ^7.6.2
   firebase_storage: ^5.0.1
   firebase_core: ^0.5.0
   cached_network_image: "2.5.1"
   scoped_model: ^1.0.1
   flutter_absolute_path: ^1.0.6
   loading_gifs: ^0.3.0
+  location: ^1.4.1
 
 dev_dependencies:
   flutter_test:

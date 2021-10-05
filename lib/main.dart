@@ -77,7 +77,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
             backgroundColor: Colors.white,
             bottom: TabBar(
               physics: NeverScrollableScrollPhysics(),
-              indicatorColor: Colors.green,
+              indicatorColor: Color(0xFF65C27A),
               labelColor: Color(0xFF65C27A),
               unselectedLabelColor: Color(0x6665C27A),
               tabs: [

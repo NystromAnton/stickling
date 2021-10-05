@@ -125,11 +125,13 @@ class _SwipeTabState extends State<SwipeTab> {
               for (int i = 0; i < images.length; i++) {
                 welcomeImages.add(images[i]["pic"][0]);
               }
+
               return Container(
                 child: Column(
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.height * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.97,
                       child: new TinderSwapCard(
                         swipeUp: true,
                         swipeDown: true,
@@ -142,7 +144,7 @@ class _SwipeTabState extends State<SwipeTab> {
                         minWidth: MediaQuery.of(context).size.width * 0.8,
                         minHeight: MediaQuery.of(context).size.height * 0.8,
                         cardBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(top: 15.0),
                           child: Card(
                             elevation: 10,
                             shape: RoundedRectangleBorder(
@@ -152,97 +154,231 @@ class _SwipeTabState extends State<SwipeTab> {
                               onTap: () {
                                 print("tapped");
                               },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.75,
-                                        padding: EdgeInsets.only(top: 5, bottom: 10),
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            images[index]['title'].toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 30,
-                                              fontFamily: 'Lato',
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Container(
+                                  child: Center(
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: CachedNetworkImage(
+                                            imageUrl: welcomeImages[index],
+                                            imageBuilder: (context,
+                                                    imageProvider) =>
+                                                Container(
+                                                    decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )),
+                                            placeholder: (context, url) =>
+                                                SizedBox(
+                                              width: 5,
+                                              height: 5,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child:
+                                                    CupertinoActivityIndicator(
+                                                  radius: 20,
+                                                ),
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    new Icon(Icons.error),
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.02,
+                                              left: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  images[index]['title']
+                                                      .toString(),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 30,
+                                                    fontFamily: 'Lato',
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                          Icons
+                                                              .location_on_outlined,
+                                                          color: Colors.white),
+                                                      Text(
+                                                        images[index]
+                                                                    ['distance']
+                                                                .toString() +
+                                                            " km",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontFamily: 'Lato',
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.72,
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Text(
+                                                    images[index]['desc']
+                                                        .toString(),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontFamily: 'Lato',
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.4,
-                                    width:
-                                        MediaQuery.of(context).size.width * 1.0,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: CachedNetworkImage(
-                                        imageUrl: welcomeImages[index],
-                                        placeholder: (context, url) => SizedBox(
-                                          width: 5,
-                                          height: 5,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: CupertinoActivityIndicator(
-                                              radius: 20,
-                                            ),
-                                          ),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            new Icon(Icons.error),
-                                      ),
+                                      ],
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.location_on_outlined),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Container(
-                                          width: MediaQuery.of(context).size.width * 0.72,
-                                          padding: EdgeInsets.only(top: 10),
-                                          child: Text(
-                                            images[index]['desc'].toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontFamily: 'Lato',
+                                ),
+
+                                /*Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.75,
+                                          padding: EdgeInsets.only(
+                                              top: 5, bottom: 10),
+                                          child: FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: Text(
+                                              images[index]['title'].toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 30,
+                                                fontFamily: 'Lato',
+                                              ),
                                             ),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.4,
+                                      width: MediaQuery.of(context).size.width *
+                                          1.0,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: welcomeImages[index],
+                                          placeholder: (context, url) =>
+                                              SizedBox(
+                                            width: 5,
+                                            height: 5,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: CupertinoActivityIndicator(
+                                                radius: 20,
+                                              ),
+                                            ),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              new Icon(Icons.error),
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.location_on_outlined),
+                                              Text(images[index]['distance']
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.72,
+                                            padding: EdgeInsets.only(top: 10),
+                                            child: Text(
+                                              images[index]['desc'].toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontFamily: 'Lato',
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),*/
                               ),
                             ),
-                          ),
                           ),
                         ),
                         cardController: cardController,
