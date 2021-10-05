@@ -62,9 +62,10 @@ class _SwipeTabState extends State<SwipeTab> {
     return users;
   }
 
-  Future<String> SwipeRight(String userID, String PlantID) async {
+  Future<String> swipeRight(String userID, String plantID) async {
+    print("HEJHEJEHEJEHEJEH" + plantID);
     var body =
-        json.encode({"userId": widget.CurrentUserID, "plantId": PlantID});
+        json.encode({"userId": widget.CurrentUserID, "plantId": plantID});
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -128,7 +129,7 @@ class _SwipeTabState extends State<SwipeTab> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: 550,
+                      height: MediaQuery.of(context).size.height * 0.7,
                       child: new TinderSwapCard(
                         swipeUp: true,
                         swipeDown: true,
@@ -147,8 +148,12 @@ class _SwipeTabState extends State<SwipeTab> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
+                            child: new InkWell(
+                              onTap: () {
+                                print("tapped");
+                              },
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 28),
+                              padding: const EdgeInsets.only(top: 15),
                               child: Column(
                                 children: [
                                   Row(
@@ -158,7 +163,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.75,
-                                        padding: EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: 5, bottom: 10),
                                         child: FittedBox(
                                           fit: BoxFit.scaleDown,
                                           child: Text(
@@ -202,7 +207,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 12.0),
+                                            const EdgeInsets.only(left: 16),
                                         child: Row(
                                           children: [
                                             Icon(Icons.location_on_outlined),
@@ -216,12 +221,9 @@ class _SwipeTabState extends State<SwipeTab> {
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 12),
+                                            const EdgeInsets.only(left: 16),
                                         child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.72,
+                                          width: MediaQuery.of(context).size.width * 0.72,
                                           padding: EdgeInsets.only(top: 10),
                                           child: Text(
                                             images[index]['desc'].toString(),
@@ -241,6 +243,7 @@ class _SwipeTabState extends State<SwipeTab> {
                               ),
                             ),
                           ),
+                          ),
                         ),
                         cardController: cardController,
                         swipeUpdateCallback:
@@ -259,10 +262,12 @@ class _SwipeTabState extends State<SwipeTab> {
                           if (orientation == CardSwipeOrientation.LEFT) {
                           } else if (orientation ==
                               CardSwipeOrientation.RIGHT) {
-                            SwipeRight("", images[index]['_id']).then(
+                            print(images[index]);
+                            swipeRight("", images[index]['plantID']).then(
                               (value) {
-                                if (value.contains("Match object created")) {
-                                } else {
+                                if (value.contains("Match")) {
+                                  print(value);
+                                  print(images[index]['_id']);
                                   Alert(
                                     context: context,
                                     type: AlertType.success,
