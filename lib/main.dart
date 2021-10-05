@@ -73,7 +73,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+            toolbarHeight: MediaQuery.of(context).size.height * 0.06,
             backgroundColor: Colors.white,
             bottom: TabBar(
               physics: NeverScrollableScrollPhysics(),

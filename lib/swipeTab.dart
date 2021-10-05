@@ -55,6 +55,8 @@ class _SwipeTabState extends State<SwipeTab> {
 
     final responseJson = json.decode(response.body.toString());
 
+    print("HERE");
+    print(responseJson);
     List<dynamic> users = (json.decode(response.body) as List);
 
     return users;
