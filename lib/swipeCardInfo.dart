@@ -10,20 +10,19 @@ import 'package:loading_gifs/loading_gifs.dart';
 import 'package:stycling/Chat/AllChatsPage.dart';
 import 'package:stycling/Registration/Login.dart';
 import 'package:stycling/settings.dart';
-import 'package:stycling/swipeCardInfo.dart';
 
-class SwipeTab extends StatefulWidget {
+class SwipeCardInfo extends StatefulWidget {
   String CurrentUserID;
 
-  SwipeTab(String CurrentUserID) {
+  SwipeCardInfo(String CurrentUserID) {
     this.CurrentUserID = CurrentUserID;
   }
 
   @override
-  _SwipeTabState createState() => _SwipeTabState();
+  _SwipeCardInfoState createState() => _SwipeCardInfoState();
 }
 
-class _SwipeTabState extends State<SwipeTab> {
+class _SwipeCardInfoState extends State<SwipeCardInfo> {
   @override
   void dispose() {
     super.dispose();
@@ -64,7 +63,7 @@ class _SwipeTabState extends State<SwipeTab> {
 
   Future<String> SwipeRight(String userID, String PlantID) async {
     var body =
-        json.encode({"userId": widget.CurrentUserID, "plantId": PlantID});
+    json.encode({"userId": widget.CurrentUserID, "plantId": PlantID});
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -152,97 +151,97 @@ class _SwipeTabState extends State<SwipeTab> {
                                 context,
                                 MaterialPageRoute(builder: (context) => SettingsPage()),
                               ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.75,
-                                        padding: EdgeInsets.only(top: 5, bottom: 10),
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            images[index]['title'].toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 30,
-                                              fontFamily: 'Lato',
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width:
+                                          MediaQuery.of(context).size.width *
+                                              0.75,
+                                          padding: EdgeInsets.only(top: 5, bottom: 10),
+                                          child: FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: Text(
+                                              images[index]['title'].toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 30,
+                                                fontFamily: 'Lato',
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.4,
-                                    width:
-                                        MediaQuery.of(context).size.width * 1.0,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: CachedNetworkImage(
-                                        imageUrl: welcomeImages[index],
-                                        placeholder: (context, url) => SizedBox(
-                                          width: 5,
-                                          height: 5,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: CupertinoActivityIndicator(
-                                              radius: 20,
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: MediaQuery.of(context).size.height *
+                                          0.4,
+                                      width:
+                                      MediaQuery.of(context).size.width * 1.0,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: welcomeImages[index],
+                                          placeholder: (context, url) => SizedBox(
+                                            width: 5,
+                                            height: 5,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: CupertinoActivityIndicator(
+                                                radius: 20,
+                                              ),
                                             ),
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                          new Icon(Icons.error),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            new Icon(Icons.error),
                                       ),
                                     ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.location_on_outlined),
-                                          ],
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.only(left: 16),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.location_on_outlined),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Container(
-                                          width: MediaQuery.of(context).size.width * 0.72,
-                                          padding: EdgeInsets.only(top: 10),
-                                          child: Text(
-                                            images[index]['desc'].toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontFamily: 'Lato',
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.only(left: 16),
+                                          child: Container(
+                                            width: MediaQuery.of(context).size.width * 0.72,
+                                            padding: EdgeInsets.only(top: 10),
+                                            child: Text(
+                                              images[index]['desc'].toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontFamily: 'Lato',
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
                           ),
                         ),
                         cardController: cardController,
@@ -263,7 +262,7 @@ class _SwipeTabState extends State<SwipeTab> {
                           } else if (orientation ==
                               CardSwipeOrientation.RIGHT) {
                             SwipeRight("", images[index]['_id']).then(
-                              (value) {
+                                  (value) {
                                 if (value.contains("Match object created")) {
                                 } else {
                                   Alert(
@@ -330,8 +329,8 @@ class _SwipeTabState extends State<SwipeTab> {
                                 icon: Icon(Icons.favorite_rounded,
                                     color: Colors.pink[300]),
                                 onPressed: () => {
-                                      cardController.triggerRight(),
-                                    },
+                                  cardController.triggerRight(),
+                                },
                                 iconSize: 55),
                           ),
                         ],
