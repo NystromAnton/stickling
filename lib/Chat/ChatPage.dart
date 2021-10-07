@@ -59,6 +59,8 @@ class _ChatPageState extends State<ChatPage> {
         headers: headers);
     final responseJson = response.body.toString();
 
+    messageController.clear();
+
     getMyChatMessages();
   }
   void scrollToEnd() async {
