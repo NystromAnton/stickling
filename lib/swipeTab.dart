@@ -25,6 +25,8 @@ class SwipeTab extends StatefulWidget {
 }
 
 class _SwipeTabState extends State<SwipeTab> {
+  int cardIndex = 0;
+
   @override
   void dispose() {
     super.dispose();
@@ -39,27 +41,19 @@ class _SwipeTabState extends State<SwipeTab> {
   Future<List<dynamic>> getMyPlants(String url) async {
     String url = "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
     final response = await http.get(url);
-
     final responseJson = json.decode(response.body.toString());
-
     List<dynamic> plants = (json.decode(response.body) as List);
-
     return plants;
   }
 
   Future<List<dynamic>> requestMethod(String url) async {
     Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
-
     String url = "https://sticklingar.herokuapp.com/nearby/" +
         widget.CurrentUserID +
         "/?q=17.61721,59.85877";
-
     final response = await http.get(url);
-
     final responseJson = json.decode(response.body.toString());
-
     List<dynamic> users = (json.decode(response.body) as List);
-
     return users;
   }
 
@@ -132,7 +126,7 @@ class _SwipeTabState extends State<SwipeTab> {
                       height: MediaQuery.of(context).size.height * 0.7,
                       child: OpenContainer(
                         transitionDuration: Duration(milliseconds: 500),
-                        openBuilder: (context, _) => DetailsPage(welcomeImages, images, 0),
+                        openBuilder: (context, _) => DetailsPage(welcomeImages, images, cardIndex),
                         closedElevation: 0,
                         closedShape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32),
@@ -368,8 +362,23 @@ class DetailsPage extends StatelessWidget {
       borderRadius: BorderRadius.circular(5),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
-        child: Column(
+        child:
+        Column(
           children: [
+            Padding(
+              padding: EdgeInsets.only(top: 55),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back_ios_rounded),
+                  onPressed: null,
+                  iconSize: 35,
+                  color: Color(0xFF65C27A),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
