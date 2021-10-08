@@ -43,7 +43,6 @@ dependencies:
   scoped_model: ^1.0.1
   flutter_absolute_path: ^1.0.6
   loading_gifs: ^0.3.0
-  animations: ^2.0.1
 
 dev_dependencies:
   flutter_test:
