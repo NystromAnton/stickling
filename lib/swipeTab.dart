@@ -131,7 +131,7 @@ class _SwipeTabState extends State<SwipeTab> {
                         closedShape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32),
                             side: BorderSide(color: Colors.white, width: 1)),
-                        closedColor: Colors.blue,
+                        closedColor: Colors.transparent,
                         closedBuilder: (context, _) =>
                         new TinderSwapCard(
                             swipeUp: true,
@@ -257,6 +257,7 @@ class _SwipeTabState extends State<SwipeTab> {
                             },
                             swipeCompleteCallback:
                                 (CardSwipeOrientation orientation, int index) {
+                              cardIndex += 1;
                               if (orientation == CardSwipeOrientation.LEFT) {
                               } else if (orientation ==
                                   CardSwipeOrientation.RIGHT) {
