@@ -59,13 +59,13 @@ class _AllChatsPageState extends State<AllChatsPage> {
                               String otherUserPlant;
                               if (chatRooms[i]["user1"]["_id"] ==
                                   widget.currentUserID) {
-                                otherUser = "user1";
-                                otherUserPlant = "plant1";
-                                meUser = "user2";
-                              } else {
                                 otherUser = "user2";
                                 otherUserPlant = "plant2";
                                 meUser = "user1";
+                              } else {
+                                otherUser = "user1";
+                                otherUserPlant = "plant1";
+                                meUser = "user2";
                               }
                               if (chatRooms[i]["recent_chat"] != null) {
                                 message =

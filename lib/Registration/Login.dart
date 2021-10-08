@@ -10,6 +10,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 
 class Login extends StatefulWidget {
   Login() {}
@@ -21,6 +22,11 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  double long;
+  double lat;
+  var currentPos = [];
+
+  Future<Position> coordinates;
   @override
   void dispose() {
     emailController.dispose();
@@ -28,14 +34,55 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  Future<String> requestMethod(String url) async {
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<String> requestMethod(String url) async {
+    _determinePosition().then((value) {
+      long = value.longitude;
+      lat = value.latitude;
+      currentPos = [long, lat];
+    });
 
     var body = json.encode({
       "email": emailController.text,
       "password": passwordController.text,
+      "location": {"type": "Point", "coordinates": currentPos}
     });
-
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -43,7 +90,7 @@ class _LoginState extends State<Login> {
 
     final response = await http.post(url, body: body, headers: headers);
     final responseJson = response.body.toString();
-    print("result " + responseJson);
+
     return responseJson;
   }
 
@@ -53,12 +100,7 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-
-
-
-      url = "https://sticklingar.herokuapp.com/users/login";
-
-
+    url = "https://sticklingar.herokuapp.com/users/login";
   }
 
   @override
@@ -73,7 +115,8 @@ class _LoginState extends State<Login> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
-                  child: Image.asset('assets/stickling_heart_logo.png', height: 50),
+                  child: Image.asset('assets/stickling_heart_logo.png',
+                      height: 50),
                 ),
                 Text(
                   'Stickling',
@@ -267,7 +310,7 @@ class _LoginState extends State<Login> {
 
   ValidateUser() {
     requestMethod(url).then((value) {
-      print("Result " + value);
+      //print("Result " + value);
       if (value == "login failed") {
         Fluttertoast.showToast(
             msg: value,
@@ -278,7 +321,7 @@ class _LoginState extends State<Login> {
             textColor: Colors.white,
             fontSize: 16.0);
       } else {
-        if(value=="Email and password doesn't match"){
+        if (value == "Email and password doesn't match") {
           Fluttertoast.showToast(
               msg: value,
               toastLength: Toast.LENGTH_SHORT,
@@ -287,16 +330,14 @@ class _LoginState extends State<Login> {
               backgroundColor: Colors.red,
               textColor: Colors.white,
               fontSize: 16.0);
-        }else{
-
-        String newvalue  = value.substring(1,value.length-1);
-        print("NewValue "+newvalue );
+        } else {
+          String newvalue = value.substring(1, value.length - 1);
+          //print("NewValue " + newvalue);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => TabBarDemo(newvalue)),
           );
         }
-
       }
     });
   }
