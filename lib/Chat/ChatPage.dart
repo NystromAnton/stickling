@@ -61,14 +61,14 @@ class _ChatPageState extends State<ChatPage> {
     final responseJson = response.body.toString();
 
     messageController.clear();
-   // scrollToEnd();
+   scrollToEnd();
 
     getMyChatMessages();
   }
-  void scrollToEnd(context) {
+  void scrollToEnd() {
     print(context);
     scrollController.animateTo(
-           scrollController.position.maxScrollExtent,
+           0.0,
            duration: const Duration(milliseconds: 20),
            curve: Curves.fastOutSlowIn);
   }
