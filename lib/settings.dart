@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
+
 class SettingsPage extends StatefulWidget {
   SettingsPage();
 
@@ -32,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  List _selectedAnimals= new List();
+  List _selectedAnimals = new List();
   double _currentSliderValue = 20;
   @override
   void dispose() {
@@ -40,7 +41,6 @@ class _SettingsPageState extends State<SettingsPage> {
     passwordController.dispose();
     super.dispose();
   }
-
 
   String dropdownValue = 'Plant types';
   String _currentSelectedValue;
@@ -76,24 +76,21 @@ class _SettingsPageState extends State<SettingsPage> {
     // passwordController.addListener(EnableButton);
     // confirmPasswordController.addListener(EnableButton);
 
-      GetSaveSliderValue().then((value) {
-        setState(() {
-          print("Value current "+value.toString());
-          if(value!=null){
-            _currentSliderValue=value;
-          }else{
-            _currentSliderValue=20;
-          }
-
-        });
-
+    GetSaveSliderValue().then((value) {
+      setState(() {
+        print("Value current " + value.toString());
+        if (value != null) {
+          _currentSliderValue = value;
+        } else {
+          _currentSliderValue = 20;
+        }
       });
-    _determinePosition().then((value) =>
-        print("Position "+ value.toString())
-    );
+    });
+    _determinePosition().then((value) => print("Position " + value.toString()));
 
     super.initState();
   }
+
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -122,8 +119,7 @@ class _SettingsPageState extends State<SettingsPage> {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        return Future.error(
-            'Location permissions are denied');
+        return Future.error('Location permissions are denied');
       }
     }
 
@@ -131,6 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
   }
+
   @override
   Widget build(BuildContext context) {
     print("Checking State");
@@ -256,12 +253,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveColor: Colors.grey[400],
                     //label: _currentSliderValue.toStringAsFixed(0),
                     onChanged: (double value) async {
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       await prefs.setDouble('_currentSliderValue', value);
 
                       setState(
                         () {
-
                           _currentSliderValue = value;
                         },
                       );
@@ -337,7 +334,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         builder: (_) {
                           return MyDialog();
                         }),
-
                     padding: EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
                     color: Color(0xFF65C27A),
@@ -365,11 +361,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   RaisedButton(
                     // onPressed: () => _onAlertWithCustomContentPressed(context),
-                    onPressed: () =>  Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Login()),
-            ),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login()),
+                    ),
 
                     padding: EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
@@ -508,7 +503,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<double> GetSaveSliderValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    double value = prefs.getDouble('_currentSliderValue') ;
+    double value = prefs.getDouble('_currentSliderValue');
 
     return value;
   }
@@ -542,10 +537,8 @@ class _MyDialogState extends State<MyDialog> {
 
   @override
   void initState() {
-     passwordController.addListener(EnableButton);
-     confirmPasswordController.addListener(EnableButton);
-
-
+    passwordController.addListener(EnableButton);
+    confirmPasswordController.addListener(EnableButton);
   }
 
   void printObject(Object object) {
@@ -561,16 +554,17 @@ class _MyDialogState extends State<MyDialog> {
     // print or debugPrint your object
     debugPrint(prettyPrint);
   }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content:   Container(
+      content: Container(
         height: 220,
         child: Column(
           children: <Widget>[
             Padding(
               padding:
-              const EdgeInsets.only(top: 25, left: 8, right: 8, bottom: 8),
+                  const EdgeInsets.only(top: 25, left: 8, right: 8, bottom: 8),
               child: Theme(
                 data: ThemeData(primaryColor: Colors.grey),
                 child: TextField(
@@ -593,7 +587,7 @@ class _MyDialogState extends State<MyDialog> {
             ),
             Padding(
               padding:
-              const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 2),
+                  const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 2),
               child: Theme(
                 data: ThemeData(primaryColor: Colors.grey),
                 child: TextField(
@@ -616,36 +610,34 @@ class _MyDialogState extends State<MyDialog> {
             ),
             isEnabled
                 ? DialogButton(
-              onPressed: isEnabled ? () => Navigator.pop(context) : null,
-              child: Text(
-                "Change password",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              color: Color(0xFF65C27A),
-              radius: BorderRadius.circular(20),
-            )
+                    onPressed: isEnabled ? () => Navigator.pop(context) : null,
+                    child: Text(
+                      "Change password",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    color: Color(0xFF65C27A),
+                    radius: BorderRadius.circular(20),
+                  )
                 : DialogButton(
-              onPressed: () => Fluttertoast.showToast(
-                  msg: "You password is not matched",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.0),
-              child: Text(
-                "Change password",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              color: Colors.grey,
-              radius: BorderRadius.circular(20),
-            )
+                    onPressed: () => Fluttertoast.showToast(
+                        msg: "You password is not matched",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0),
+                    child: Text(
+                      "Change password",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    color: Colors.grey,
+                    radius: BorderRadius.circular(20),
+                  )
           ],
         ),
       ),
-      actions: <Widget>[
-
-      ],
+      actions: <Widget>[],
     );
   }
 }
