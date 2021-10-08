@@ -125,16 +125,7 @@ class _SwipeTabState extends State<SwipeTab> {
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.height * 0.7,
-                      child: OpenContainer(
-                        transitionDuration: Duration(milliseconds: 500),
-                        openBuilder: (context, _) => DetailsPage(welcomeImages, images, cardIndex),
-                        closedElevation: 0,
-                        closedShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32),
-                            side: BorderSide(color: Colors.white, width: 1)),
-                        closedColor: Colors.transparent,
-                        closedBuilder: (context, _) =>
-                        new TinderSwapCard(
+                      child: new TinderSwapCard(
                             swipeUp: true,
                             swipeDown: true,
                             orientation: AmassOrientation.RIGHT,
@@ -154,7 +145,16 @@ class _SwipeTabState extends State<SwipeTab> {
                                 ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 15),
-                                    child: Column(
+                                    child: OpenContainer(
+                                      transitionDuration: Duration(milliseconds: 500),
+                                      openBuilder: (context, _) => DetailsPage(welcomeImages, images, cardIndex),
+                                      closedElevation: 0,
+                                      closedShape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(32),
+                                          side: BorderSide(color: Colors.white, width: 1)),
+                                      closedColor: Colors.transparent,
+                                      closedBuilder: (context, _) =>
+                                      Column(
                                       children: [
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
@@ -244,6 +244,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                   ),
                               ),
                             ),
+                            ),
                             cardController: cardController,
                             swipeUpdateCallback:
                                 (DragUpdateDetails details, Alignment align) {
@@ -299,7 +300,6 @@ class _SwipeTabState extends State<SwipeTab> {
                             },
                           ),
                         ),
-                    ),
                         Padding(
                           padding: const EdgeInsets.only(top: 18.0),
                           child: Row(
