@@ -32,10 +32,12 @@ router.get("/client-viewed", async (req, res) => {
 /* GET SINGLE CHAT BY ID */
 router.get("/:id", function (req, res, next) {
   let id = req.params.id;
-  chat.find({ chatRoom: id }, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
+  chat
+    .find({ chatRoom: id }, function (err, post) {
+      if (err) return next(err);
+      res.json(post);
+    })
+    .sort({ created_date: -1 });
 });
 
 /* SAVE CHAT */
