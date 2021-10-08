@@ -14,6 +14,7 @@ class ChatPage extends StatefulWidget {
   String myName;
   String plantPicUrl;
 
+
   ChatPage(String chatRoomID, String currentUserID, String otherName,
     String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
@@ -60,13 +61,19 @@ class _ChatPageState extends State<ChatPage> {
     final responseJson = response.body.toString();
 
     messageController.clear();
+   // scrollToEnd();
 
     getMyChatMessages();
   }
-  void scrollToEnd() async {
+  void scrollToEnd(context) {
+    print(context);
     scrollController.animateTo(
-      scrollController.position.maxScrollExtent);
+           scrollController.position.maxScrollExtent,
+           duration: const Duration(milliseconds: 20),
+           curve: Curves.fastOutSlowIn);
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,6 +159,7 @@ class _ChatPageState extends State<ChatPage> {
                           itemCount: chatMessages.length,
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 10, bottom: 10),
+                          reverse: true,
                           itemBuilder: (context, i) {
                             return Container(
                               padding: EdgeInsets.only(
@@ -193,8 +201,7 @@ class _ChatPageState extends State<ChatPage> {
                   child: Row(
                     children: <Widget>[
                       GestureDetector(
-                        onTap: (){
-                        },
+                        onTap: () => "",
                         child: Container(
                           height: 30,
                           width: 30,
