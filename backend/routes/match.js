@@ -60,7 +60,7 @@ router.post("/", async function (req, res, next) {
           await newChatRoom.save();
           res.send("Match");
         } else {
-          res.send("Chat already exist");
+          res.send("Match again");
         }
       } else {
         const newMatch = new Match({
