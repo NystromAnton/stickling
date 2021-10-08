@@ -11,7 +11,6 @@ import 'package:loading_gifs/loading_gifs.dart';
 import 'package:stycling/Chat/AllChatsPage.dart';
 import 'package:stycling/Registration/Login.dart';
 import 'package:stycling/settings.dart';
-import 'package:stycling/swipeCardInfo.dart';
 
 class SwipeTab extends StatefulWidget {
   String CurrentUserID;
