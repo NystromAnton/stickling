@@ -55,10 +55,10 @@ router.post("/", async function (req, res, next) {
             user1ID: userId,
             user2ID: swipedPlant.user,
             plant1ID: match.likedPlant,
-            plant2ID: swipedPlant,
+            plant2ID: swipedPlant._id,
           });
           await newChatRoom.save();
-          res.json(plants[0]);
+          res.send("Match");
         } else {
           res.send("Chat already exist");
         }
@@ -67,6 +67,7 @@ router.post("/", async function (req, res, next) {
           firstLiked: userId,
           likedPlant: form.plantId,
         });
+        await newMatch.save();
         const newSwipeHistory = new MySwipeHistory({
           myUserID: userId,
           userID: swipedPlant.user,
@@ -76,7 +77,7 @@ router.post("/", async function (req, res, next) {
           type: swipedPlant.type,
         });
         await newSwipeHistory.save();
-        res.send("Match object created");
+        res.send("Swiped registered");
       }
     } else {
       res.send("User doesn't exist");

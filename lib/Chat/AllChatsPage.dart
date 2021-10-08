@@ -88,64 +88,34 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                 },
                                 child: new Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: Container(
-                                    height: 100,
-                                    width: 150,
-                                    color: Colors.white,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 8.0,
-                                                  right: 10,
-                                                  left: 20,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      chatRooms[i][otherUser]
-                                                          ["name"],
-                                                      style: TextStyle(
-                                                          fontFamily: 'Lato',
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black,
-                                                          fontSize: 20),
-                                                    ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Row(
+                                          children: <Widget>[
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(chatRooms[i][otherUserPlant]["pic"][0]),
+                                              maxRadius: 30,
+                                            ),
+                                            SizedBox(width: 16,),
+                                            Expanded(
+                                              child: Container(
+                                                color: Colors.transparent,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text(chatRooms[i][otherUser]["name"], style: TextStyle(fontSize: 16),),
+                                                    SizedBox(height: 6,),
+                                                    Text(message,style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.normal),),
                                                   ],
                                                 ),
                                               ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Text(
-                                                  message,
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                      fontFamily: 'Lato',
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.black,
-                                                      fontSize: 20),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Text(chatRooms[i]["recent_chat"]["created_date"],style: TextStyle(fontSize: 12,fontWeight:FontWeight.normal),),
+                                    ],
                                   ),
                                 ),
                               );

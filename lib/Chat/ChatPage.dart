@@ -5,6 +5,7 @@ import './User.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
+import 'dart:async';
 
 class ChatPage extends StatefulWidget {
   String chatRoomID;
@@ -14,7 +15,7 @@ class ChatPage extends StatefulWidget {
   String plantPicUrl;
 
   ChatPage(String chatRoomID, String currentUserID, String otherName,
-      String myName, String plantPicUrl) {
+    String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
     this.currentUserID = currentUserID;
     this.otherName = otherName;
@@ -26,15 +27,46 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  TextEditingController messageController = new TextEditingController();
+  ScrollController scrollController = new ScrollController();
+
   Future<List<dynamic>> getMyChatMessages() async {
-    String url = "http://localhost:3000/chat/" + widget.chatRoomID;
+    String url = "https://sticklingar.herokuapp.com/chat/" + widget.chatRoomID;
     final response = await http.get(url);
 
     List<dynamic> chatMessages = (json.decode(response.body) as List);
-    print(chatMessages);
+    print("meddelanden");
+    print(chatMessages[7]);
+    print("currID");
+    print(widget.currentUserID);
     return chatMessages;
   }
+  void sendChat() async {
+    var body = json.encode({
+      "chatRoom": widget.chatRoomID,
+      "fromID": widget.currentUserID,
+      "message": messageController.text,
+    });
+    print(body);
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
 
+    final response = await http.post(
+        "https://sticklingar.herokuapp.com/chat/",
+        body: body,
+        headers: headers);
+    final responseJson = response.body.toString();
+
+    messageController.clear();
+
+    getMyChatMessages();
+  }
+  void scrollToEnd() async {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,28 +146,27 @@ class _ChatPageState extends State<ChatPage> {
                       List chatMessages = snapshot.data;
 
                       return Container(
-                        height: 700,
+                        height: 610,
                         child: ListView.builder(
+                          controller: scrollController,
                           itemCount: chatMessages.length,
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 10, bottom: 10),
-                          physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, i) {
                             return Container(
                               padding: EdgeInsets.only(
                                   left: 14, right: 14, top: 10, bottom: 10),
                               child: Align(
-                                alignment: (chatMessages[i]["fromID"] ==
-                                        widget.currentUserID
-                                    ? Alignment.topLeft
-                                    : Alignment.topRight),
+                                alignment: (chatMessages[i]["fromID"] == widget.currentUserID
+                                    ? Alignment.topRight
+                                    : Alignment.topLeft),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: (chatMessages[i]["fromID"] ==
                                             widget.currentUserID
-                                        ? Colors.grey.shade200
-                                        : Colors.blue[200]),
+                                        ? Colors.blue[200]
+                                        : Colors.grey.shade200),
                                   ),
                                   padding: EdgeInsets.all(16),
                                   child: Text(
@@ -151,7 +182,52 @@ class _ChatPageState extends State<ChatPage> {
                     }
                   },
                 ),
-              )
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  padding: EdgeInsets.only(left: 10,bottom: 10,top: 10),
+                  height: 60,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: (){
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Icon(Icons.add, color: Colors.white, size: 20, ),
+                        ),
+                      ),
+                      SizedBox(width: 15,),
+                      Expanded(
+                        child: TextField(
+                          controller: messageController,
+                          decoration: InputDecoration(
+                            hintText: "Write message...",
+                            hintStyle: TextStyle(color: Colors.black54),
+                            border: InputBorder.none
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 15,),
+                      FloatingActionButton(
+                        onPressed: () => sendChat(),
+                        child: Icon(Icons.send,color: Colors.white,size: 18,),
+                        backgroundColor: Colors.blue,
+                        elevation: 0,
+                      ),
+                    ],
+                    
+                  ),
+                ),
+              ),
             ],
           ),
         ),

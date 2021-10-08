@@ -38,7 +38,8 @@ class _SwipeTabState extends State<SwipeTab> {
   CardController cardController = new CardController();
 
   Future<List<dynamic>> getMyPlants(String url) async {
-    String url = "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
+    String url =
+        "https://sticklingar.herokuapp.com/plants/" + widget.CurrentUserID;
     final response = await http.get(url);
     final responseJson = json.decode(response.body.toString());
     List<dynamic> plants = (json.decode(response.body) as List);
@@ -56,9 +57,10 @@ class _SwipeTabState extends State<SwipeTab> {
     return users;
   }
 
-  Future<String> SwipeRight(String userID, String PlantID) async {
+  Future<String> swipeRight(String userID, String plantID) async {
+    print("HEJHEJEHEJEHEJEH" + plantID);
     var body =
-        json.encode({"userId": widget.CurrentUserID, "plantId": PlantID});
+        json.encode({"userId": widget.CurrentUserID, "plantId": plantID});
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -251,33 +253,36 @@ class _SwipeTabState extends State<SwipeTab> {
 
                               } else if (align.x > 0) {
                                 //Card is RIGHT swiping
-
-                              }
-                            },
-                            swipeCompleteCallback:
-                                (CardSwipeOrientation orientation, int index) {
-                              cardIndex += 1;
-                              if (orientation == CardSwipeOrientation.LEFT) {
-                              } else if (orientation ==
-                                  CardSwipeOrientation.RIGHT) {
-                                SwipeRight("", images[index]['_id']).then(
-                                      (value) {
-                                    if (value.contains("Match object created")) {
-                                    } else {
-                                      Alert(
-                                        context: context,
-                                        type: AlertType.success,
-                                        title: "New Match",
-                                        desc: "Great! You got a new Match",
-                                        buttons: [
-                                          DialogButton(
-                                            child: Text(
-                                              "Chat",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
-                                            ),
-                                            onPressed: null,/*() => Navigator.push(
+                                
+                          }
+                        },
+                        swipeCompleteCallback:
+                            (CardSwipeOrientation orientation, int index) {
+                          cardIndex += 1;
+                          if (orientation == CardSwipeOrientation.LEFT) {
+                          } else if (orientation ==
+                              CardSwipeOrientation.RIGHT) {
+                            print(images[index]);
+                            swipeRight("", images[index]['plantID']).then(
+                              (value) {
+                                if (value.contains("Match")) {
+                                  print(value);
+                                  print(images[index]['_id']);
+                                  Alert(
+                                    context: context,
+                                    type: AlertType.success,
+                                    title: "New Match",
+                                    desc: "Great! You got a new Match",
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text(
+                                          "Chat",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        onPressed: null,
+                                        /*() => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
