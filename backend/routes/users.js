@@ -17,6 +17,27 @@ router.get("/by-id/:id", async function (req, res, next) {
   res.send(user);
 });
 
+router.post("/update-location", async function (req, res, next) {
+  var form = req.body;
+
+  try {
+    var user = await User.findOneAndUpdate(
+      {
+        _id: form.id,
+      },
+      {
+        $set: {
+          "location.coordinates": form.coordinates,
+        },
+      }
+    ).exec();
+    res.json(user);
+  } catch (err) {
+    console.error("Issue with signup " + err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 router.post("/signup", async function (req, res, next) {
   var form = req.body;
   try {
