@@ -146,7 +146,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 15),
                                     child: OpenContainer(
-                                      transitionDuration: Duration(milliseconds: 500),
+                                      transitionDuration: Duration(milliseconds: 300),
                                       openBuilder: (context, _) => DetailsPage(welcomeImages, images, cardIndex),
                                       closedElevation: 0,
                                       closedShape: RoundedRectangleBorder(
@@ -371,7 +371,8 @@ class DetailsPage extends StatelessWidget {
         Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 55),
+              padding: EdgeInsets.only(top: 45, right: MediaQuery.of(context).size.width *
+                  0.75),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
