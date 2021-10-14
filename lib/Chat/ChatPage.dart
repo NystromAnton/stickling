@@ -14,9 +14,8 @@ class ChatPage extends StatefulWidget {
   String myName;
   String plantPicUrl;
 
-
   ChatPage(String chatRoomID, String currentUserID, String otherName,
-      String myName, String plantPicUrl) {
+    String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
     this.currentUserID = currentUserID;
     this.otherName = otherName;
@@ -42,7 +41,6 @@ class _ChatPageState extends State<ChatPage> {
     print(widget.currentUserID);
     return chatMessages;
   }
-
   void sendChat() async {
     var body = json.encode({
       "chatRoom": widget.chatRoomID,
@@ -55,24 +53,20 @@ class _ChatPageState extends State<ChatPage> {
       'Accept': 'application/json',
     };
 
-    final response = await http.post("https://sticklingar.herokuapp.com/chat/",
-        body: body, headers: headers);
+    final response = await http.post(
+        "https://sticklingar.herokuapp.com/chat/",
+        body: body,
+        headers: headers);
     final responseJson = response.body.toString();
 
     messageController.clear();
-   scrollToEnd();
 
     getMyChatMessages();
   }
-
-  void scrollToEnd() {
-    print(context);
+  void scrollToEnd() async {
     scrollController.animateTo(
-           0.0,
-           duration: const Duration(milliseconds: 20),
-           curve: Curves.fastOutSlowIn);
+      scrollController.position.maxScrollExtent);
   }
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,14 +152,12 @@ class _ChatPageState extends State<ChatPage> {
                           itemCount: chatMessages.length,
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 10, bottom: 10),
-                          reverse: true,
                           itemBuilder: (context, i) {
                             return Container(
                               padding: EdgeInsets.only(
                                   left: 14, right: 14, top: 10, bottom: 10),
                               child: Align(
-                                alignment: (chatMessages[i]["fromID"] ==
-                                        widget.currentUserID
+                                alignment: (chatMessages[i]["fromID"] == widget.currentUserID
                                     ? Alignment.topRight
                                     : Alignment.topLeft),
                                 child: Container(
@@ -194,14 +186,15 @@ class _ChatPageState extends State<ChatPage> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Container(
-                  padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+                  padding: EdgeInsets.only(left: 10,bottom: 10,top: 10),
                   height: 60,
                   width: double.infinity,
                   color: Colors.white,
                   child: Row(
                     children: <Widget>[
                       GestureDetector(
-                        onTap: () {},
+                        onTap: (){
+                        },
                         child: Container(
                           height: 30,
                           width: 30,
@@ -209,39 +202,29 @@ class _ChatPageState extends State<ChatPage> {
                             color: Colors.lightBlue,
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 20,
-                          ),
+                          child: Icon(Icons.add, color: Colors.white, size: 20, ),
                         ),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
+                      SizedBox(width: 15,),
                       Expanded(
                         child: TextField(
                           controller: messageController,
                           decoration: InputDecoration(
-                              hintText: "Write message...",
-                              hintStyle: TextStyle(color: Colors.black54),
-                              border: InputBorder.none),
+                            hintText: "Write message...",
+                            hintStyle: TextStyle(color: Colors.black54),
+                            border: InputBorder.none
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
+                      SizedBox(width: 15,),
                       FloatingActionButton(
                         onPressed: () => sendChat(),
-                        child: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                          size: 18,
-                        ),
+                        child: Icon(Icons.send,color: Colors.white,size: 18,),
                         backgroundColor: Colors.blue,
                         elevation: 0,
                       ),
                     ],
+                    
                   ),
                 ),
               ),

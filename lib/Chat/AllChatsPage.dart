@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:intl/intl.dart';
 
 import './User.dart';
 import 'package:http/http.dart' as http;
@@ -43,10 +42,10 @@ class _AllChatsPageState extends State<AllChatsPage> {
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
-                        child: CupertinoActivityIndicator(
+                          child: CupertinoActivityIndicator(
                           radius: 20,
-                        ),
-                      );
+                      ),
+                  );
                     } else {
                       List chatRooms = snapshot.data;
                       return Container(
@@ -58,8 +57,6 @@ class _AllChatsPageState extends State<AllChatsPage> {
                               String meUser;
                               String message = "";
                               String otherUserPlant;
-                              String date;
-                              String formatDate;
                               if (chatRooms[i]["user1"]["_id"] ==
                                   widget.currentUserID) {
                                 otherUser = "user1";
@@ -74,11 +71,6 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                 message =
                                     chatRooms[i]["recent_chat"]["message"];
                               }
-                              date =
-                                  chatRooms[i]["recent_chat"]["created_date"];
-                              DateTime dateTime = DateTime.parse(date);
-                              formatDate =
-                                  DateFormat('dd-MM-yyyy').format(dateTime);
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -102,39 +94,19 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                         child: Row(
                                           children: <Widget>[
                                             CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  chatRooms[i][otherUserPlant]
-                                                      ["pic"][0]),
+                                              backgroundImage: NetworkImage(chatRooms[i][otherUserPlant]["pic"][0]),
                                               maxRadius: 30,
                                             ),
-                                            SizedBox(
-                                              width: 16,
-                                            ),
+                                            SizedBox(width: 16,),
                                             Expanded(
                                               child: Container(
                                                 color: Colors.transparent,
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Text(
-                                                      chatRooms[i][otherUser]
-                                                          ["name"],
-                                                      style: TextStyle(
-                                                          fontSize: 16),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 6,
-                                                    ),
-                                                    Text(
-                                                      message,
-                                                      style: TextStyle(
-                                                          fontSize: 13,
-                                                          color: Colors
-                                                              .grey.shade600,
-                                                          fontWeight: FontWeight
-                                                              .normal),
-                                                    ),
+                                                    Text(chatRooms[i][otherUser]["name"], style: TextStyle(fontSize: 16),),
+                                                    SizedBox(height: 6,),
+                                                    Text(message,style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.normal),),
                                                   ],
                                                 ),
                                               ),
@@ -142,12 +114,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                           ],
                                         ),
                                       ),
-                                      Text(
-                                        formatDate,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal),
-                                      ),
+                                      Text(chatRooms[i]["recent_chat"]["created_date"],style: TextStyle(fontSize: 12,fontWeight:FontWeight.normal),),
                                     ],
                                   ),
                                 ),
