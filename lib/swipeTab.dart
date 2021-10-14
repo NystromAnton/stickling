@@ -46,17 +46,29 @@ class _SwipeTabState extends State<SwipeTab> {
 
   Future<List<dynamic>> requestMethod(String url) async {
     Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
+    print("CURRENT USERID: " + widget.CurrentUserID);
+
+    var userURL =
+        "https://sticklingar.herokuapp.com/users/by-id/" + widget.CurrentUserID;
+
+    var user = await http.get(userURL);
+
+    var userJson = json.decode(user.body.toString());
+
+    var long = userJson['location']['coordinates'][0];
+    var lat = userJson['location']['coordinates'][1];
 
     String url = "https://sticklingar.herokuapp.com/nearby/" +
         widget.CurrentUserID +
-        "/?q=17.61721,59.85877";
+        "/?q=" +
+        long.toString() +
+        "," +
+        lat.toString();
 
     final response = await http.get(url);
 
     final responseJson = json.decode(response.body.toString());
 
-    //print("HERE");
-    //print(responseJson);
     List<dynamic> users = (json.decode(response.body) as List);
 
     return users;

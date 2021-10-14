@@ -16,22 +16,24 @@ router.post("/add-preference", async function (req, res, next) {
   try {
     let user = await User.findById(userId);
     if (user) {
+      var distanceMeters = form.distance*1000;
       var preference = await Preference.findOne({ user: userId });
       console.log(preference);
       if (preference) {
         var p = await Preference.findOneAndUpdate(
           { _id: preference._id },
           {
-            $set: { types: form.types, distance: form.distance },
+            $set: { types: form.types, distance: distanceMeters },
           }
         );
         console.log(p);
         res.send("Preference updated");
       } else {
+        var distanceMeters = form.distance*1000;
         const newPreference = new Preference({
           user: userId,
           types: form.types,
-          distance: form.distance,
+          distance: distanceMeters,
         });
 
         await newPreference.save();
