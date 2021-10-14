@@ -10,6 +10,13 @@ router.get("/:name", async function (req, res, next) {
   var user = await User.find({ name: name });
   res.send(user);
 });
+
+router.get("/by-id/:id", async function (req, res, next) {
+  var id = req.params.id;
+  var user = await User.findById(id);
+  res.send(user);
+});
+
 router.post("/signup", async function (req, res, next) {
   var form = req.body;
   try {
@@ -27,7 +34,7 @@ router.post("/signup", async function (req, res, next) {
     await newUser.save();
     res.send(newUser);
   } catch (err) {
-    console.error("Issue with signup "+err.message);
+    console.error("Issue with signup " + err.message);
     res.status(500).json({ message: "Server error" });
   }
 });
