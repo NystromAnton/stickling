@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:loading_gifs/loading_gifs.dart';
@@ -26,6 +27,8 @@ class _SwipeTabState extends State<SwipeTab> {
     super.dispose();
   }
 
+  double long;
+  double lat;
   void initState() {
     requestMethod("").then((value) => print("API RESULT " + value.toString()));
   }
@@ -44,38 +47,63 @@ class _SwipeTabState extends State<SwipeTab> {
     return plants;
   }
 
-  Future<List<dynamic>> requestMethod(String url) async {
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+   Future<List<dynamic>> requestMethod(String url) async {
     Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
-    print("CURRENT USERID: " + widget.CurrentUserID);
 
-    var userURL =
-        "https://sticklingar.herokuapp.com/users/by-id/" + widget.CurrentUserID;
-
-    var user = await http.get(userURL);
-
-    var userJson = json.decode(user.body.toString());
-
-    var long = userJson['location']['coordinates'][0];
-    var lat = userJson['location']['coordinates'][1];
+     await determinePosition().then((value) {
+        this.long = value.longitude;
+        this.lat = value.latitude;
+      });
 
     String url = "https://sticklingar.herokuapp.com/nearby/" +
-        widget.CurrentUserID +
-        "/?q=" +
-        long.toString() +
-        "," +
-        lat.toString();
+        widget.CurrentUserID + "/?q=" + this.long.toString() + "," + this.lat.toString();
 
     final response = await http.get(url);
-
     final responseJson = json.decode(response.body.toString());
-
     List<dynamic> users = (json.decode(response.body) as List);
-
     return users;
   }
 
+
   Future<String> swipeRight(String userID, String plantID) async {
-    //print("HEJHEJEHEJEHEJEH" + plantID);
     var body =
         json.encode({"userId": widget.CurrentUserID, "plantId": plantID});
 
@@ -164,7 +192,6 @@ class _SwipeTabState extends State<SwipeTab> {
                             ),
                             child: new InkWell(
                               onTap: () {
-                                //print("tapped");
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 0),
@@ -248,7 +275,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                                       Text(
                                                         images[index]
                                                                     ['distance']
-                                                                .toString() +
+                                                                .toStringAsFixed(0) +
                                                             " km",
                                                         style: TextStyle(
                                                           fontSize: 15,
@@ -410,12 +437,9 @@ class _SwipeTabState extends State<SwipeTab> {
                           if (orientation == CardSwipeOrientation.LEFT) {
                           } else if (orientation ==
                               CardSwipeOrientation.RIGHT) {
-                            //print(images[index]);
                             swipeRight("", images[index]['plantID']).then(
                               (value) {
                                 if (value.contains("Match")) {
-                                  //print(value);
-                                  //print(images[index]['_id']);
                                   Alert(
                                     context: context,
                                     type: AlertType.success,
