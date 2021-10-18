@@ -42,7 +42,7 @@ router.post("/signup", async function (req, res, next) {
   var form = req.body;
   try {
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send("User already registered.");
+    if (user) return res.status(400).send("User already registered");
 
     const newUser = new User({
       name: form.name,
@@ -53,7 +53,7 @@ router.post("/signup", async function (req, res, next) {
     newUser.password = await bcrypt.hash(newUser.password, 10);
 
     await newUser.save();
-    res.send(newUser);
+    res.json(newUser);
   } catch (err) {
     console.error("Issue with signup " + err.message);
     res.status(500).json({ message: "Server error" });
