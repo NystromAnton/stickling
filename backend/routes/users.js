@@ -33,8 +33,8 @@ router.post("/update-location", async function (req, res, next) {
     ).exec();
     res.json(user);
   } catch (err) {
-    console.error("Issue with signup " + err.message);
-    res.status(500).json({ message: "Server error" });
+    console.error("Failure " + err.message);
+    res.status(500).json({ message: "Server error" + err.message });
   }
 });
 

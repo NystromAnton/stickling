@@ -44,14 +44,6 @@ router.get("/:id", async function (req, res, next) {
           as: "plants",
         },
       },
-      {
-        $lookup: {
-          from: mySwipeHistory.collection.name,
-          localField: "_id",
-          foreignField: "myUserID",
-          as: "swipeHistory",
-        },
-      },
       { $unwind: "$plants" },
       {
         $match: {
