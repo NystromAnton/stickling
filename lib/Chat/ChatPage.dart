@@ -14,6 +14,7 @@ class ChatPage extends StatefulWidget {
   String myName;
   String plantPicUrl;
 
+
   ChatPage(String chatRoomID, String currentUserID, String otherName,
       String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
@@ -29,17 +30,31 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = new TextEditingController();
   ScrollController scrollController = new ScrollController();
+  Future<List<dynamic>> _future;
 
   Future<List<dynamic>> getMyChatMessages() async {
     String url = "https://sticklingar.herokuapp.com/chat/" + widget.chatRoomID;
     final response = await http.get(url);
 
     List<dynamic> chatMessages = (json.decode(response.body) as List);
-    print("meddelanden");
-    print(chatMessages[7]);
-    print("currID");
-    print(widget.currentUserID);
     return chatMessages;
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _future = getMyChatMessages();
+    });
+    setUpTimedFetch();
+  }
+
+  setUpTimedFetch() {
+    Timer.periodic(Duration(milliseconds: 5000), (timer) {
+      setState(() {
+        _future = getMyChatMessages();
+      });
+    });
   }
 
   void sendChat() async {
@@ -48,7 +63,6 @@ class _ChatPageState extends State<ChatPage> {
       "fromID": widget.currentUserID,
       "message": messageController.text,
     });
-    print(body);
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -58,13 +72,19 @@ class _ChatPageState extends State<ChatPage> {
         body: body, headers: headers);
     final responseJson = response.body.toString();
 
-    getMyChatMessages();
+    messageController.clear();
+    setState(() {
+        _future = getMyChatMessages();
+      });
   }
 
-  void scrollToEnd() async {
-    scrollController.animateTo(scrollController.position.maxScrollExtent);
+  void scrollToEnd() {
+    scrollController.animateTo(
+           0.0,
+           duration: const Duration(milliseconds: 20),
+           curve: Curves.fastOutSlowIn);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 28.0),
                 child: FutureBuilder(
-                  future: getMyChatMessages(),
+                  future: _future,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
@@ -150,6 +170,7 @@ class _ChatPageState extends State<ChatPage> {
                           itemCount: chatMessages.length,
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 10, bottom: 10),
+                          reverse: true,
                           itemBuilder: (context, i) {
                             return Container(
                               padding: EdgeInsets.only(

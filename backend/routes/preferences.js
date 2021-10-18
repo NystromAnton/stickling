@@ -13,6 +13,7 @@ router.get("/:id", async function (req, res, next) {
 router.post("/add-preference", async function (req, res, next) {
   var form = req.body;
   var userId = form.id;
+  var distanceMeter = form.distance * 1000;
   try {
     let user = await User.findById(userId);
     if (user) {

@@ -10,11 +10,39 @@ router.get("/:name", async function (req, res, next) {
   var user = await User.find({ name: name });
   res.send(user);
 });
+
+router.get("/by-id/:id", async function (req, res, next) {
+  var id = req.params.id;
+  var user = await User.findById(id);
+  res.send(user);
+});
+
+router.post("/update-location", async function (req, res, next) {
+  var form = req.body;
+
+  try {
+    var user = await User.findOneAndUpdate(
+      {
+        _id: form.id,
+      },
+      {
+        $set: {
+          "location.coordinates": form.coordinates,
+        },
+      }
+    ).exec();
+    res.json(user);
+  } catch (err) {
+    console.error("Failure " + err.message);
+    res.status(500).json({ message: "Server error" + err.message });
+  }
+});
+
 router.post("/signup", async function (req, res, next) {
   var form = req.body;
   try {
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send("User already registered.");
+    if (user) return res.status(400).send("User already registered");
 
     const newUser = new User({
       name: form.name,
@@ -25,9 +53,9 @@ router.post("/signup", async function (req, res, next) {
     newUser.password = await bcrypt.hash(newUser.password, 10);
 
     await newUser.save();
-    res.send(newUser);
+    res.json(newUser);
   } catch (err) {
-    console.error("Issue with signup "+err.message);
+    console.error("Issue with signup " + err.message);
     res.status(500).json({ message: "Server error" });
   }
 });
