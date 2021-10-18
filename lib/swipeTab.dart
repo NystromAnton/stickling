@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:animations/animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -31,6 +32,8 @@ class _SwipeTabState extends State<SwipeTab> {
     super.dispose();
   }
 
+  double long;
+  double lat;
   void initState() {
     requestMethod("").then((value) => print("API RESULT " + value.toString()));
   }
@@ -46,19 +49,63 @@ class _SwipeTabState extends State<SwipeTab> {
     return plants;
   }
 
-  Future<List<dynamic>> requestMethod(String url) async {
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+   Future<List<dynamic>> requestMethod(String url) async {
     Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
+
+     await determinePosition().then((value) {
+        this.long = value.longitude;
+        this.lat = value.latitude;
+      });
+
     String url = "https://sticklingar.herokuapp.com/nearby/" +
-        widget.CurrentUserID +
-        "/?q=17.61721,59.85877";
+        widget.CurrentUserID + "/?q=" + this.long.toString() + "," + this.lat.toString();
+
     final response = await http.get(url);
     final responseJson = json.decode(response.body.toString());
     List<dynamic> users = (json.decode(response.body) as List);
     return users;
   }
 
+
   Future<String> swipeRight(String userID, String plantID) async {
-    print("HEJHEJEHEJEHEJEH" + plantID);
     var body =
     json.encode({"userId": widget.CurrentUserID, "plantId": plantID});
 
@@ -120,11 +167,13 @@ class _SwipeTabState extends State<SwipeTab> {
               for (int i = 0; i < images.length; i++) {
                 welcomeImages.add(images[i]["pic"][0]);
               }
+
               return Container(
                 child: Column(
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.height * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.97,
                       child: new TinderSwapCard(
                         swipeUp: true,
                         swipeDown: true,
@@ -137,7 +186,7 @@ class _SwipeTabState extends State<SwipeTab> {
                         minWidth: MediaQuery.of(context).size.width * 0.8,
                         minHeight: MediaQuery.of(context).size.height * 0.8,
                         cardBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(top: 15.0),
                           child: Card(
                             elevation: 10,
                             shape: RoundedRectangleBorder(
@@ -263,12 +312,9 @@ class _SwipeTabState extends State<SwipeTab> {
                           if (orientation == CardSwipeOrientation.LEFT) {
                           } else if (orientation ==
                               CardSwipeOrientation.RIGHT) {
-                            print(images[index]);
                             swipeRight("", images[index]['plantID']).then(
                                   (value) {
                                 if (value.contains("Match")) {
-                                  print(value);
-                                  print(images[index]['_id']);
                                   Alert(
                                     context: context,
                                     type: AlertType.success,

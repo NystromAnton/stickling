@@ -39,7 +39,7 @@ class _ChatPageState extends State<ChatPage> {
     List<dynamic> chatMessages = (json.decode(response.body) as List);
     return chatMessages;
   }
-
+  
   @override
   void initState() {
     super.initState();
@@ -185,7 +185,7 @@ class _ChatPageState extends State<ChatPage> {
                                     borderRadius: BorderRadius.circular(20),
                                     color: (chatMessages[i]["fromID"] ==
                                             widget.currentUserID
-                                        ? Colors.blue[200]
+                                        ? Color(0xFF65C27A).withOpacity(0.8)
                                         : Colors.grey.shade200),
                                   ),
                                   padding: EdgeInsets.all(16),
@@ -218,7 +218,7 @@ class _ChatPageState extends State<ChatPage> {
                           height: 30,
                           width: 30,
                           decoration: BoxDecoration(
-                            color: Colors.lightBlue,
+                            color: Color(0xFF65C27A).withOpacity(0.9),
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Icon(
@@ -250,7 +250,7 @@ class _ChatPageState extends State<ChatPage> {
                           color: Colors.white,
                           size: 18,
                         ),
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Color(0xFF65C27A).withOpacity(0.9),
                         elevation: 0,
                       ),
                     ],

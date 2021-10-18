@@ -11,6 +11,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 
 class Signup extends StatefulWidget {
   Signup() {}
@@ -25,6 +26,7 @@ class _SignupState extends State<Signup> {
   final lastnameController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final passwordController = TextEditingController();
+
   @override
   void dispose() {
     emailController.dispose();
@@ -37,15 +39,10 @@ class _SignupState extends State<Signup> {
 
   Future<String> requestMethod(String url) async {
 
-
     var body = json.encode({
       "name": firstnameController.text,
       "email": emailController.text,
       "password": passwordController.text,
-      "location": {
-        "type": "Point",
-        "coordinates": [17.617210, 59.858770]
-      }
     });
 
     Map<String, String> headers = {
@@ -55,7 +52,6 @@ class _SignupState extends State<Signup> {
 
     final response = await http.post(url, body: body, headers: headers);
     final responseJson = response.body.toString();
-    print("result " + responseJson);
     return responseJson;
   }
 
@@ -66,11 +62,8 @@ class _SignupState extends State<Signup> {
   var isEnabled = false;
 
   @override
-  void initState()
-  {
-
-      url = "https://sticklingar.herokuapp.com/users/signup";
-
+  void initState() {
+    url = "https://sticklingar.herokuapp.com/users/signup";
   }
 
   @override
@@ -330,7 +323,7 @@ class _SignupState extends State<Signup> {
 
   CheckRegistration() {
     requestMethod(url).then((value) {
-      print("Result " + value);
+      //print("Result " + value);
       if (value != "user posted") {
         Fluttertoast.showToast(
             msg: value,
