@@ -14,7 +14,6 @@ class ChatPage extends StatefulWidget {
   String myName;
   String plantPicUrl;
 
-
   ChatPage(String chatRoomID, String currentUserID, String otherName,
       String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
@@ -31,6 +30,7 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = new TextEditingController();
   ScrollController scrollController = new ScrollController();
   Future<List<dynamic>> _future;
+  Timer timer;
 
   Future<List<dynamic>> getMyChatMessages() async {
     String url = "https://sticklingar.herokuapp.com/chat/" + widget.chatRoomID;
@@ -39,7 +39,7 @@ class _ChatPageState extends State<ChatPage> {
     List<dynamic> chatMessages = (json.decode(response.body) as List);
     return chatMessages;
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -50,11 +50,18 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   setUpTimedFetch() {
-    Timer.periodic(Duration(milliseconds: 5000), (timer) {
+    timer = Timer.periodic(Duration(milliseconds: 5000), (timer) {
       setState(() {
         _future = getMyChatMessages();
       });
     });
+  }
+
+  
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   void sendChat() async {
@@ -74,17 +81,16 @@ class _ChatPageState extends State<ChatPage> {
 
     messageController.clear();
     setState(() {
-        _future = getMyChatMessages();
-      });
+      _future = getMyChatMessages();
+    });
   }
 
   void scrollToEnd() {
-    scrollController.animateTo(
-           0.0,
-           duration: const Duration(milliseconds: 20),
-           curve: Curves.fastOutSlowIn);
+    scrollController.animateTo(0.0,
+        duration: const Duration(milliseconds: 20),
+        curve: Curves.fastOutSlowIn);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
