@@ -118,6 +118,8 @@ class _SwipeTabState extends State<SwipeTab> {
         body: body, headers: headers);
     final responseJson = response.body.toString();
 
+    print(responseJson);
+
     return responseJson;
   }
 
@@ -321,6 +323,32 @@ class _SwipeTabState extends State<SwipeTab> {
                                     type: AlertType.success,
                                     title: "New Match",
                                     desc: "Great! You got a new Match",
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text(
+                                          "Chat",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        onPressed: null,
+                                        /*() => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AllChatsPage(widget.CurrentUserID)),
+                                        ),*/
+                                        width: 120,
+                                      )
+                                    ],
+                                  ).show();
+                                }
+                                else if (value.contains("Chat")) {
+                                  Alert(
+                                    context: context,
+                                    type: AlertType.success,
+                                    title: "You've matched again!",
+                                    desc: "Go check your chat",
                                     buttons: [
                                       DialogButton(
                                         child: Text(
