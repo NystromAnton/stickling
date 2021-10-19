@@ -11,6 +11,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 
 class Signup extends StatefulWidget {
   Signup() {}
@@ -25,6 +26,9 @@ class _SignupState extends State<Signup> {
   final lastnameController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final passwordController = TextEditingController();
+  double lat;
+  double long;
+
   @override
   void dispose() {
     emailController.dispose();
@@ -35,17 +39,56 @@ class _SignupState extends State<Signup> {
     super.dispose();
   }
 
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+
   Future<String> requestMethod(String url) async {
 
+    await determinePosition().then((value) {
+        this.long = value.longitude;
+        this.lat = value.latitude;
+      });
 
     var body = json.encode({
       "name": firstnameController.text,
       "email": emailController.text,
       "password": passwordController.text,
-      "location": {
-        "type": "Point",
-        "coordinates": [17.617210, 59.858770]
-      }
+      "location": {"type": "Point", "coordinates": [long, lat]}
     });
 
     Map<String, String> headers = {
@@ -55,7 +98,6 @@ class _SignupState extends State<Signup> {
 
     final response = await http.post(url, body: body, headers: headers);
     final responseJson = response.body.toString();
-    print("result " + responseJson);
     return responseJson;
   }
 
@@ -66,11 +108,8 @@ class _SignupState extends State<Signup> {
   var isEnabled = false;
 
   @override
-  void initState()
-  {
-
-      url = "https://sticklingar.herokuapp.com/users/signup";
-
+  void initState() {
+    url = "https://sticklingar.herokuapp.com/users/signup";
   }
 
   @override
@@ -330,7 +369,7 @@ class _SignupState extends State<Signup> {
 
   CheckRegistration() {
     requestMethod(url).then((value) {
-      print("Result " + value);
+      //print("Result " + value);
       if (value != "user posted") {
         Fluttertoast.showToast(
             msg: value,

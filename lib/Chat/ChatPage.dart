@@ -30,17 +30,31 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = new TextEditingController();
   ScrollController scrollController = new ScrollController();
+  Future<List<dynamic>> _future;
 
   Future<List<dynamic>> getMyChatMessages() async {
     String url = "https://sticklingar.herokuapp.com/chat/" + widget.chatRoomID;
     final response = await http.get(url);
 
     List<dynamic> chatMessages = (json.decode(response.body) as List);
-    print("meddelanden");
-    print(chatMessages[7]);
-    print("currID");
-    print(widget.currentUserID);
     return chatMessages;
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _future = getMyChatMessages();
+    });
+    setUpTimedFetch();
+  }
+
+  setUpTimedFetch() {
+    Timer.periodic(Duration(milliseconds: 5000), (timer) {
+      setState(() {
+        _future = getMyChatMessages();
+      });
+    });
   }
 
   void sendChat() async {
@@ -49,7 +63,6 @@ class _ChatPageState extends State<ChatPage> {
       "fromID": widget.currentUserID,
       "message": messageController.text,
     });
-    print(body);
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -60,13 +73,12 @@ class _ChatPageState extends State<ChatPage> {
     final responseJson = response.body.toString();
 
     messageController.clear();
-   scrollToEnd();
-
-    getMyChatMessages();
+    setState(() {
+        _future = getMyChatMessages();
+      });
   }
 
   void scrollToEnd() {
-    print(context);
     scrollController.animateTo(
            0.0,
            duration: const Duration(milliseconds: 20),
@@ -141,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 28.0),
                 child: FutureBuilder(
-                  future: getMyChatMessages(),
+                  future: _future,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
@@ -173,7 +185,7 @@ class _ChatPageState extends State<ChatPage> {
                                     borderRadius: BorderRadius.circular(20),
                                     color: (chatMessages[i]["fromID"] ==
                                             widget.currentUserID
-                                        ? Colors.blue[200]
+                                        ? Color(0xFF65C27A).withOpacity(0.8)
                                         : Colors.grey.shade200),
                                   ),
                                   padding: EdgeInsets.all(16),
@@ -206,7 +218,7 @@ class _ChatPageState extends State<ChatPage> {
                           height: 30,
                           width: 30,
                           decoration: BoxDecoration(
-                            color: Colors.lightBlue,
+                            color: Color(0xFF65C27A).withOpacity(0.9),
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Icon(
@@ -238,7 +250,7 @@ class _ChatPageState extends State<ChatPage> {
                           color: Colors.white,
                           size: 18,
                         ),
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Color(0xFF65C27A).withOpacity(0.9),
                         elevation: 0,
                       ),
                     ],

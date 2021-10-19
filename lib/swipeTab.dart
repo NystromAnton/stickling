@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:animations/animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -31,6 +32,8 @@ class _SwipeTabState extends State<SwipeTab> {
     super.dispose();
   }
 
+  double long;
+  double lat;
   void initState() {
     requestMethod("").then((value) => print("API RESULT " + value.toString()));
   }
@@ -46,19 +49,63 @@ class _SwipeTabState extends State<SwipeTab> {
     return plants;
   }
 
-  Future<List<dynamic>> requestMethod(String url) async {
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+   Future<List<dynamic>> requestMethod(String url) async {
     Addpreprefernces("", "").then((value) => print("Pref User ID " + value));
+
+     await determinePosition().then((value) {
+        this.long = value.longitude;
+        this.lat = value.latitude;
+      });
+
     String url = "https://sticklingar.herokuapp.com/nearby/" +
-        widget.CurrentUserID +
-        "/?q=17.61721,59.85877";
+        widget.CurrentUserID + "/?q=" + this.long.toString() + "," + this.lat.toString();
+
     final response = await http.get(url);
     final responseJson = json.decode(response.body.toString());
     List<dynamic> users = (json.decode(response.body) as List);
     return users;
   }
 
+
   Future<String> swipeRight(String userID, String plantID) async {
-    print("HEJHEJEHEJEHEJEH" + plantID);
     var body =
     json.encode({"userId": widget.CurrentUserID, "plantId": plantID});
 
@@ -70,6 +117,8 @@ class _SwipeTabState extends State<SwipeTab> {
     final response = await http.post("https://sticklingar.herokuapp.com/match/",
         body: body, headers: headers);
     final responseJson = response.body.toString();
+
+    print(responseJson);
 
     return responseJson;
   }
@@ -125,6 +174,7 @@ class _SwipeTabState extends State<SwipeTab> {
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.height * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.97,
                       child: new TinderSwapCard(
                         swipeUp: true,
                         swipeDown: true,
@@ -137,57 +187,38 @@ class _SwipeTabState extends State<SwipeTab> {
                         minWidth: MediaQuery.of(context).size.width * 0.8,
                         minHeight: MediaQuery.of(context).size.height * 0.8,
                         cardBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(top: 15.0),
                           child: Card(
                             elevation: 10,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 15),
+                              padding: const EdgeInsets.only(top: 0),
                               child: OpenContainer(
                                 transitionDuration: Duration(milliseconds: 300),
-                                openBuilder: (context, _) => DetailsPage(welcomeImages, images, cardIndex),
+                                openBuilder: (context, _) => DetailsPage(welcomeImages, images, index),
                                 closedElevation: 0,
                                 closedShape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(32),
-                                    side: BorderSide(color: Colors.white, width: 1)),
+                                    borderRadius: BorderRadius.circular(15),
+                                    ),
                                 closedColor: Colors.transparent,
                                 closedBuilder: (context, _) =>
-                                    Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.75,
-                                              padding: EdgeInsets.only(top: 5, bottom: 10),
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                child: Text(
-                                                  images[index]['title'].toString(),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 30,
-                                                    fontFamily: 'Lato',
+                                Container(
+                                  child: Center(
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: CachedNetworkImage(
+                                              imageUrl: welcomeImages[index],
+                                              imageBuilder: (context, imageProvider) => Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(15),
+                                                  image: DecorationImage(image: imageProvider,
+                                                  fit: BoxFit.cover),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context).size.height *
-                                              0.4,
-                                          width:
-                                          MediaQuery.of(context).size.width * 1.0,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                              imageUrl: welcomeImages[index],
                                               placeholder: (context, url) => SizedBox(
                                                 width: 5,
                                                 height: 5,
@@ -201,50 +232,71 @@ class _SwipeTabState extends State<SwipeTab> {
                                               errorWidget: (context, url, error) =>
                                               new Icon(Icons.error),
                                             ),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(left: 16),
-                                              child: Row(
-                                                children: [
-                                                  Icon(Icons.location_on_outlined),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(left: 16),
-                                              child: Container(
-                                                width: MediaQuery.of(context).size.width * 0.72,
-                                                padding: EdgeInsets.only(top: 10),
-                                                child: Text(
-                                                  images[index]['desc'].toString(),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontFamily: 'Lato',
+                                         ),
+                                         Container(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context).size.height*0.02,
+                                                left: MediaQuery.of(context).size.width*0.05),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      images[index]['title'].toString(),
+                                                      overflow: TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontSize: 30,
+                                                        fontFamily: 'Lato',
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(top: 8),
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(Icons.location_on_outlined,
+                                                          color: Colors.white),
+                                                          Text(
+                                                            images[index]["distance"].toStringAsFixed(0) + " km",
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily: "Lato",
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.bold
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),),
+                                                      Container(
+                                                        width: MediaQuery.of(context).size.width*0.72,
+                                                        padding: EdgeInsets.only(top: 10),
+                                                        child: Text(
+                                                          images[index]["desc"].toString(),
+                                                          overflow: TextOverflow.ellipsis,
+                                                          maxLines: 2,
+                                                          textAlign: TextAlign.start,
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontFamily: "Lato",
+                                                            color: Colors.white),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                              ),
-                            ),
-                          ),
-                        ),
+                                  ),
+                                ),
                         cardController: cardController,
                         swipeUpdateCallback:
                             (DragUpdateDetails details, Alignment align) {
@@ -263,17 +315,40 @@ class _SwipeTabState extends State<SwipeTab> {
                           if (orientation == CardSwipeOrientation.LEFT) {
                           } else if (orientation ==
                               CardSwipeOrientation.RIGHT) {
-                            print(images[index]);
                             swipeRight("", images[index]['plantID']).then(
                                   (value) {
                                 if (value.contains("Match")) {
-                                  print(value);
-                                  print(images[index]['_id']);
                                   Alert(
                                     context: context,
                                     type: AlertType.success,
                                     title: "New Match",
                                     desc: "Great! You got a new Match",
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text(
+                                          "Chat",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        onPressed: null,
+                                        /*() => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AllChatsPage(widget.CurrentUserID)),
+                                        ),*/
+                                        width: 120,
+                                      )
+                                    ],
+                                  ).show();
+                                }
+                                else if (value.contains("Chat")) {
+                                  Alert(
+                                    context: context,
+                                    type: AlertType.success,
+                                    title: "You've matched again!",
+                                    desc: "Go check your chat",
                                     buttons: [
                                       DialogButton(
                                         child: Text(

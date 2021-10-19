@@ -10,6 +10,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 
 class Login extends StatefulWidget {
   Login() {}
@@ -21,6 +22,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  Future<Position> coordinates;
   @override
   void dispose() {
     emailController.dispose();
@@ -29,13 +32,10 @@ class _LoginState extends State<Login> {
   }
 
   Future<String> requestMethod(String url) async {
-
-
     var body = json.encode({
       "email": emailController.text,
       "password": passwordController.text,
     });
-
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
 
     final response = await http.post(url, body: body, headers: headers);
     final responseJson = response.body.toString();
-    print("result " + responseJson);
+
     return responseJson;
   }
 
@@ -53,12 +53,7 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-
-
-
-      url = "https://sticklingar.herokuapp.com/users/login";
-
-
+    url = "https://sticklingar.herokuapp.com/users/login";
   }
 
   @override
@@ -73,7 +68,8 @@ class _LoginState extends State<Login> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
-                  child: Image.asset('assets/stickling_heart_logo.png', height: 50),
+                  child: Image.asset('assets/stickling_heart_logo.png',
+                      height: 50),
                 ),
                 Text(
                   'Stickling',
@@ -267,7 +263,7 @@ class _LoginState extends State<Login> {
 
   ValidateUser() {
     requestMethod(url).then((value) {
-      print("Result " + value);
+      //print("Result " + value);
       if (value == "login failed") {
         Fluttertoast.showToast(
             msg: value,
@@ -278,7 +274,7 @@ class _LoginState extends State<Login> {
             textColor: Colors.white,
             fontSize: 16.0);
       } else {
-        if(value=="Email and password doesn't match"){
+        if (value == "Email and password doesn't match") {
           Fluttertoast.showToast(
               msg: value,
               toastLength: Toast.LENGTH_SHORT,
@@ -287,16 +283,14 @@ class _LoginState extends State<Login> {
               backgroundColor: Colors.red,
               textColor: Colors.white,
               fontSize: 16.0);
-        }else{
-
-        String newvalue  = value.substring(1,value.length-1);
-        print("NewValue "+newvalue );
+        } else {
+          String newvalue = value.substring(1, value.length - 1);
+          //print("NewValue " + newvalue);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => TabBarDemo(newvalue)),
           );
         }
-
       }
     });
   }

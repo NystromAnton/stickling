@@ -73,12 +73,9 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     _selectedPlantTypes5 = _tags;
-    // passwordController.addListener(EnableButton);
-    // confirmPasswordController.addListener(EnableButton);
 
     GetSaveSliderValue().then((value) {
       setState(() {
-        print("Value current " + value.toString());
         if (value != null) {
           _currentSliderValue = value;
         } else {
@@ -86,7 +83,8 @@ class _SettingsPageState extends State<SettingsPage> {
         }
       });
     });
-    _determinePosition().then((value) => print("Position " + value.toString()));
+    _determinePosition()
+        .then((value) => print("POSITION :" + value.toString()));
 
     super.initState();
   }
@@ -125,12 +123,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
+
     return await Geolocator.getCurrentPosition();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Checking State");
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -196,16 +194,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                 fontFamily: 'Lato',
                                 color: Colors.grey[700]),
                           ),
-                          Icon(Icons.near_me_outlined),
+                          Icon(Icons.near_me_outlined)
                         ],
                       ),
-                      Text(
-                        'Uppsala',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Lato',
-                            color: Colors.grey[600]),
-                      )
                     ],
                   )
                 ],
@@ -417,7 +408,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   _onAlertWithCustomContentPressed(context) {
-    print("IsEnabled Test" + isEnabled.toString());
     Alert(
         context: context,
         title: "Change password",
@@ -439,10 +429,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                  // onChanged: (text) {
-                  //   print("Password changing");
-                  //   EnableButton();
-                  // },
                 ),
               ),
             ),
@@ -462,10 +448,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                  // onChanged: (text) {
-                  //   print("Confirm Password changing");
-                  //   EnableButton();
-                  // },
                 ),
               ),
             ),
@@ -521,10 +503,8 @@ class _MyDialogState extends State<MyDialog> {
   var isEnabled = false;
 
   EnableButton() {
-    print("Text Input 1");
     setState(() {
       isEnabled = true;
-      print("Text Input 2");
       if (passwordController.text.length > 0 &&
           confirmPasswordController.text.length > 0 &&
           passwordController.text == confirmPasswordController.text) {
@@ -578,10 +558,6 @@ class _MyDialogState extends State<MyDialog> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                  // onChanged: (text) {
-                  //   print("Password changing");
-                  //   EnableButton();
-                  // },
                 ),
               ),
             ),
@@ -601,10 +577,6 @@ class _MyDialogState extends State<MyDialog> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                  // onChanged: (text) {
-                  //   print("Confirm Password changing");
-                  //   EnableButton();
-                  // },
                 ),
               ),
             ),
