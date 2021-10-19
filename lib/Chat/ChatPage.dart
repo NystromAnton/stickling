@@ -14,7 +14,6 @@ class ChatPage extends StatefulWidget {
   String myName;
   String plantPicUrl;
 
-
   ChatPage(String chatRoomID, String currentUserID, String otherName,
       String myName, String plantPicUrl) {
     this.chatRoomID = chatRoomID;
@@ -39,7 +38,7 @@ class _ChatPageState extends State<ChatPage> {
     List<dynamic> chatMessages = (json.decode(response.body) as List);
     return chatMessages;
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -74,17 +73,16 @@ class _ChatPageState extends State<ChatPage> {
 
     messageController.clear();
     setState(() {
-        _future = getMyChatMessages();
-      });
+      _future = getMyChatMessages();
+    });
   }
 
   void scrollToEnd() {
-    scrollController.animateTo(
-           0.0,
-           duration: const Duration(milliseconds: 20),
-           curve: Curves.fastOutSlowIn);
+    scrollController.animateTo(0.0,
+        duration: const Duration(milliseconds: 20),
+        curve: Curves.fastOutSlowIn);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
