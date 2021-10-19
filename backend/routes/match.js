@@ -49,8 +49,7 @@ router.post("/", async function (req, res, next) {
             { $and: [{ user1ID: swipedPlant.user }, { user2ID: userId }] },
           ],
         });
-        console.log(chatExist);
-        console.log(chatExist);
+        console.log("CHATEXIST:" + chatExist);
         if (chatExist.length < 1) {
           const newChatRoom = new ChatRoom({
             user1ID: userId,
