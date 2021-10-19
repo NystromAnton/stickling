@@ -9,6 +9,7 @@ var Plant = require("../models/plantModel");
 // GET ALL USERS ROOMS BY userID
 router.get("/user/:id", function (req, res, next) {
   var id = mongoose.Types.ObjectId(req.params.id);
+  console.log(id);
   chatRoom.aggregate(
     [
       {

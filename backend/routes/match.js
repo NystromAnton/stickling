@@ -27,12 +27,6 @@ router.post("/", async function (req, res, next) {
       });
       console.log(match);
       if (match.length > 0) {
-        await Match.updateOne(
-          { id: match._id, matched: false },
-          {
-            $set: { matched: true },
-          }
-        );
         const newSwipeHistory = new MySwipeHistory({
           myUserID: userId,
           userID: swipedPlant.user,
@@ -54,7 +48,7 @@ router.post("/", async function (req, res, next) {
           const newChatRoom = new ChatRoom({
             user1ID: userId,
             user2ID: swipedPlant.user,
-            plant1ID: match.likedPlant,
+            plant1ID: match[0].likedPlant,
             plant2ID: swipedPlant._id,
           });
           await newChatRoom.save();
