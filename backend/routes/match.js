@@ -50,6 +50,7 @@ router.post("/", async function (req, res, next) {
           ],
         });
         console.log(chatExist);
+        console.log(chatExist);
         if (chatExist.length < 1) {
           const newChatRoom = new ChatRoom({
             user1ID: userId,
@@ -77,7 +78,7 @@ router.post("/", async function (req, res, next) {
           type: swipedPlant.type,
         });
         await newSwipeHistory.save();
-        res.send("Swiped registered");
+        res.send("Swipe registered");
       }
     } else {
       res.send("User doesn't exist");
