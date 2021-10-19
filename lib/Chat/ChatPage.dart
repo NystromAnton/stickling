@@ -31,6 +31,7 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = new TextEditingController();
   ScrollController scrollController = new ScrollController();
   Future<List<dynamic>> _future;
+  Timer timer;
 
   Future<List<dynamic>> getMyChatMessages() async {
     String url = "https://sticklingar.herokuapp.com/chat/" + widget.chatRoomID;
@@ -50,11 +51,18 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   setUpTimedFetch() {
-    Timer.periodic(Duration(milliseconds: 5000), (timer) {
+    timer = Timer.periodic(Duration(milliseconds: 5000), (timer) {
       setState(() {
         _future = getMyChatMessages();
       });
     });
+  }
+
+  
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   void sendChat() async {
