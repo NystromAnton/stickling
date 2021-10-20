@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'ChatPage.dart';
+import 'dart:async';
 
 class AllChatsPage extends StatefulWidget {
   String currentUserID;
@@ -19,6 +20,9 @@ class AllChatsPage extends StatefulWidget {
 }
 
 class _AllChatsPageState extends State<AllChatsPage> {
+  Future<List<dynamic>> chatRooms;
+  Timer timer;
+
   Future<List<dynamic>> getMyChatRooms() async {
     String url = "https://sticklingar.herokuapp.com/chatRoom/user/" +
         widget.currentUserID;
@@ -27,6 +31,29 @@ class _AllChatsPageState extends State<AllChatsPage> {
     List<dynamic> chatRooms = (json.decode(response.body) as List);
     print(chatRooms);
     return chatRooms;
+  }
+
+  setUpTimedFetch() {
+    timer = Timer.periodic(Duration(milliseconds: 5000), (timer) {
+      setState(() {
+        chatRooms = getMyChatRooms();
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      chatRooms = getMyChatRooms();
+    });
+    setUpTimedFetch();
+  }
+
+    @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   @override
@@ -39,7 +66,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 28.0),
                 child: FutureBuilder(
-                  future: getMyChatRooms(),
+                  future: chatRooms,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
@@ -70,15 +97,16 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                 otherUserPlant = "plant1";
                                 meUser = "user2";
                               }
-                              if (chatRooms[i]["recent_chat"] != []) {
+                              print(chatRooms[i]);
+                              if (chatRooms[i]["recent_chat"] != null) {
                                 message =
                                     chatRooms[i]["recent_chat"]["message"];
-                              }
-                              date =
+                                date =
                                   chatRooms[i]["recent_chat"]["created_date"];
-                              DateTime dateTime = DateTime.parse(date);
-                              formatDate =
+                                DateTime dateTime = DateTime.parse(date);
+                                formatDate =
                                   DateFormat('dd-MM-yyyy').format(dateTime);
+                              }
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -143,7 +171,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                         ),
                                       ),
                                       Text(
-                                        formatDate,
+                                        (formatDate != null) ? formatDate : "",
                                         style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.normal),
