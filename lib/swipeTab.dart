@@ -12,6 +12,10 @@ import 'package:loading_gifs/loading_gifs.dart';
 import 'package:stycling/Chat/AllChatsPage.dart';
 import 'package:stycling/Registration/Login.dart';
 import 'package:stycling/settings.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+
 
 class SwipeTab extends StatefulWidget {
   String CurrentUserID;
@@ -169,6 +173,7 @@ class _SwipeTabState extends State<SwipeTab> {
               for (int i = 0; i < images.length; i++) {
                 welcomeImages.add(images[i]["pic"][0]);
               }
+
               return Container(
                 child: Column(
                   children: <Widget>[
@@ -427,8 +432,16 @@ class DetailsPage extends StatelessWidget {
 
   DetailsPage(this.welcomeImages, this.images, this.index);
 
+
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> slideImages = List<Widget>();
+    slideImages.clear();
+    for (int i = 0; i < images[index]["pic"].length; i++) {
+        slideImages.add(Image.network(images[index]["pic"][i]));
+    }
+
     return Material(
       elevation: 3,
       borderRadius: BorderRadius.circular(5),
@@ -482,21 +495,32 @@ class DetailsPage extends StatelessWidget {
               MediaQuery.of(context).size.width * 1.0,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: CachedNetworkImage(
-                  imageUrl: welcomeImages[index],
-                  placeholder: (context, url) => SizedBox(
-                    width: 5,
-                    height: 5,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: CupertinoActivityIndicator(
-                        radius: 20,
-                      ),
-                    ),
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                      height: 400.0,
+                      autoPlay: false,
+                      enableInfiniteScroll: false,
                   ),
-                  errorWidget: (context, url, error) =>
-                  new Icon(Icons.error),
-                ),
+                  items: slideImages,
+                )
+
+
+            //    CachedNetworkImage(
+              //    imageUrl: images[index]['pic'][0],
+                //  //imageUrl: welcomeImages[index],
+//                  placeholder: (context, url) => SizedBox(
+//                    width: 5,
+//                    height: 5,
+//                    child: Align(
+//                      alignment: Alignment.center,
+//                      child: CupertinoActivityIndicator(
+//                        radius: 20,
+//                      ),
+//                    ),
+//                  ),
+//                  errorWidget: (context, url, error) =>
+//                  new Icon(Icons.error),
+         //       ),
               ),
             ),
             Row(
