@@ -23,7 +23,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
     String url = "https://sticklingar.herokuapp.com/chatRoom/user/" +
         widget.currentUserID;
     final response = await http.get(url);
-
+    
     List<dynamic> chatRooms = (json.decode(response.body) as List);
     print(chatRooms);
     return chatRooms;
