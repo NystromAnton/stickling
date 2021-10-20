@@ -70,7 +70,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
                                 otherUserPlant = "plant1";
                                 meUser = "user2";
                               }
-                              if (chatRooms[i]["recent_chat"] != null) {
+                              if (chatRooms[i]["recent_chat"] != []) {
                                 message =
                                     chatRooms[i]["recent_chat"]["message"];
                               }
