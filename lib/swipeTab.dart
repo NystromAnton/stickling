@@ -125,23 +125,6 @@ class _SwipeTabState extends State<SwipeTab> {
                 welcomeImages.add(images[i]["pic"][0]);
               }
 
-
-              /*List<Widget> slideImages = List<Widget>();
-              for (int i = 0; i < images.length; i++) {
-                for (int x = 0; x < images[i]["pic"].length; x++) {
-                  slideImages.add(Image.network(images[i]["pic"][x]));
-                  print("AHOAUHAOUHA");
-                  print(slideImages.length);
-                }
-              }*/
-
-              /*final List<Widget> slideImagesWidget = slideImages.map((item) =>
-                CachedNetworkImage(
-                  imageUrl: slideImages[item],
-                )
-              );*/
-
-
               return Container(
                 child: Column(
                   children: <Widget>[
@@ -386,15 +369,10 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    print("gababbababa");
-    print(index);
-
     List<Widget> slideImages = List<Widget>();
     slideImages.clear();
-    for (int i = 0; i < images[i]["pic"].length; i++) {
+    for (int i = 0; i < images[index]["pic"].length; i++) {
         slideImages.add(Image.network(images[index]["pic"][i]));
-        print("AHOAUHAOUHA");
-        print(slideImages.length);
     }
 
     return Material(
