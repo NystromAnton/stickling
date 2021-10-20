@@ -331,8 +331,9 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed:() => DefaultTabController.of(context).animateTo(2),
-                                        ),
+                                        onPressed:() {
+                                          Navigator.of(context, rootNavigator: true).pop();
+                                          DefaultTabController.of(context).animateTo(1);},
                                         width: 120,
                                       )
                                     ],
@@ -352,8 +353,9 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: () => DefaultTabController.of(context).animateTo(2),
-                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context, rootNavigator: true).pop();
+                                          DefaultTabController.of(context).animateTo(1);},
                                         width: 120,
                                       )
                                     ],
