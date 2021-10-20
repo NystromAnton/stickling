@@ -331,11 +331,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed:() => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AllChatsPage(widget.CurrentUserID)),
+                                        onPressed:() => DefaultTabController.of(context).animateTo(2),
                                         ),
                                         width: 120,
                                       )
@@ -356,11 +352,7 @@ class _SwipeTabState extends State<SwipeTab> {
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AllChatsPage(widget.CurrentUserID)),
+                                        onPressed: () => DefaultTabController.of(context).animateTo(2),
                                         ),
                                         width: 120,
                                       )
