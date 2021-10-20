@@ -39,7 +39,7 @@ class _EditProfileState extends State<EditProfile> {
 
   List _imageFile;
   //List<Asset> images = List<Asset>();
-  String _error = 'No Error Dectected';
+  String _error = 'No Error Detected';
   Asset asset = null;
   Asset asset_one = null;
   var isEnabled = false;
