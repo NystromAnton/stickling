@@ -326,18 +326,17 @@ class _SwipeTabState extends State<SwipeTab> {
                                     buttons: [
                                       DialogButton(
                                         child: Text(
-                                          "Chat",
+                                          "Chats",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: null,
-                                        /*() => Navigator.push(
+                                        onPressed:() => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   AllChatsPage(widget.CurrentUserID)),
-                                        ),*/
+                                        ),
                                         width: 120,
                                       )
                                     ],
@@ -348,22 +347,21 @@ class _SwipeTabState extends State<SwipeTab> {
                                     context: context,
                                     type: AlertType.success,
                                     title: "You've matched again!",
-                                    desc: "Go check your chat",
+                                    desc: "Go check your chats",
                                     buttons: [
                                       DialogButton(
                                         child: Text(
-                                          "Chat",
+                                          "Chats",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 20),
                                         ),
-                                        onPressed: null,
-                                        /*() => Navigator.push(
+                                        onPressed: () => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   AllChatsPage(widget.CurrentUserID)),
-                                        ),*/
+                                        ),
                                         width: 120,
                                       )
                                     ],
