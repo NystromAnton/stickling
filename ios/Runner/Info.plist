@@ -27,7 +27,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Needed to access location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-<string>Needed access to photos for uploading</string>
+	<string>Needed access to photos for uploading</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
