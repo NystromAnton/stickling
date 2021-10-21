@@ -104,6 +104,7 @@ class _SwipeTabState extends State<SwipeTab> {
 
     final response = await http.get(url);
     final responseJson = json.decode(response.body.toString());
+
     List<dynamic> users = (json.decode(response.body) as List);
     return users;
   }
@@ -121,8 +122,6 @@ class _SwipeTabState extends State<SwipeTab> {
     final response = await http.post("https://sticklingar.herokuapp.com/match/",
         body: body, headers: headers);
     final responseJson = response.body.toString();
-
-    print(responseJson);
 
     return responseJson;
   }
@@ -452,7 +451,7 @@ class DetailsPage extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 45, right: MediaQuery.of(context).size.width *
-                  0.75),
+                  0.8),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -465,29 +464,6 @@ class DetailsPage extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width:
-                  MediaQuery.of(context).size.width *
-                      0.75,
-                  padding: EdgeInsets.only(top: 5, bottom: 10),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      images[index]['title'].toString(),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontFamily: 'Lato',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
             SizedBox(
               height: MediaQuery.of(context).size.height *
                   0.4,
@@ -497,43 +473,56 @@ class DetailsPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: CarouselSlider(
                   options: CarouselOptions(
-                      height: 400.0,
+                      height: 500.0,
                       autoPlay: false,
                       enableInfiniteScroll: false,
                   ),
                   items: slideImages,
                 )
-
-
-            //    CachedNetworkImage(
-              //    imageUrl: images[index]['pic'][0],
-                //  //imageUrl: welcomeImages[index],
-//                  placeholder: (context, url) => SizedBox(
-//                    width: 5,
-//                    height: 5,
-//                    child: Align(
-//                      alignment: Alignment.center,
-//                      child: CupertinoActivityIndicator(
-//                        radius: 20,
-//                      ),
-//                    ),
-//                  ),
-//                  errorWidget: (context, url, error) =>
-//                  new Icon(Icons.error),
-         //       ),
               ),
             ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width:
+                    MediaQuery.of(context).size.width *
+                        0.4,
+                    padding: EdgeInsets.only(top: 5, bottom: 10),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        images[index]['title'].toString(),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Lato',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             Row(
               children: [
-                Padding(
-                  padding:
-                  const EdgeInsets.only(left: 16),
-                  child: Row(
-                    children: [
-                      Icon(Icons.location_on_outlined),
-                    ],
-                  ),
-                ),
+                 Padding(
+                     padding: const EdgeInsets.only(top: 8, left: 10),
+                     child: Row(
+                     children: [
+                       Icon(Icons.location_on_outlined,
+                       color: Colors.black),
+                       Text(
+                          images[index]["distance"].toStringAsFixed(0) + " km",
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily: "Lato",
+                                                              color: Colors.black,
+                                                              fontWeight: FontWeight.bold
+                                                            ),
+                                                          ),
+                                                        ],
+                ),),
               ],
             ),
             Row(
@@ -543,12 +532,12 @@ class DetailsPage extends StatelessWidget {
                   padding:
                   const EdgeInsets.only(left: 16),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.72,
+                    width: MediaQuery.of(context).size.width * 0.95,
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
                       images[index]['desc'].toString(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                      //overflow: TextOverflow.ellipsis,
+                      //maxLines: 10,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontSize: 15,
